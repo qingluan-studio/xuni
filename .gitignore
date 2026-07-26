@@ -1,0 +1,75 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Audio output
+*.wav
+*.mp3
+*.ogg
+
+# Logs
+*.log
+logs/*
+!logs/.gitkeep
+!logs/harmonia_daemon.jsonl
+
+# Model checkpoints (trained models - too big / generated)
+# 注：合鸣-13 训练产物需要入库保存，避免会话结束丢失
+# checkpoints/
+*.ckpt
+*.pt
+*.pth
+# 但排除其他临时训练产物
+checkpoints/*/
+!checkpoints/harmonia13/
+!checkpoints/harmonia13_code/
+
+# 检查点内只入库压缩版(.gz)，原始 json 不入库(大文件)
+checkpoints/*/harmonia_lite.json
+!checkpoints/*/harmonia13_meta.json
+!checkpoints/*/harmonia_lite.json.gz
+
+# 大语料文件只入库压缩版(.gz)，原始 json 不入库(超过 GitHub 100MB 限制)
+corpus_particles_large.json
+corpus_clean_large.json
+logs_train.out
+
+# Config with secrets
+config.local.yaml
+.env

@@ -1,0 +1,1222 @@
+{
+  "version": "1.0",
+  "timestamp": 1785044699.6561203,
+  "layers": [
+    {
+      "config": {
+        "layer_id": "L1-music",
+        "layer_name": "音乐模型层",
+        "layer_type": "MUSIC",
+        "level": 1,
+        "model_count": 5,
+        "description": "音乐作曲模型，每个AI认领一个训练"
+      },
+      "models": [
+        {
+          "model_id": "L1-music-m01",
+          "model_type": "MUSIC_COMPOSER",
+          "owner": "Aria",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148376,
+          "trained_at": 1785044699.6558373,
+          "energy_buffer": 0.0,
+          "energy_requirement": 12.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Aria",
+              "timestamp": 1785044699.6554127
+            },
+            {
+              "action": "complete_training",
+              "owner": "Aria",
+              "timestamp": 1785044699.6558375
+            }
+          ]
+        },
+        {
+          "model_id": "L1-music-m02",
+          "model_type": "MUSIC_COMPOSER",
+          "owner": "Bolt",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.61484,
+          "trained_at": 1785044699.6558392,
+          "energy_buffer": 0.0,
+          "energy_requirement": 12.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Bolt",
+              "timestamp": 1785044699.6554155
+            },
+            {
+              "action": "complete_training",
+              "owner": "Bolt",
+              "timestamp": 1785044699.6558394
+            }
+          ]
+        },
+        {
+          "model_id": "L1-music-m03",
+          "model_type": "MUSIC_COMPOSER",
+          "owner": "Coda",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.614841,
+          "trained_at": 1785044699.655841,
+          "energy_buffer": 0.0,
+          "energy_requirement": 12.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Coda",
+              "timestamp": 1785044699.6554165
+            },
+            {
+              "action": "complete_training",
+              "owner": "Coda",
+              "timestamp": 1785044699.655841
+            }
+          ]
+        },
+        {
+          "model_id": "L1-music-m04",
+          "model_type": "MUSIC_COMPOSER",
+          "owner": "Dusk",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.614842,
+          "trained_at": 1785044699.6558425,
+          "energy_buffer": 0.0,
+          "energy_requirement": 12.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Dusk",
+              "timestamp": 1785044699.6554177
+            },
+            {
+              "action": "complete_training",
+              "owner": "Dusk",
+              "timestamp": 1785044699.6558428
+            }
+          ]
+        },
+        {
+          "model_id": "L1-music-m05",
+          "model_type": "MUSIC_COMPOSER",
+          "owner": "Echo",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148422,
+          "trained_at": 1785044699.6558442,
+          "energy_buffer": 0.0,
+          "energy_requirement": 12.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Echo",
+              "timestamp": 1785044699.6554184
+            },
+            {
+              "action": "complete_training",
+              "owner": "Echo",
+              "timestamp": 1785044699.6558442
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "config": {
+        "layer_id": "L2-diffusion",
+        "layer_name": "扩散模型层",
+        "layer_type": "DIFFUSION",
+        "level": 2,
+        "model_count": 5,
+        "description": "图像扩散生成模型"
+      },
+      "models": [
+        {
+          "model_id": "L2-diffusion-m01",
+          "model_type": "DIFFUSION",
+          "owner": "Flux",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148458,
+          "trained_at": 1785044699.655847,
+          "energy_buffer": 0.0,
+          "energy_requirement": 15.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Flux",
+              "timestamp": 1785044699.65542
+            },
+            {
+              "action": "complete_training",
+              "owner": "Flux",
+              "timestamp": 1785044699.6558473
+            }
+          ]
+        },
+        {
+          "model_id": "L2-diffusion-m02",
+          "model_type": "DIFFUSION",
+          "owner": "Glow",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148477,
+          "trained_at": 1785044699.6558492,
+          "energy_buffer": 0.0,
+          "energy_requirement": 15.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Glow",
+              "timestamp": 1785044699.6554277
+            },
+            {
+              "action": "complete_training",
+              "owner": "Glow",
+              "timestamp": 1785044699.6558495
+            }
+          ]
+        },
+        {
+          "model_id": "L2-diffusion-m03",
+          "model_type": "DIFFUSION",
+          "owner": "Halo",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148496,
+          "trained_at": 1785044699.6558518,
+          "energy_buffer": 0.0,
+          "energy_requirement": 15.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Halo",
+              "timestamp": 1785044699.6554296
+            },
+            {
+              "action": "complete_training",
+              "owner": "Halo",
+              "timestamp": 1785044699.6558523
+            }
+          ]
+        },
+        {
+          "model_id": "L2-diffusion-m04",
+          "model_type": "DIFFUSION",
+          "owner": "Iris",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148505,
+          "trained_at": 1785044699.6558537,
+          "energy_buffer": 0.0,
+          "energy_requirement": 15.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Iris",
+              "timestamp": 1785044699.6554313
+            },
+            {
+              "action": "complete_training",
+              "owner": "Iris",
+              "timestamp": 1785044699.655854
+            }
+          ]
+        },
+        {
+          "model_id": "L2-diffusion-m05",
+          "model_type": "DIFFUSION",
+          "owner": "Jade",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.614851,
+          "trained_at": 1785044699.6558554,
+          "energy_buffer": 0.0,
+          "energy_requirement": 15.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Jade",
+              "timestamp": 1785044699.655432
+            },
+            {
+              "action": "complete_training",
+              "owner": "Jade",
+              "timestamp": 1785044699.6558554
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "config": {
+        "layer_id": "L3-chat",
+        "layer_name": "对话模型层",
+        "layer_type": "CHAT",
+        "level": 3,
+        "model_count": 5,
+        "description": "聊天对话模型"
+      },
+      "models": [
+        {
+          "model_id": "L3-chat-m01",
+          "model_type": "CHAT_BOT",
+          "owner": "Kite",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.614854,
+          "trained_at": 1785044699.6558585,
+          "energy_buffer": 0.0,
+          "energy_requirement": 4.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Kite",
+              "timestamp": 1785044699.655434
+            },
+            {
+              "action": "complete_training",
+              "owner": "Kite",
+              "timestamp": 1785044699.6558588
+            }
+          ]
+        },
+        {
+          "model_id": "L3-chat-m02",
+          "model_type": "CHAT_BOT",
+          "owner": "Luna",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148548,
+          "trained_at": 1785044699.6558602,
+          "energy_buffer": 0.0,
+          "energy_requirement": 4.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Luna",
+              "timestamp": 1785044699.655435
+            },
+            {
+              "action": "complete_training",
+              "owner": "Luna",
+              "timestamp": 1785044699.6558602
+            }
+          ]
+        },
+        {
+          "model_id": "L3-chat-m03",
+          "model_type": "CHAT_BOT",
+          "owner": "Mist",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148558,
+          "trained_at": 1785044699.6558616,
+          "energy_buffer": 0.0,
+          "energy_requirement": 4.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Mist",
+              "timestamp": 1785044699.655436
+            },
+            {
+              "action": "complete_training",
+              "owner": "Mist",
+              "timestamp": 1785044699.6558619
+            }
+          ]
+        },
+        {
+          "model_id": "L3-chat-m04",
+          "model_type": "CHAT_BOT",
+          "owner": "Nova",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.614856,
+          "trained_at": 1785044699.655863,
+          "energy_buffer": 0.0,
+          "energy_requirement": 4.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Nova",
+              "timestamp": 1785044699.6554368
+            },
+            {
+              "action": "complete_training",
+              "owner": "Nova",
+              "timestamp": 1785044699.655863
+            }
+          ]
+        },
+        {
+          "model_id": "L3-chat-m05",
+          "model_type": "CHAT_BOT",
+          "owner": "Onyx",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148567,
+          "trained_at": 1785044699.6558642,
+          "energy_buffer": 0.0,
+          "energy_requirement": 4.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Onyx",
+              "timestamp": 1785044699.6554375
+            },
+            {
+              "action": "complete_training",
+              "owner": "Onyx",
+              "timestamp": 1785044699.6558642
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "config": {
+        "layer_id": "L4-text",
+        "layer_name": "文本模型层",
+        "layer_type": "TEXT",
+        "level": 4,
+        "model_count": 5,
+        "description": "文本生成模型"
+      },
+      "models": [
+        {
+          "model_id": "L4-text-m01",
+          "model_type": "TEXT_GENERATOR",
+          "owner": "Pulse",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148584,
+          "trained_at": 1785044699.655867,
+          "energy_buffer": 0.0,
+          "energy_requirement": 5.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Pulse",
+              "timestamp": 1785044699.6554387
+            },
+            {
+              "action": "complete_training",
+              "owner": "Pulse",
+              "timestamp": 1785044699.655867
+            }
+          ]
+        },
+        {
+          "model_id": "L4-text-m02",
+          "model_type": "TEXT_GENERATOR",
+          "owner": "Quartz",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148593,
+          "trained_at": 1785044699.6558688,
+          "energy_buffer": 0.0,
+          "energy_requirement": 5.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Quartz",
+              "timestamp": 1785044699.6554394
+            },
+            {
+              "action": "complete_training",
+              "owner": "Quartz",
+              "timestamp": 1785044699.6558688
+            }
+          ]
+        },
+        {
+          "model_id": "L4-text-m03",
+          "model_type": "TEXT_GENERATOR",
+          "owner": "Rune",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148598,
+          "trained_at": 1785044699.65587,
+          "energy_buffer": 0.0,
+          "energy_requirement": 5.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Rune",
+              "timestamp": 1785044699.6554403
+            },
+            {
+              "action": "complete_training",
+              "owner": "Rune",
+              "timestamp": 1785044699.65587
+            }
+          ]
+        },
+        {
+          "model_id": "L4-text-m04",
+          "model_type": "TEXT_GENERATOR",
+          "owner": "Sage",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148603,
+          "trained_at": 1785044699.6558712,
+          "energy_buffer": 0.0,
+          "energy_requirement": 5.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Sage",
+              "timestamp": 1785044699.655441
+            },
+            {
+              "action": "complete_training",
+              "owner": "Sage",
+              "timestamp": 1785044699.6558712
+            }
+          ]
+        },
+        {
+          "model_id": "L4-text-m05",
+          "model_type": "TEXT_GENERATOR",
+          "owner": "Tide",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148608,
+          "trained_at": 1785044699.6558726,
+          "energy_buffer": 0.0,
+          "energy_requirement": 5.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Tide",
+              "timestamp": 1785044699.655442
+            },
+            {
+              "action": "complete_training",
+              "owner": "Tide",
+              "timestamp": 1785044699.6558726
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "config": {
+        "layer_id": "L5-classifier",
+        "layer_name": "分类模型层",
+        "layer_type": "CLASSIFIER",
+        "level": 5,
+        "model_count": 5,
+        "description": "分类预测模型"
+      },
+      "models": [
+        {
+          "model_id": "L5-classifier-m01",
+          "model_type": "CLASSIFIER",
+          "owner": "Umber",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.614862,
+          "trained_at": 1785044699.655875,
+          "energy_buffer": 0.0,
+          "energy_requirement": 3.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Umber",
+              "timestamp": 1785044699.6554432
+            },
+            {
+              "action": "complete_training",
+              "owner": "Umber",
+              "timestamp": 1785044699.6558754
+            }
+          ]
+        },
+        {
+          "model_id": "L5-classifier-m02",
+          "model_type": "CLASSIFIER",
+          "owner": "Vex",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148627,
+          "trained_at": 1785044699.6558766,
+          "energy_buffer": 0.0,
+          "energy_requirement": 3.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Vex",
+              "timestamp": 1785044699.655444
+            },
+            {
+              "action": "complete_training",
+              "owner": "Vex",
+              "timestamp": 1785044699.6558769
+            }
+          ]
+        },
+        {
+          "model_id": "L5-classifier-m03",
+          "model_type": "CLASSIFIER",
+          "owner": "Wisp",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148632,
+          "trained_at": 1785044699.6558778,
+          "energy_buffer": 0.0,
+          "energy_requirement": 3.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Wisp",
+              "timestamp": 1785044699.6554446
+            },
+            {
+              "action": "complete_training",
+              "owner": "Wisp",
+              "timestamp": 1785044699.655878
+            }
+          ]
+        },
+        {
+          "model_id": "L5-classifier-m04",
+          "model_type": "CLASSIFIER",
+          "owner": "Xen",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148636,
+          "trained_at": 1785044699.6558793,
+          "energy_buffer": 0.0,
+          "energy_requirement": 3.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Xen",
+              "timestamp": 1785044699.6554456
+            },
+            {
+              "action": "complete_training",
+              "owner": "Xen",
+              "timestamp": 1785044699.6558795
+            }
+          ]
+        },
+        {
+          "model_id": "L5-classifier-m05",
+          "model_type": "CLASSIFIER",
+          "owner": "Yarn",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148639,
+          "trained_at": 1785044699.6558807,
+          "energy_buffer": 0.0,
+          "energy_requirement": 3.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Yarn",
+              "timestamp": 1785044699.6554463
+            },
+            {
+              "action": "complete_training",
+              "owner": "Yarn",
+              "timestamp": 1785044699.6558807
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "config": {
+        "layer_id": "L6-image",
+        "layer_name": "图像描述层",
+        "layer_type": "IMAGE",
+        "level": 6,
+        "model_count": 5,
+        "description": "图像描述生成模型"
+      },
+      "models": [
+        {
+          "model_id": "L6-image-m01",
+          "model_type": "IMAGE_DESCRIBER",
+          "owner": "Zen",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.614865,
+          "trained_at": 1785044699.6558836,
+          "energy_buffer": 0.0,
+          "energy_requirement": 8.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Zen",
+              "timestamp": 1785044699.6554472
+            },
+            {
+              "action": "complete_training",
+              "owner": "Zen",
+              "timestamp": 1785044699.6558838
+            }
+          ]
+        },
+        {
+          "model_id": "L6-image-m02",
+          "model_type": "IMAGE_DESCRIBER",
+          "owner": "Aria",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.614866,
+          "trained_at": 1785044699.655885,
+          "energy_buffer": 0.0,
+          "energy_requirement": 8.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Aria",
+              "timestamp": 1785044699.6554484
+            },
+            {
+              "action": "complete_training",
+              "owner": "Aria",
+              "timestamp": 1785044699.655885
+            }
+          ]
+        },
+        {
+          "model_id": "L6-image-m03",
+          "model_type": "IMAGE_DESCRIBER",
+          "owner": "Bolt",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148663,
+          "trained_at": 1785044699.6558864,
+          "energy_buffer": 0.0,
+          "energy_requirement": 8.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Bolt",
+              "timestamp": 1785044699.6554492
+            },
+            {
+              "action": "complete_training",
+              "owner": "Bolt",
+              "timestamp": 1785044699.6558864
+            }
+          ]
+        },
+        {
+          "model_id": "L6-image-m04",
+          "model_type": "IMAGE_DESCRIBER",
+          "owner": "Coda",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148667,
+          "trained_at": 1785044699.6558876,
+          "energy_buffer": 0.0,
+          "energy_requirement": 8.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Coda",
+              "timestamp": 1785044699.6554499
+            },
+            {
+              "action": "complete_training",
+              "owner": "Coda",
+              "timestamp": 1785044699.6558876
+            }
+          ]
+        },
+        {
+          "model_id": "L6-image-m05",
+          "model_type": "IMAGE_DESCRIBER",
+          "owner": "Dusk",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148672,
+          "trained_at": 1785044699.6558888,
+          "energy_buffer": 0.0,
+          "energy_requirement": 8.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Dusk",
+              "timestamp": 1785044699.6554506
+            },
+            {
+              "action": "complete_training",
+              "owner": "Dusk",
+              "timestamp": 1785044699.655889
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "config": {
+        "layer_id": "L7-predictor",
+        "layer_name": "预测模型层",
+        "layer_type": "PREDICTOR",
+        "level": 7,
+        "model_count": 5,
+        "description": "时间序列预测模型"
+      },
+      "models": [
+        {
+          "model_id": "L7-predictor-m01",
+          "model_type": "PREDICTOR",
+          "owner": "Echo",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148684,
+          "trained_at": 1785044699.6558917,
+          "energy_buffer": 0.0,
+          "energy_requirement": 6.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Echo",
+              "timestamp": 1785044699.6554515
+            },
+            {
+              "action": "complete_training",
+              "owner": "Echo",
+              "timestamp": 1785044699.6558917
+            }
+          ]
+        },
+        {
+          "model_id": "L7-predictor-m02",
+          "model_type": "PREDICTOR",
+          "owner": "Flux",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148689,
+          "trained_at": 1785044699.655893,
+          "energy_buffer": 0.0,
+          "energy_requirement": 6.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Flux",
+              "timestamp": 1785044699.6554525
+            },
+            {
+              "action": "complete_training",
+              "owner": "Flux",
+              "timestamp": 1785044699.6558933
+            }
+          ]
+        },
+        {
+          "model_id": "L7-predictor-m03",
+          "model_type": "PREDICTOR",
+          "owner": "Glow",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148696,
+          "trained_at": 1785044699.6558943,
+          "energy_buffer": 0.0,
+          "energy_requirement": 6.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Glow",
+              "timestamp": 1785044699.6554532
+            },
+            {
+              "action": "complete_training",
+              "owner": "Glow",
+              "timestamp": 1785044699.6558945
+            }
+          ]
+        },
+        {
+          "model_id": "L7-predictor-m04",
+          "model_type": "PREDICTOR",
+          "owner": "Halo",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148698,
+          "trained_at": 1785044699.6558955,
+          "energy_buffer": 0.0,
+          "energy_requirement": 6.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Halo",
+              "timestamp": 1785044699.655454
+            },
+            {
+              "action": "complete_training",
+              "owner": "Halo",
+              "timestamp": 1785044699.6558957
+            }
+          ]
+        },
+        {
+          "model_id": "L7-predictor-m05",
+          "model_type": "PREDICTOR",
+          "owner": "Iris",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148703,
+          "trained_at": 1785044699.6558986,
+          "energy_buffer": 0.0,
+          "energy_requirement": 6.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Iris",
+              "timestamp": 1785044699.6554546
+            },
+            {
+              "action": "complete_training",
+              "owner": "Iris",
+              "timestamp": 1785044699.6558988
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "config": {
+        "layer_id": "L8-autoencoder",
+        "layer_name": "自编码层",
+        "layer_type": "AUTOENCODER",
+        "level": 8,
+        "model_count": 5,
+        "description": "自编码器模型，编码解码"
+      },
+      "models": [
+        {
+          "model_id": "L8-autoencoder-m01",
+          "model_type": "AUTOENCODER",
+          "owner": "Jade",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.614873,
+          "trained_at": 1785044699.6559017,
+          "energy_buffer": 0.0,
+          "energy_requirement": 7.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Jade",
+              "timestamp": 1785044699.6554558
+            },
+            {
+              "action": "complete_training",
+              "owner": "Jade",
+              "timestamp": 1785044699.6559017
+            }
+          ]
+        },
+        {
+          "model_id": "L8-autoencoder-m02",
+          "model_type": "AUTOENCODER",
+          "owner": "Kite",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148734,
+          "trained_at": 1785044699.6559029,
+          "energy_buffer": 0.0,
+          "energy_requirement": 7.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Kite",
+              "timestamp": 1785044699.6554565
+            },
+            {
+              "action": "complete_training",
+              "owner": "Kite",
+              "timestamp": 1785044699.6559029
+            }
+          ]
+        },
+        {
+          "model_id": "L8-autoencoder-m03",
+          "model_type": "AUTOENCODER",
+          "owner": "Luna",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148736,
+          "trained_at": 1785044699.6559045,
+          "energy_buffer": 0.0,
+          "energy_requirement": 7.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Luna",
+              "timestamp": 1785044699.6554573
+            },
+            {
+              "action": "complete_training",
+              "owner": "Luna",
+              "timestamp": 1785044699.6559045
+            }
+          ]
+        },
+        {
+          "model_id": "L8-autoencoder-m04",
+          "model_type": "AUTOENCODER",
+          "owner": "Mist",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148741,
+          "trained_at": 1785044699.655906,
+          "energy_buffer": 0.0,
+          "energy_requirement": 7.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Mist",
+              "timestamp": 1785044699.655458
+            },
+            {
+              "action": "complete_training",
+              "owner": "Mist",
+              "timestamp": 1785044699.655906
+            }
+          ]
+        },
+        {
+          "model_id": "L8-autoencoder-m05",
+          "model_type": "AUTOENCODER",
+          "owner": "Nova",
+          "training_state": "TRAINED",
+          "training_progress": 1.0,
+          "claimed_at": 1785044696.6148744,
+          "trained_at": 1785044699.6559076,
+          "energy_buffer": 0.0,
+          "energy_requirement": 7.0,
+          "stats": {
+            "total_calls": 0,
+            "total_energy_consumed": 0.0,
+            "total_latency_ms": 0.0
+          },
+          "training_history": [
+            {
+              "action": "start_training",
+              "owner": "Nova",
+              "timestamp": 1785044699.655459
+            },
+            {
+              "action": "complete_training",
+              "owner": "Nova",
+              "timestamp": 1785044699.6559076
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

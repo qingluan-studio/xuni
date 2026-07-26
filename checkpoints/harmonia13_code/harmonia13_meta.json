@@ -1,0 +1,11 @@
+{
+  "model_id": "harmonia-13-code",
+  "scale": "large",
+  "variant": "code_experts",
+  "training_samples_seen": 614285,
+  "training_epochs_done": 1,
+  "training_state": "TRAINED",
+  "energy_buffer": 99999.0,
+  "total_calls": 0,
+  "saved_at": 1785039702.105033
+}

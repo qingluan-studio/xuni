@@ -1,0 +1,120 @@
+# 100 个高质量开源仓库清单
+# 格式: owner/repo
+# 按 Python 生态为主，覆盖 Web/数据/AI/工具/系统 等
+
+# === Web 框架 (15) ===
+pallets/flask
+pallets/werkzeug
+pallets/click
+pallets/markupsafe
+pallets/jinja
+tiangolo/fastapi
+django/django
+encode/starlette
+encode/uvicorn
+sanic-org/sanic
+aio-libs/aiohttp
+bottlepy/bottle
+falconry/falcon
+tornadoweb/tornado
+flask-restful/flask-restful
+
+# === 数据科学/处理 (15) ===
+numpy/numpy
+pandas-dev/pandas
+scipy/scipy
+matplotlib/matplotlib
+scikit-learn/scikit-learn
+plotly/plotly.py
+seaborn/seaborn
+bokeh/bokeh
+pydata/xarray
+dask/dask
+modin-project/modin
+polars/polars
+pyarrow/pyarrow
+numba/numba
+sympy/sympy
+
+# === AI/ML 框架 (15) ===
+huggingface/transformers
+huggingface/datasets
+huggingface/tokenizers
+huggingface/accelerate
+langchain-ai/langchain
+openai/openai-python
+scikit-image/scikit-image
+OPTFL/transformers
+pytorch/pytorch
+tensorflow/tensorflow
+keras-team/keras
+ray-project/ray
+mxnet/apache-mxnet
+explosion/spaCy
+RasaHQ/rasa
+
+# === HTTP/网络 (10) ===
+psf/requests
+psf/requests-html
+encode/httpx
+urllib3/urllib3
+httpie/httpie
+aio-libs/aiohttp
+Mkdocs/mkdocs
+encode/databases
+encode/orm
+sqlalchemy/sqlalchemy
+
+# === 数据库/ORM (5) ===
+sqlalchemy/sqlalchemy
+django/django
+mongodb/mongo-python-driver
+redis/redis-py
+pymongo/mongo-python-driver
+
+# === 任务队列/异步 (5) ===
+celery/celery
+rq/rq
+dramatiq/dramatiq
+aio-libs/aiomysql
+aio-libs/aiopg
+
+# === 测试/质量 (5) ===
+pytest-dev/pytest
+tox-dev/tox
+coveragepy/coverage
+psf/black
+PyCQA/flake8
+
+# === 工具/CLI (10) ===
+pallets/click
+prompt-toolkit/python-prompt-toolkit
+willmcgugan/rich
+Textualize/textual
+pypa/pip
+pypa/setuptools
+pypa/wheel
+pypa/build
+python/cpython
+certifi/python-certifi
+
+# === 爬虫/自动化 (5) ===
+scrapy/scrapy
+KulaZda/BeautifulSoup
+mechanicalsoup/mechanicalsoup
+autoptimist/autoptimist
+seleniumHQ/selenium
+
+# === 配置/序列化 (5) ===
+pydantic/pydantic
+uiri/toml
+yaml/pyyaml
+simplejson/simplejson
+cloudpipe/cloudpickle
+
+# === 安全/认证 (5) ===
+pyca/pycrypto
+paramiko/paramiko
+pyca/cryptography
+pynacl/pynacl
+requests/requests-oauthlib
