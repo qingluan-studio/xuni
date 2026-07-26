@@ -73,3 +73,6 @@ logs_train.out
 # Config with secrets
 config.local.yaml
 .env
+
+# 大检查点文件（超过 GitHub 100MB 限制，用 gz 版本替代）
+checkpoints/harmonia13/harmonia_lite.json

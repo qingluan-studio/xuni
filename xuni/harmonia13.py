@@ -213,7 +213,14 @@ VIRTUAL_EXPERTS: List[Dict[str, Any]] = [
         "id": "general",
         "name": "通用兜底",
         "domain": "通用对话",
-        "keywords": ["你好", "是什么", "为什么", "怎么", "如何", "介绍", "解释", "什么是", "？", "?"],
+        "keywords": ["你好", "是什么", "为什么", "怎么", "如何", "介绍", "解释", "什么是", "？", "?",
+                     "flask", "django", "fastapi", "numpy", "pandas", "scipy", "pytest", "unittest",
+                     "python", "java", "javascript", "typescript", "golang", "rust", "c++",
+                     "async", "await", "class", "function", "decorator", "装饰器", "import",
+                     "api", "http", "request", "response", "route", "endpoint", "middleware",
+                     "database", "sql", "orm", "redis", "docker", "kubernetes",
+                     "transformers", "pytorch", "tensorflow", "机器学习", "深度学习",
+                     "git", "linux", "shell", "pip", "setup", "config", "yaml", "json", "xml"],
         "fragments": [
             "这是一个好问题，让我从合鸣的视角来回应",
             "在 xuni 虚拟生态里，每个问题都会被路由到最合适的专家",
@@ -287,7 +294,7 @@ class HarmoniaLiteEngine:
 
         terms = self._tokenize(prompt)
         chosen = self._gate(prompt, terms, top_k)
-        frags = self._retrieve(chosen, terms, max_frags=4)
+        frags = self._retrieve(chosen, terms, max_frags=8)
         if not frags:
             general = self._find("general")
             frags = list(general["fragments"]) if general else ["合鸣lite 暂无相关语料。"]
@@ -315,11 +322,13 @@ class HarmoniaLiteEngine:
         }
 
     def save(self, ckpt_dir: str) -> Dict[str, Any]:
-        """把已学语料+训练统计保存为检查点（JSON）。"""
+        """把已学语料+训练统计保存为检查点（gzip 压缩 JSON）。"""
         import json
         import os
+        import gzip
         os.makedirs(ckpt_dir, exist_ok=True)
-        path = os.path.join(ckpt_dir, "harmonia_lite.json")
+        # 优先保存为 gz 压缩格式（大语料时远小于 GitHub 100MB 限制）
+        path = os.path.join(ckpt_dir, "harmonia_lite.json.gz")
         expert_snapshots = []
         for exp in self.experts:
             expert_snapshots.append({
@@ -329,7 +338,7 @@ class HarmoniaLiteEngine:
                 "keywords": list(exp["keywords"]),
                 "fragments": list(exp["fragments"]),
             })
-        with open(path, "w", encoding="utf-8") as f:
+        with gzip.open(path, "wt", encoding="utf-8") as f:
             json.dump({
                 "scale": self._scale.value,
                 "learned_fragments": self._learned_fragments,
@@ -372,17 +381,19 @@ class HarmoniaLiteEngine:
                 if kw.lower() in p:
                     score += 3.0
             # 片段术语重叠（强加权：领域专家的片段里有多少术语命中）
-            if terms and exp["id"] != "general":
+            if terms:
                 match = 0
-                for frag in exp["fragments"][:500]:  # 只看前500条抽样
+                # general 片段多，限制扫描数量避免性能问题；领域专家全扫
+                scan_limit = 2000 if exp["id"] == "general" else 500
+                for frag in exp["fragments"][:scan_limit]:
                     fl = frag.lower()
                     match += sum(1 for t in terms if t in fl)
                     if match > 30:
                         break
                 score += 0.5 * match
-            # general 降权：避免泛化关键词抢走所有问题
-            if exp["id"] == "general":
-                score *= 0.3
+            # general 轻度降权：仅在没有关键词命中时降权，有关键词命中则与领域专家平等竞争
+            if exp["id"] == "general" and score == 0.0:
+                score *= 0.5
             scored.append((exp, score))
 
         scored.sort(key=lambda x: x[1], reverse=True)
@@ -403,55 +414,63 @@ class HarmoniaLiteEngine:
         """从选中专家里检索与提示词最相关的片段。
 
         改进：
-        - max_frags 4 → 8：增加多样性
-        - 反高频惩罚：含通用高频词(async/函式/問題)的片段降权，避免万能回答
-        - 长度偏好：太短(<30)的片段降权，太长(>180)的也降权
-        - 加随机扰动：相同分数的片段随机排序，避免每次都返回同一条
+        - 每专家均匀采样：确保每个选中的专家都有代表，避免硬编码片段垄断
+        - general 额外配额：兜底专家包含最多知识，给更多检索机会
+        - 反高频惩罚：含通用高频词的片段降权
+        - 长度偏好：30-180 字最佳
+        - 加随机扰动：相同分数的片段随机排序
         """
         # 通用高频词黑名单（出现这些词的片段要降权，因为它们容易"万能命中"）
         GENERIC_TERMS = {'async', 'await', 'function', 'func', '函式', '函数',
                          '問題', '问题', '教學', '教学', '了解', '基本',
                          'environment', '變數', '变量', 'how', 'what', 'why'}
 
-        scored_frags: List[tuple] = []
+        # 每专家均匀采样，general 额外配额
+        n_experts = len(chosen)
+        has_general = any(e["id"] == "general" for e in chosen)
+        if has_general and n_experts > 1:
+            general_quota = max(2, max_frags // 2)
+            other_quota = max(1, (max_frags - general_quota) // (n_experts - 1))
+        else:
+            other_quota = max(1, max_frags // max(1, n_experts))
+            general_quota = other_quota
+
+        result: List[str] = []
+        seen: set = set()
         for exp in chosen:
-            for frag in exp["fragments"]:
+            quota = general_quota if exp["id"] == "general" else other_quota
+            scored_frags: List[tuple] = []
+            # general 片段多，但全扫只需约 0.4s，可接受
+            scan_limit = len(exp["fragments"])
+            for frag in exp["fragments"][:scan_limit]:
                 fl = frag.lower()
                 if terms:
-                    score = sum(1.0 for t in terms if t in fl)
+                    score = 2.0 * sum(1 for t in terms if t in fl)
                 else:
                     score = 0.5
-                # 关键词命中加权
+                # 关键词命中加权（降权：关键词是领域标签，不代表片段与 prompt 直接相关）
                 for kw in exp["keywords"]:
                     if kw.lower() in fl:
-                        score += 1.0
-                # 反高频惩罚：每命中一个通用词扣 0.3
+                        score += 0.3
+                # 反高频惩罚
                 generic_hits = sum(1 for g in GENERIC_TERMS if g in fl)
                 score -= 0.3 * generic_hits
-                # 长度偏好：30-180 字最佳
+                # 长度偏好
                 flen = len(frag)
                 if flen < 30:
                     score -= 0.5
                 elif flen > 180:
                     score -= 0.3
-                # 加随机扰动 (0~0.5)，让相同分数的片段每次选不同的
-                score += self._rng.random() * 0.5
-                scored_frags.append((frag, score, exp["id"]))
-
-        scored_frags.sort(key=lambda x: x[1], reverse=True)
-
-        # 去重，保留最多 max_frags 条
-        result: List[str] = []
-        seen = set()
-        for frag, _, _ in scored_frags:
-            key = frag.strip()
-            if key in seen:
-                continue
-            seen.add(key)
-            result.append(frag)
-            if len(result) >= max_frags:
-                break
-        return result
+                score += self._rng.random() * 0.3
+                scored_frags.append((frag, score))
+            scored_frags.sort(key=lambda x: x[1], reverse=True)
+            for frag, _ in scored_frags[:quota]:
+                key = frag.strip()
+                if key in seen:
+                    continue
+                seen.add(key)
+                result.append(frag)
+        return result[:max_frags]
 
     # ----------------------- 内部：合成 ----------------------- #
 
@@ -586,15 +605,21 @@ class HarmoniaLiteEngine:
         return []
 
     def _load(self, ckpt_dir: str):
-        """从检查点加载已学语料+专家快照。失败则静默忽略。"""
+        """从检查点加载已学语料+专家快照。支持 gz 压缩格式。失败则静默忽略。"""
         try:
             import json
             import os
-            path = os.path.join(ckpt_dir, "harmonia_lite.json")
-            if not os.path.exists(path):
+            import gzip
+            gz_path = os.path.join(ckpt_dir, "harmonia_lite.json.gz")
+            json_path = os.path.join(ckpt_dir, "harmonia_lite.json")
+            if os.path.exists(gz_path):
+                with gzip.open(gz_path, "rt", encoding="utf-8") as f:
+                    obj = json.load(f)
+            elif os.path.exists(json_path):
+                with open(json_path, "r", encoding="utf-8") as f:
+                    obj = json.load(f)
+            else:
                 return
-            with open(path, "r", encoding="utf-8") as f:
-                obj = json.load(f)
             # 恢复专家快照（含训练后新增的片段）
             if "experts" in obj and isinstance(obj["experts"], list):
                 loaded_experts = obj["experts"]
