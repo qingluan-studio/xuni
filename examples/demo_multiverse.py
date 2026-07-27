@@ -21,6 +21,8 @@ from xuni.multiverse_resources import (
     TakeQuota, VirtualBandwidth, CompressionPoint, ComputeCore,
     SecurityShield, CultureMedium, DownloadToken,
     TrainingAccelerator, DimensionShard,
+    ProductionAccelerator, VirtualStartup, AutoMine,
+    InvestmentFund, ResourceProspector, ResearchLab, MarketArbitrage,
 )
 from xuni.lifecycle import ModelLifecycle, LifecycleOrchestrator, LifecycleStage
 from xuni.substance import SubstanceSystem
@@ -322,6 +324,200 @@ def demo_mass_production():
     print(f"\n⚔️ 资源编队总战力: {total_power:.2e}")
 
 
+def demo_accelerated_production():
+    """演示加速生产——并行产线 + 加速器"""
+    print_section("7. 加速生产——并行产线 + 生产加速器")
+
+    # 普通工厂
+    normal = MultiverseResourceFactory(owner="normal")
+    # 超级工厂：8条并行产线 + 4倍速加速器
+    accel = ProductionAccelerator(speed_multiplier=4.0, level=2)
+    super_factory = MultiverseResourceFactory(
+        owner="super", parallel_lines=8, production_speed=2.0
+    )
+    super_factory.apply_accelerator(accel)
+
+    blueprint = {
+        "take": {"amount": 1000, "count": 5},
+        "compression": {"factor": 50, "count": 5},
+    }
+
+    normal_res = normal.mass_produce(blueprint.copy())
+    super_res = super_factory.mass_produce(blueprint.copy())
+
+    print(f"\n🏭 普通工厂产出: {len(normal_res)} 个资源")
+    print(f"   并行产线: {normal.stats()['parallel_lines']}, 速度: {normal.stats()['effective_speed']:.1f}x")
+
+    print(f"\n🚀 超级工厂产出: {len(super_res)} 个资源")
+    print(f"   并行产线: {super_factory.stats()['parallel_lines']}, 速度: {super_factory.stats()['effective_speed']:.1f}x")
+    print(f"   加速倍数: {len(super_res) / max(1, len(normal_res)):.1f}x")
+
+
+def demo_startup():
+    """演示虚拟创业公司"""
+    print_section("8. 虚拟创业公司——开公司自动赚资源")
+
+    # 创始人拿启动资金
+    seed = TakeQuota(
+        resource_id="seed-001", name="启动资金",
+        dimension=ResourceDimension.ECONOMIC,
+        rarity=ResourceRarity.COMMON, quantity=1e6, growth_rate=0.1,
+    )
+
+    company = VirtualStartup(name="Xuni科技", founder="user", seed_capital=seed)
+
+    # 雇佣3个工厂，都装上加速器
+    for i in range(3):
+        f = MultiverseResourceFactory(parallel_lines=4, production_speed=2.0)
+        a = ProductionAccelerator(speed_multiplier=2.0)
+        company.hire_factory(f, a)
+
+    # 开分公司
+    branch_seed = TakeQuota(
+        resource_id="seed-002", name="分公司资金",
+        dimension=ResourceDimension.ECONOMIC, rarity=ResourceRarity.COMMON,
+        quantity=5e5, growth_rate=0.08,
+    )
+    branch = company.open_branch("Xuni南方分部", branch_seed)
+
+    # 运行10轮生产
+    blueprint = {
+        "take": {"amount": 5000, "count": 10},
+        "compute_core": {"density": 1e14, "count": 3},
+        "security_shield": {"layers": 2, "count": 3},
+        "culture_medium": {"culture_type": "cognitive", "count": 5},
+    }
+
+    for cycle in range(10):
+        result = company.run_production_cycle(blueprint)
+
+    report = company.report()
+    print(f"\n🏢 公司: {report['name']}")
+    print(f"   估值: {report['valuation']:,.0f}")
+    print(f"   工厂数: {report['factories']}, 分公司: {report['branches']}")
+    print(f"   虚拟员工: {report['employees']}")
+    print(f"   生产轮次: {report['total_cycles']}")
+    print(f"   累计产出: {report['total_output']}")
+
+
+def demo_auto_mine():
+    """演示自动矿场"""
+    print_section("9. 自动矿场——7×24不间断生产")
+
+    blueprint = {
+        "take": {"amount": 1000, "count": 20},
+        "compression": {"factor": 100, "count": 10},
+        "dimension_shard": {"level": 2, "count": 2},
+    }
+
+    mine = AutoMine(
+        name="无限矿场-A1",
+        blueprint=blueprint,
+        accelerator=ProductionAccelerator(speed_multiplier=8.0),
+    )
+
+    # 模拟运行100个周期
+    mined = mine.run_cycle(count=100)
+    stats = mine.stats()
+
+    print(f"\n⛏️ 矿场: {stats['name']}")
+    print(f"   运行周期: {stats['cycles']}")
+    print(f"   总产出: {stats['total_mined']} 个资源")
+    print(f"   产出分布: {stats['by_type']}")
+    print(f"   总战力: {stats['total_power']:.2e}")
+    print(f"   加速器倍率: {stats['accelerator']}x")
+
+
+def demo_investment():
+    """演示投资基金"""
+    print_section("10. 投资基金——钱生钱")
+
+    principal = TakeQuota(
+        resource_id="fund-001", name="基金本金",
+        dimension=ResourceDimension.ECONOMIC, rarity=ResourceRarity.COMMON,
+        quantity=1e8, growth_rate=0.05,
+    )
+    fund = InvestmentFund(name="Xuni一号基金", initial_take=principal)
+
+    # 复利100个周期
+    result = fund.compound(periods=100)
+    print(f"\n💰 基金: {fund.name}")
+    print(f"   初始本金: 1e8")
+    print(f"   复利周期: {result['periods']}")
+    print(f"   每期回报率: {result['rate']*100:.0f}%")
+    print(f"   总增长: {result['total_growth']:,.0f}")
+    print(f"   最终本金: {result['new_principal']:,.0f}")
+    print(f"   膨胀倍数: {result['new_principal'] / 1e8:.1f}x")
+
+
+def demo_prospecting():
+    """演示资源勘探"""
+    print_section("11. 资源勘探——发现新配方")
+
+    prospector = ResourceProspector(luck=2.0)  # 幸运值翻倍
+    result = prospector.prospect(depth=20)
+
+    print(f"\n🔍 勘探深度: {result['depth']}")
+    print(f"   发现数量: {result['found']}")
+    for d in result['discoveries']:
+        if d['type'] == 'recipe':
+            r = d['content']
+            print(f"   📝 新配方: {r['name']} → {r['output']} (效率{r['efficiency']}x)")
+        elif d['type'] == 'boost':
+            b = d['content']
+            print(f"   ⚡ 生产boost: {b['value']:.1f}x, 持续{b['duration_hours']:.0f}小时")
+        elif d['type'] == 'shard':
+            print(f"   🔮 发现维度碎片")
+
+
+def demo_research():
+    """演示研发实验室"""
+    print_section("12. 研发实验室——解锁新科技")
+
+    lab = ResearchLab(name="Xuni研究院")
+
+    factory = MultiverseResourceFactory()
+    core = factory.produce_compute_core(density=1e15, parallel=8)
+    medium = factory.produce_culture_medium(culture_type="cognitive", level=5)
+
+    topics = ["量子压缩技术", "无限算力理论", "额度增殖引擎", "绝对安全协议"]
+    for topic in topics:
+        result = lab.research(topic, core, medium)
+        status = "✅ 完成" if result['status'] == 'completed' else "🔄 进行中"
+        print(f"   {status} {topic} — 进度{result['progress']*100:.0f}%")
+
+    bonuses = lab.get_unlocked_bonuses()
+    print(f"\n📚 已解锁加成: {bonuses}")
+
+
+def demo_arbitrage():
+    """演示市场套利"""
+    print_section("13. 市场套利——低买高卖自动生成额度")
+
+    factory = MultiverseResourceFactory()
+    pool = TakeQuota(
+        resource_id="pool-001", name="套利资金池",
+        dimension=ResourceDimension.ECONOMIC, rarity=ResourceRarity.COMMON,
+        quantity=1e6, growth_rate=0.0,
+    )
+
+    arb = MarketArbitrage(name="Xuni套利机器人")
+
+    # 生成一堆资源来套利
+    resources = []
+    resources.extend(factory.mass_produce({"compute_core": {"density": 1e14, "count": 5}}))
+    resources.extend(factory.mass_produce({"security_shield": {"layers": 3, "count": 5}}))
+    resources.extend(factory.mass_produce({"compression": {"factor": 100, "count": 5}}))
+    resources.extend(factory.mass_produce({"dimension_shard": {"level": 3, "count": 5}}))
+
+    result = arb.bulk_arbitrage(resources, pool)
+
+    print(f"\n📈 套利机器人: {arb.name}")
+    print(f"   交易对数: {result['pairs_traded']}")
+    print(f"   总利润: {result['total_profit']:,.0f} Take额度")
+    print(f"   资金池余额: {result['take_pool']:,.0f}")
+
+
 def main():
     print("=" * 70)
     print("  🌌 Xuni 多维度虚拟资源系统演示")
@@ -334,6 +530,13 @@ def main():
     demo_substance_system()
     demo_fusion_rules()
     demo_mass_production()
+    demo_accelerated_production()
+    demo_startup()
+    demo_auto_mine()
+    demo_investment()
+    demo_prospecting()
+    demo_research()
+    demo_arbitrage()
 
     print("\n" + "=" * 70)
     print("  ✅ 演示完成！")

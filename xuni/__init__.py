@@ -109,6 +109,8 @@ from .multiverse_resources import (
     TakeQuota, VirtualBandwidth, CompressionPoint, ComputeCore,
     SecurityShield, CultureMedium, DownloadToken,
     TrainingAccelerator, DimensionShard, DimensionCore,
+    ProductionAccelerator, VirtualStartup, AutoMine,
+    InvestmentFund, ResourceProspector, ResearchLab, MarketArbitrage,
 )
 from .lifecycle import (
     ModelLifecycle, LifecycleOrchestrator,
@@ -261,6 +263,13 @@ __all__ = [
     "TrainingAccelerator",
     "DimensionShard",
     "DimensionCore",
+    "ProductionAccelerator",
+    "VirtualStartup",
+    "AutoMine",
+    "InvestmentFund",
+    "ResourceProspector",
+    "ResearchLab",
+    "MarketArbitrage",
     "ModelLifecycle",
     "LifecycleOrchestrator",
     "LifecycleStage",

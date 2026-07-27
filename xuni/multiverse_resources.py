@@ -68,10 +68,10 @@ class ResourceRarity(Enum):
 @dataclass
 class VirtualResource:
     """虚拟资源基类——所有资源的通用结构"""
-    resource_id: str
-    name: str
-    dimension: ResourceDimension
-    rarity: ResourceRarity
+    resource_id: str = ""
+    name: str = ""
+    dimension: Optional[ResourceDimension] = None
+    rarity: ResourceRarity = ResourceRarity.COMMON
     quantity: float = 1.0           # 数量/强度
     quality: float = 1.0            # 质量倍率 (0.1 ~ 100.0)
     level: int = 1                  # 等级
@@ -716,7 +716,393 @@ class DimensionCore(VirtualResource):
 
 
 # ============================================================
-# 资源生产工厂——统一生产所有资源
+# 生产加速与创业系统
+# ============================================================
+
+@dataclass
+class ProductionAccelerator(VirtualResource):
+    """
+    生产加速器——给工厂装涡轮，生产速度直接翻倍。
+
+    可以叠加，10个加速器 = 1024倍速。
+    """
+    speed_multiplier: float = 2.0     # 基础加速倍率
+    stackable: bool = True
+    max_stack: int = 10               # 最多叠加10个
+
+    def __post_init__(self):
+        if self.name == "":
+            self.name = "生产加速器"
+        if self.dimension is None:
+            self.dimension = ResourceDimension.COMPUTE
+        self._update_quantity()
+
+    def _update_quantity(self):
+        self.quantity = self.speed_multiplier * self.level
+
+    def stack(self, other: "ProductionAccelerator") -> "ProductionAccelerator":
+        """叠加加速器——倍率相乘"""
+        new_mult = min(self.speed_multiplier * other.speed_multiplier, 2 ** self.max_stack)
+        return ProductionAccelerator(
+            resource_id=f"accel-prod-{uuid.uuid4().hex[:8]}",
+            name=f"叠加生产加速器",
+            dimension=ResourceDimension.COMPUTE,
+            rarity=ResourceRarity(min(6, self.rarity.value + 1)),
+            speed_multiplier=new_mult,
+            level=max(self.level, other.level),
+        )
+
+
+class VirtualStartup:
+    """
+    虚拟创业公司——在虚拟世界里开公司，自动赚资源。
+
+    概念：
+        - 投入启动资源（Take额度）
+        - 公司自动雇佣工厂、运行产线
+        - 每小时自动产出资源，可以分红
+        - 可以开设分公司、并购其他公司
+    """
+
+    def __init__(self, name: str, founder: str, seed_capital: TakeQuota):
+        self.name = name
+        self.founder = founder
+        self.founded_at = time.time()
+        self.capital = seed_capital          # 启动资金
+        self.factories: List[MultiverseResourceFactory] = []
+        self.accelerators: List[ProductionAccelerator] = []
+        self.employees: int = 0              # 员工数（虚拟）
+        self.revenue_log: List[Dict[str, Any]] = []
+        self.branches: List["VirtualStartup"] = []
+        self._total_output: Dict[str, float] = {}
+
+    def hire_factory(self, factory: MultiverseResourceFactory, accelerator: Optional[ProductionAccelerator] = None):
+        """雇佣一个工厂进公司"""
+        factory.owner = f"{self.name}_factory_{len(self.factories)+1}"
+        self.factories.append(factory)
+        if accelerator:
+            self.accelerators.append(accelerator)
+            factory.apply_accelerator(accelerator)
+        self.employees += 5  # 一个工厂配5个虚拟员工
+
+    def open_branch(self, branch_name: str, seed: TakeQuota) -> "VirtualStartup":
+        """开分公司"""
+        branch = VirtualStartup(branch_name, self.founder, seed)
+        self.branches.append(branch)
+        return branch
+
+    def run_production_cycle(self, blueprint: Dict[str, Any]) -> Dict[str, Any]:
+        """运行一轮生产——所有工厂同时开工"""
+        total_resources = []
+        for factory in self.factories:
+            resources = factory.mass_produce(blueprint)
+            total_resources.extend(resources)
+
+        # 统计产出
+        by_type = {}
+        for r in total_resources:
+            tn = r.__class__.__name__
+            by_type[tn] = by_type.get(tn, 0) + 1
+            self._total_output[tn] = self._total_output.get(tn, 0) + r.quantity
+
+        cycle_revenue = {
+            "cycle": len(self.revenue_log) + 1,
+            "resources_produced": len(total_resources),
+            "by_type": by_type,
+            "total_power": sum(r.power_score for r in total_resources),
+            "factories_active": len(self.factories),
+            "employees": self.employees,
+        }
+        self.revenue_log.append(cycle_revenue)
+        return cycle_revenue
+
+    def compound_capital(self, hours: float = 1.0) -> Dict[str, Any]:
+        """让公司资金自动增殖"""
+        return self.capital.compound(hours=hours)
+
+    def get_valuation(self) -> float:
+        """公司估值 = 资金 + 工厂价值 + 历史产出"""
+        factory_value = sum(len(f.production_log) * 1e6 for f in self.factories)
+        output_value = sum(self._total_output.values())
+        return self.capital.quantity + factory_value + output_value
+
+    def report(self) -> Dict[str, Any]:
+        return {
+            "name": self.name,
+            "founder": self.founder,
+            "valuation": self.get_valuation(),
+            "factories": len(self.factories),
+            "branches": len(self.branches),
+            "employees": self.employees,
+            "capital": self.capital.quantity,
+            "total_cycles": len(self.revenue_log),
+            "total_output": self._total_output,
+        }
+
+
+class AutoMine:
+    """
+    自动矿场——7×24小时不间断自动生产指定资源。
+
+    只要设定好蓝图，矿场就会持续产出，完全自动化。
+    """
+
+    def __init__(self, name: str, blueprint: Dict[str, Any],
+                 factory: Optional[MultiverseResourceFactory] = None,
+                 accelerator: Optional[ProductionAccelerator] = None):
+        self.name = name
+        self.blueprint = blueprint
+        self.factory = factory or MultiverseResourceFactory(owner=name)
+        self.accelerator = accelerator
+        self.total_mined: List[VirtualResource] = []
+        self.cycles = 0
+        if accelerator:
+            self.factory.apply_accelerator(accelerator)
+
+    def run_cycle(self, count: int = 1) -> List[VirtualResource]:
+        """运行 count 个生产周期"""
+        mined = []
+        for _ in range(count):
+            batch = self.factory.mass_produce(self.blueprint)
+            mined.extend(batch)
+            self.cycles += 1
+        self.total_mined.extend(mined)
+        return mined
+
+    def stats(self) -> Dict[str, Any]:
+        by_type = {}
+        for r in self.total_mined:
+            tn = r.__class__.__name__
+            by_type[tn] = by_type.get(tn, 0) + 1
+        return {
+            "name": self.name,
+            "cycles": self.cycles,
+            "total_mined": len(self.total_mined),
+            "by_type": by_type,
+            "total_power": sum(r.power_score for r in self.total_mined),
+            "accelerator": self.accelerator.speed_multiplier if self.accelerator else 1.0,
+        }
+
+
+class InvestmentFund:
+    """
+    投资基金——用钱生钱，投资额度自动复利增长。
+
+    也可以投资给其他创业公司，拿分红。
+    """
+
+    def __init__(self, name: str, initial_take: TakeQuota):
+        self.name = name
+        self.principal = initial_take        # 本金
+        self.investments: List[Dict[str, Any]] = []
+        self.return_rate: float = 0.08       # 基础回报率 8%/周期
+
+    def invest_in_startup(self, startup: VirtualStartup, amount: float) -> Dict[str, Any]:
+        """投资创业公司"""
+        if amount > self.principal.quantity:
+            return {"error": "资金不足"}
+        self.principal.quantity -= amount
+        stake = amount / startup.get_valuation()
+        record = {
+            "startup": startup.name,
+            "amount": amount,
+            "stake_pct": stake * 100,
+            "valuation_at_invest": startup.get_valuation(),
+        }
+        self.investments.append(record)
+        startup.capital.quantity += amount
+        return record
+
+    def compound(self, periods: int = 1) -> Dict[str, Any]:
+        """本金复利增长"""
+        total_growth = 0
+        for _ in range(periods):
+            growth = self.principal.quantity * self.return_rate
+            self.principal.quantity += growth
+            total_growth += growth
+        return {
+            "periods": periods,
+            "rate": self.return_rate,
+            "total_growth": total_growth,
+            "new_principal": self.principal.quantity,
+        }
+
+    def report(self) -> Dict[str, Any]:
+        return {
+            "name": self.name,
+            "principal": self.principal.quantity,
+            "investments": len(self.investments),
+            "total_invested": sum(i["amount"] for i in self.investments),
+            "return_rate": self.return_rate,
+        }
+
+
+class ResourceProspector:
+    """
+    资源勘探者——在虚拟维度中勘探，发现新的资源配方和生产方式。
+
+    每次勘探都有概率发现：
+        - 新资源类型
+        - 新碰撞配方
+        - 新生产效率提升方法
+    """
+
+    def __init__(self, luck: float = 1.0):
+        self.luck = luck
+        self.discoveries: List[Dict[str, Any]] = []
+        self.discovered_recipes: Dict[str, Any] = {}
+
+    def prospect(self, depth: int = 1) -> Dict[str, Any]:
+        """进行勘探"""
+        discoveries = []
+        for _ in range(depth):
+            seed = hashlib.sha256(f"{time.time()}{uuid.uuid4()}".encode()).hexdigest()
+            roll = (int(seed[:8], 16) / 2**32) * self.luck
+
+            if roll > 0.95:
+                recipe = self._generate_recipe()
+                discoveries.append({"type": "recipe", "content": recipe})
+                self.discovered_recipes[recipe["name"]] = recipe
+            elif roll > 0.8:
+                boost = self._generate_boost()
+                discoveries.append({"type": "boost", "content": boost})
+            elif roll > 0.5:
+                shard = DimensionShard(
+                    resource_id=f"ds-prospect-{uuid.uuid4().hex[:8]}",
+                    name="勘探碎片",
+                    rarity=ResourceRarity.UNCOMMON,
+                )
+                discoveries.append({"type": "shard", "content": shard})
+            else:
+                discoveries.append({"type": "nothing", "content": "这片区域很平静"})
+
+        self.discoveries.extend(discoveries)
+        return {
+            "depth": depth,
+            "found": len([d for d in discoveries if d["type"] != "nothing"]),
+            "discoveries": discoveries,
+        }
+
+    def _generate_recipe(self) -> Dict[str, Any]:
+        """随机生成新配方"""
+        recipes = [
+            {"name": "量子压缩", "input": ["压缩点", "维度碎片"], "output": "量子压缩场", "efficiency": 10.0},
+            {"name": "算力裂变", "input": ["算力核心", "培养液"], "output": "智能算力细胞", "efficiency": 5.0},
+            {"name": "额度黑洞", "input": ["Take额度", "算力核心"], "output": "引力额度井", "efficiency": 3.0},
+            {"name": "安全共鸣", "input": ["安全盾", "训练加速器"], "output": "绝对防御场", "efficiency": 8.0},
+            {"name": "流量奇点", "input": ["虚拟流量", "下载令牌"], "output": "无限带宽奇点", "efficiency": 100.0},
+        ]
+        return np.random.choice(recipes)
+
+    def _generate_boost(self) -> Dict[str, Any]:
+        return {
+            "type": "production_boost",
+            "value": np.random.uniform(1.5, 5.0),
+            "duration_hours": np.random.uniform(1, 24),
+        }
+
+
+class ResearchLab:
+    """
+    研发实验室——通过研究解锁新的生产技术和资源类型。
+
+    投入算力核心 + 培养液 → 解锁新科技
+    """
+
+    def __init__(self, name: str):
+        self.name = name
+        self.tech_tree: Dict[str, Any] = {}
+        self.research_queue: List[Dict[str, Any]] = []
+        self.completed_research: List[str] = []
+
+    def research(self, topic: str, compute: ComputeCore, medium: CultureMedium) -> Dict[str, Any]:
+        """进行一项研究"""
+        power = compute.quantity * medium.quantity
+        progress = min(1.0, power / 1e15)
+
+        tech = {
+            "topic": topic,
+            "progress": progress,
+            "compute_used": compute.resource_id,
+            "medium_used": medium.resource_id,
+        }
+
+        if progress >= 1.0:
+            self.completed_research.append(topic)
+            self.tech_tree[topic] = {"unlocked_at": time.time(), "power": power}
+            tech["status"] = "completed"
+        else:
+            self.research_queue.append(tech)
+            tech["status"] = "in_progress"
+
+        return tech
+
+    def get_unlocked_bonuses(self) -> Dict[str, float]:
+        """获取已解锁科技带来的生产加成"""
+        bonuses = {}
+        for tech in self.completed_research:
+            if "压缩" in tech:
+                bonuses["compression"] = 2.0
+            elif "算力" in tech:
+                bonuses["compute"] = 3.0
+            elif "额度" in tech:
+                bonuses["take_growth"] = 0.2
+            elif "安全" in tech:
+                bonuses["security"] = 2.5
+            else:
+                bonuses["general"] = 1.5
+        return bonuses
+
+
+class MarketArbitrage:
+    """
+    市场套利——虚拟世界里的低买高卖，自动生成额度。
+
+    利用不同资源之间的价差，自动套利赚取 Take 额度。
+    """
+
+    def __init__(self, name: str):
+        self.name = name
+        self.trades: List[Dict[str, Any]] = []
+        self.total_profit = 0.0
+
+    def arbitrage(self, resource_a: VirtualResource, resource_b: VirtualResource,
+                  take_pool: TakeQuota) -> Dict[str, Any]:
+        """对两种资源进行套利"""
+        # 虚拟价差计算
+        price_a = resource_a.power_score * 0.1
+        price_b = resource_b.power_score * 0.1
+        spread = abs(price_a - price_b)
+
+        profit = spread * np.random.uniform(0.1, 0.5)
+        take_pool.quantity += profit
+        self.total_profit += profit
+
+        trade = {
+            "resource_a": resource_a.name,
+            "resource_b": resource_b.name,
+            "spread": spread,
+            "profit": profit,
+            "take_pool_after": take_pool.quantity,
+        }
+        self.trades.append(trade)
+        return trade
+
+    def bulk_arbitrage(self, resources: List[VirtualResource], take_pool: TakeQuota) -> Dict[str, Any]:
+        """批量套利——对资源列表自动配对套利"""
+        total_profit = 0
+        for i in range(0, len(resources) - 1, 2):
+            result = self.arbitrage(resources[i], resources[i+1], take_pool)
+            total_profit += result["profit"]
+        return {
+            "pairs_traded": len(resources) // 2,
+            "total_profit": total_profit,
+            "take_pool": take_pool.quantity,
+        }
+
+
+# ============================================================
+# 资源生产工厂——统一生产所有资源（已升级加速能力）
 # ============================================================
 
 class MultiverseResourceFactory:
@@ -745,7 +1131,9 @@ class MultiverseResourceFactory:
         shard = factory.produce_dimension_shard()
     """
 
-    def __init__(self, owner: str = "factory"):
+    def __init__(self, owner: str = "factory",
+                 parallel_lines: int = 1,
+                 production_speed: float = 1.0):
         self.owner = owner
         self.production_log: List[Dict[str, Any]] = []
         self._counters: Dict[str, int] = {
@@ -753,6 +1141,24 @@ class MultiverseResourceFactory:
             "core": 0, "shield": 0, "medium": 0,
             "token": 0, "accel": 0, "shard": 0,
         }
+        self.parallel_lines = max(1, parallel_lines)   # 并行产线数
+        self.production_speed = production_speed         # 基础速度倍率
+        self._accelerators: List[ProductionAccelerator] = []
+        self._boost_multiplier: float = 1.0              # 临时 boost
+
+    def apply_accelerator(self, accelerator: ProductionAccelerator):
+        """给工厂装上加速器"""
+        self._accelerators.append(accelerator)
+        self.production_speed *= accelerator.speed_multiplier
+
+    def apply_boost(self, multiplier: float, duration_hours: float = 1.0):
+        """应用临时生产 boost"""
+        self._boost_multiplier *= multiplier
+        # boost 是临时的，这里只记录数值，实际系统可由外部调度清除
+
+    def get_effective_speed(self) -> float:
+        """计算实际生产速度 = 基础速度 × 加速器 × boost"""
+        return self.production_speed * self._boost_multiplier * self.parallel_lines
 
     def _next_id(self, prefix: str) -> str:
         self._counters[prefix] += 1
@@ -886,7 +1292,9 @@ class MultiverseResourceFactory:
 
     def mass_produce(self, blueprint: Dict[str, Any]) -> List[VirtualResource]:
         """
-        批量生产资源。
+        批量生产资源（已加速）。
+
+        实际生产数量 = 蓝图数量 × 并行产线数 × 速度倍率
 
         blueprint 示例：
             {
@@ -897,37 +1305,52 @@ class MultiverseResourceFactory:
             }
         """
         resources = []
+        speed = self.get_effective_speed()
+
         for resource_type, spec in blueprint.items():
-            count = spec.pop("count", 1)
-            for _ in range(count):
-                if resource_type == "take":
-                    resources.append(self.produce_take(**spec))
-                elif resource_type == "bandwidth":
-                    resources.append(self.produce_bandwidth(**spec))
-                elif resource_type == "compression":
-                    resources.append(self.produce_compression(**spec))
-                elif resource_type == "compute_core":
-                    resources.append(self.produce_compute_core(**spec))
-                elif resource_type == "security_shield":
-                    resources.append(self.produce_security_shield(**spec))
-                elif resource_type == "culture_medium":
-                    resources.append(self.produce_culture_medium(**spec))
-                elif resource_type == "download_token":
-                    resources.append(self.produce_download_token(**spec))
-                elif resource_type == "training_accelerator":
-                    resources.append(self.produce_training_accelerator(**spec))
-                elif resource_type == "dimension_shard":
-                    resources.append(self.produce_dimension_shard(**spec))
+            base_count = spec.pop("count", 1)
+            # 加速后实际生产数量
+            actual_count = int(base_count * speed)
+
+            # 按并行产线分批生产
+            lines = self.parallel_lines
+            per_line = actual_count // lines
+            remainder = actual_count % lines
+
+            for line in range(lines):
+                batch_size = per_line + (1 if line < remainder else 0)
+                for _ in range(batch_size):
+                    if resource_type == "take":
+                        resources.append(self.produce_take(**spec))
+                    elif resource_type == "bandwidth":
+                        resources.append(self.produce_bandwidth(**spec))
+                    elif resource_type == "compression":
+                        resources.append(self.produce_compression(**spec))
+                    elif resource_type == "compute_core":
+                        resources.append(self.produce_compute_core(**spec))
+                    elif resource_type == "security_shield":
+                        resources.append(self.produce_security_shield(**spec))
+                    elif resource_type == "culture_medium":
+                        resources.append(self.produce_culture_medium(**spec))
+                    elif resource_type == "download_token":
+                        resources.append(self.produce_download_token(**spec))
+                    elif resource_type == "training_accelerator":
+                        resources.append(self.produce_training_accelerator(**spec))
+                    elif resource_type == "dimension_shard":
+                        resources.append(self.produce_dimension_shard(**spec))
+
         return resources
 
     def stats(self) -> Dict[str, Any]:
         """工厂统计"""
         return {
             "total_productions": len(self.production_log),
-            "by_type": {
-                k: v for k, v in self._counters.items()
-            },
+            "by_type": {k: v for k, v in self._counters.items()},
             "owner": self.owner,
+            "parallel_lines": self.parallel_lines,
+            "production_speed": self.production_speed,
+            "effective_speed": self.get_effective_speed(),
+            "accelerators": len(self._accelerators),
         }
 
 
