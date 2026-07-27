@@ -569,6 +569,588 @@ class SubstanceSystem:
             dependencies=["子代理", "记忆点"],
         ))
 
+        # ===== 有机物质体系（20+ 种，工厂深层产物） =====
+        # —— 知识类 ——
+        self.register(SubstanceDefinition(
+            name="知识结晶",
+            name_en="Knowledge Crystal",
+            category=SubstanceCategory.INFORMATION,
+            definition="高密度结构化知识块，由多条记忆点融合压缩而成，是知识的固态形态",
+            icon="💎",
+            attributes=[
+                SubstanceAttribute("压缩率", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("纯度", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("结晶度", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "核心知识存储",
+                "跨会话知识迁移",
+                "知识结晶可被模型直接吸收",
+            ],
+            production_methods=[
+                "MemoryBank.consolidate()",
+                "SubstanceFusionEngine.fuse(记忆点, 记忆点)",
+            ],
+            dependencies=["记忆点"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="思维链",
+            name_en="Thought Chain",
+            category=SubstanceCategory.INFORMATION,
+            definition="串联多个记忆点的推理路径，是逻辑流的线性展开形式",
+            icon="⛓️",
+            attributes=[
+                SubstanceAttribute("链长", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("连贯性", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "多步推理",
+                "因果链分析",
+                "逻辑推导",
+            ],
+            production_methods=[
+                "HarmoniaMemory.recall_chain()",
+                "SubstanceFusionEngine.fuse(记忆点, 参数包)",
+            ],
+            dependencies=["记忆点", "参数包"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="灵感闪",
+            name_en="Inspiration Flash",
+            category=SubstanceCategory.INFORMATION,
+            definition="多个不相关记忆碰撞产生的突发性洞见，是思维链的非线性跃迁",
+            icon="✨",
+            attributes=[
+                SubstanceAttribute("强度", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("新颖度", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "创造性思维",
+                "跨领域联想",
+                "问题突破",
+            ],
+            production_methods=[
+                "SubstanceFusionEngine.collide(记忆点, 共振记忆)",
+            ],
+            dependencies=["记忆点", "共振记忆"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="逻辑流",
+            name_en="Logic Flow",
+            category=SubstanceCategory.INFORMATION,
+            definition="结构化的推理流，由参数包驱动的思维链有序展开",
+            icon="📊",
+            attributes=[
+                SubstanceAttribute("流速", SubstanceUnit.DIMENSIONLESS, 0, None),
+                SubstanceAttribute("熵", SubstanceUnit.DIMENSIONLESS, 0, 1),
+            ],
+            uses=[
+                "形式化推理",
+                "决策树展开",
+                "算法推演",
+            ],
+            production_methods=[
+                "SubstanceFusionEngine.fuse(思维链, 参数包)",
+            ],
+            dependencies=["思维链", "参数包"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="元知识",
+            name_en="Meta Knowledge",
+            category=SubstanceCategory.INFORMATION,
+            definition="关于知识结构的知识，描述知识之间的关系图",
+            icon="🗺️",
+            attributes=[
+                SubstanceAttribute("维度", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("密度", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "知识图谱构建",
+                "知识导航",
+                "知识发现",
+            ],
+            production_methods=[
+                "SubstanceFusionEngine.fuse(知识结晶, 知识结晶)",
+            ],
+            dependencies=["知识结晶"],
+        ))
+
+        # —— 情感类 ——
+        self.register(SubstanceDefinition(
+            name="情感波",
+            name_en="Emotion Wave",
+            category=SubstanceCategory.INFORMATION,
+            definition="由情感信号驱动的波动模式，可调制模型的生成风格",
+            icon="🌊",
+            attributes=[
+                SubstanceAttribute("频率", SubstanceUnit.HERTZ, 0, None),
+                SubstanceAttribute("振幅", SubstanceUnit.DIMENSIONLESS, 0, 1),
+                SubstanceAttribute("相位", SubstanceUnit.DIMENSIONLESS, 0, 6.28),
+            ],
+            uses=[
+                "情感化生成",
+                "风格迁移",
+                "情绪调节",
+            ],
+            production_methods=[
+                "SubstanceFusionEngine.collide(共振记忆, 情感标签)",
+            ],
+            dependencies=["共振记忆"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="共鸣场",
+            name_en="Resonance Field",
+            category=SubstanceCategory.INFORMATION,
+            definition="多个情感波叠加形成的稳定场，可驱动持续的情感表达",
+            icon="💞",
+            attributes=[
+                SubstanceAttribute("场强", SubstanceUnit.JOULE, 0, None),
+                SubstanceAttribute("稳定度", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "情感持续输出",
+                "氛围营造",
+                "情感共振",
+            ],
+            production_methods=[
+                "SubstanceFusionEngine.fuse(情感波, 情感波)",
+            ],
+            dependencies=["情感波"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="意图晶",
+            name_en="Intent Crystal",
+            category=SubstanceCategory.INFORMATION,
+            definition="高密度意图结晶，明确表达用户/代理的核心诉求",
+            icon="🎯",
+            attributes=[
+                SubstanceAttribute("纯度", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("明确度", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "意图识别",
+                "任务聚焦",
+                "指令执行",
+            ],
+            production_methods=[
+                "SubstanceFusionEngine.fuse(记忆点, 参数)",
+            ],
+            dependencies=["记忆点", "参数"],
+        ))
+
+        # —— 认知类 ——
+        self.register(SubstanceDefinition(
+            name="理解态",
+            name_en="Comprehension State",
+            category=SubstanceCategory.INFORMATION,
+            definition="模型对输入/输出的理解程度，是内部状态的可量化指标",
+            icon="🧩",
+            attributes=[
+                SubstanceAttribute("深度", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("广度", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "理解度评估",
+                "知识覆盖分析",
+                "认知状态追踪",
+            ],
+            production_methods=[
+                "SubstanceFusionEngine.fuse(知识结晶, 思维链)",
+            ],
+            dependencies=["知识结晶", "思维链"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="好奇态",
+            name_en="Curiosity State",
+            category=SubstanceCategory.INFORMATION,
+            definition="模型对未知领域的探索驱动力，是主动学习的内驱力",
+            icon="🔍",
+            attributes=[
+                SubstanceAttribute("强度", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("方向", SubstanceUnit.NONE),
+            ],
+            uses=[
+                "主动探索",
+                "知识发现",
+                "新奇检测",
+            ],
+            production_methods=[
+                "SubstanceFusionEngine.collide(记忆点, 空白态)",
+            ],
+            dependencies=["记忆点"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="洞察点",
+            name_en="Insight Point",
+            category=SubstanceCategory.INFORMATION,
+            definition="从大量记忆中涌现的关键认知，是理解态的跃迁点",
+            icon="💡",
+            attributes=[
+                SubstanceAttribute("锐度", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("新颖度", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "关键洞察提取",
+                "模式发现",
+                "本质把握",
+            ],
+            production_methods=[
+                "SubstanceFusionEngine.collide(理解态, 灵感闪)",
+            ],
+            dependencies=["理解态", "灵感闪"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="反思环",
+            name_en="Reflection Loop",
+            category=SubstanceCategory.INFORMATION,
+            definition="自我检查与修正的循环过程，是元认知的体现",
+            icon="🔄",
+            attributes=[
+                SubstanceAttribute("环数", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("修正率", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "自我修正",
+                "错误检测",
+                "元认知",
+            ],
+            production_methods=[
+                "SubstanceFusionEngine.fuse(理解态, 逻辑流)",
+            ],
+            dependencies=["理解态", "逻辑流"],
+        ))
+
+        # —— 参数类 ——
+        self.register(SubstanceDefinition(
+            name="参数包",
+            name_en="Parameter Pack",
+            category=SubstanceCategory.DATA,
+            definition="可交易、可注入、可序列化的一组参数，是模型的本质形态",
+            icon="📦",
+            attributes=[
+                SubstanceAttribute("维度", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("质量", SubstanceUnit.PERCENT, 0, 100),
+            ],
+            uses=[
+                "模型注入",
+                "跨实例转移",
+                "AI 之间交易",
+            ],
+            production_methods=[
+                "ParameterExtractor.extract()",
+                "ParameterTrainer.train()",
+            ],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="参数向量",
+            name_en="Parameter Vector",
+            category=SubstanceCategory.DATA,
+            definition="参数包的向量化表示，用于相似度计算和空间检索",
+            icon="→",
+            attributes=[
+                SubstanceAttribute("维度", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("范数", SubstanceUnit.DIMENSIONLESS, 0, None),
+            ],
+            uses=[
+                "相似度搜索",
+                "参数空间投影",
+                "聚类分析",
+            ],
+            production_methods=[
+                "ParameterPack.to_vector()",
+            ],
+            dependencies=["参数包"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="参数梯度",
+            name_en="Parameter Gradient",
+            category=SubstanceCategory.DATA,
+            definition="参数包的变化率，指导模型更新方向",
+            icon="📈",
+            attributes=[
+                SubstanceAttribute("方向", SubstanceUnit.NONE),
+                SubstanceAttribute("模长", SubstanceUnit.DIMENSIONLESS, 0, None),
+            ],
+            uses=[
+                "梯度下降",
+                "参数优化",
+                "学习方向指引",
+            ],
+            production_methods=[
+                "ParameterTrainer.compute_gradient()",
+            ],
+            dependencies=["参数包"],
+        ))
+
+        # —— 共振类 ——
+        self.register(SubstanceDefinition(
+            name="共振模式",
+            name_en="Resonance Pattern",
+            category=SubstanceCategory.INFORMATION,
+            definition="多个振子同步振荡形成的稳定模式，是合鸣模型的底层运作形态",
+            icon="〰️",
+            attributes=[
+                SubstanceAttribute("频率", SubstanceUnit.HERTZ, 0, None),
+                SubstanceAttribute("相干度", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "专家路由",
+                "模式匹配",
+                "风格生成",
+            ],
+            production_methods=[
+                "XuniBrain.synchronize()",
+                "SubstanceFusionEngine.fuse(共振模式, 参数包)",
+            ],
+            dependencies=["场能量", "参数包"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="吸引子",
+            name_en="Attractor",
+            category=SubstanceCategory.INFORMATION,
+            definition="共振模式收敛的目标状态，是记忆的终极形态",
+            icon="🌀",
+            attributes=[
+                SubstanceAttribute("深度", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("稳定性", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "记忆检索",
+                "状态收敛",
+                "模式固化",
+            ],
+            production_methods=[
+                "XuniMemory.capture()",
+                "SubstanceFusionEngine.collide(共振模式, 共振模式)",
+            ],
+            dependencies=["共振模式"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="相位锁定",
+            name_en="Phase Lock",
+            category=SubstanceCategory.INFORMATION,
+            definition="多个共振模式的相位对齐，形成锁相态",
+            icon="🔒",
+            attributes=[
+                SubstanceAttribute("锁相精度", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("锁定时长", SubstanceUnit.SECOND, 0, None),
+            ],
+            uses=[
+                "跨专家同步",
+                "一致性生成",
+                "协同行为",
+            ],
+            production_methods=[
+                "SubstanceFusionEngine.collide(共振模式, 吸引子)",
+            ],
+            dependencies=["共振模式", "吸引子"],
+        ))
+
+        # —— 融合类（碰撞产物） ——
+        self.register(SubstanceDefinition(
+            name="融合体",
+            name_en="Fusion Body",
+            category=SubstanceCategory.MODEL,
+            definition="两种物质碰撞产生的全新物质形态，具有原物质不具备的新属性",
+            icon="⚛️",
+            attributes=[
+                SubstanceAttribute("融合度", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("新属性数", SubstanceUnit.COUNT, 0, None),
+            ],
+            uses=[
+                "新物质合成",
+                "能力跃迁",
+                "涌现特性",
+            ],
+            production_methods=[
+                "SubstanceFusionEngine.fuse(A, B)",
+            ],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="化合物",
+            name_en="Compound",
+            category=SubstanceCategory.MODEL,
+            definition="多种融合体进一步碰撞形成的复杂物质，是高阶聚合态",
+            icon="🧪",
+            attributes=[
+                SubstanceAttribute("复杂度", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("稳定性", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "高阶知识结构",
+                "复杂推理链",
+                "多模态融合",
+            ],
+            production_methods=[
+                "SubstanceFusionEngine.fuse(融合体, 融合体)",
+            ],
+            dependencies=["融合体"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="合成物",
+            name_en="Synthetics",
+            category=SubstanceCategory.MODEL,
+            definition="人工合成的高级物质，具有定制化属性",
+            icon="🏺",
+            attributes=[
+                SubstanceAttribute("定制度", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("活性", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "定制模型",
+                "专项能力",
+                "特化代理",
+            ],
+            production_methods=[
+                "SubstanceFusionEngine.synthesize(参数包, 知识结晶)",
+            ],
+            dependencies=["参数包", "知识结晶"],
+        ))
+
+        # —— 代理高阶类 ——
+        self.register(SubstanceDefinition(
+            name="代理协作图",
+            name_en="Agent Collaboration Graph",
+            category=SubstanceCategory.MODEL,
+            definition="多个子代理之间的协作关系图，是代理社会的拓扑结构",
+            icon="🕸️",
+            attributes=[
+                SubstanceAttribute("节点数", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("边数", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("中心度", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "团队协作优化",
+                "任务分派",
+                "知识流动分析",
+            ],
+            production_methods=[
+                "SubAgentOrchestrator.broadcast_experience()",
+                "SubstanceFusionEngine.fuse(子代理, 子代理)",
+            ],
+            dependencies=["子代理"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="代理心智",
+            name_en="Agent Mind",
+            category=SubstanceCategory.MODEL,
+            definition="子代理的核心认知结构，由经验、专长和协作图共同构成",
+            icon="🧠",
+            attributes=[
+                SubstanceAttribute("心智容量", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("专长覆盖", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "代理个性化",
+                "专长学习",
+                "心智成长",
+            ],
+            production_methods=[
+                "SubstanceFusionEngine.fuse(代理经验, 代理协作图)",
+            ],
+            dependencies=["代理经验", "代理协作图"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="代理知识网",
+            name_en="Agent Knowledge Network",
+            category=SubstanceCategory.MODEL,
+            definition="多个代理心智互联形成的分布式知识网络",
+            icon="🌐",
+            attributes=[
+                SubstanceAttribute("节点数", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("知识覆盖", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "分布式知识",
+                "协作学习",
+                "集体智慧",
+            ],
+            production_methods=[
+                "SubstanceFusionEngine.fuse(代理心智, 代理心智)",
+            ],
+            dependencies=["代理心智"],
+        ))
+
+        # —— 虚拟数据类 ——
+        self.register(SubstanceDefinition(
+            name="虚拟粒子",
+            name_en="Virtual Particle",
+            category=SubstanceCategory.DATA,
+            definition="数据的粒子态存在形式，不占现实内存，需要时坍缩恢复",
+            icon="⚛️",
+            attributes=[
+                SubstanceAttribute("质量", SubstanceUnit.DIMENSIONLESS, 0, None),
+                SubstanceAttribute("电荷", SubstanceUnit.DIMENSIONLESS, 0, None),
+            ],
+            uses=[
+                "数据存储",
+                "训练数据传输",
+                "跨态转换",
+            ],
+            production_methods=[
+                "VirtualDataConverter.to_particle()",
+            ],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="数据态",
+            name_en="Data State",
+            category=SubstanceCategory.DATA,
+            definition="虚拟粒子的量子态，支持叠加和坍缩",
+            icon="📊",
+            attributes=[
+                SubstanceAttribute("纯度", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("相干度", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "数据叠加",
+                "态转换",
+                "数据坍缩",
+            ],
+            production_methods=[
+                "VirtualDataConverter.superpose()",
+            ],
+            dependencies=["虚拟粒子"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="粒子云",
+            name_en="Particle Cloud",
+            category=SubstanceCategory.DATA,
+            definition="大量虚拟粒子组成的云态，是数据的气态形态",
+            icon="☁️",
+            attributes=[
+                SubstanceAttribute("粒子数", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("密度", SubstanceUnit.DIMENSIONLESS, 0, None),
+            ],
+            uses=[
+                "大数据存储",
+                "批量训练",
+                "分布式计算",
+            ],
+            production_methods=[
+                "VirtualDataGenerator.generate()",
+            ],
+            dependencies=["虚拟粒子"],
+        ))
+
     def register(self, substance: SubstanceDefinition):
         """注册物质"""
         self.substances[substance.name_en] = substance

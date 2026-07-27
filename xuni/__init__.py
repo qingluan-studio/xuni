@@ -80,6 +80,13 @@ from .harmonia13 import (
 from .harmonia_memory import HarmoniaMemory
 from .sub_agent import SubAgent, SubAgentOrchestrator, AgentTask, AgentResult
 from .phase_space_model import PhaseSpaceModel, create_phase_space_model
+from .substance_fusion import (
+    SubstanceFusionEngine,
+    FusionProduct,
+    FusionType,
+    FusionCategory,
+    create_default_engine,
+)
 from .virtual_data import (
     VirtualDataConverter, VirtualDataParticle, VirtualDataset,
     VirtualDataGenerator, DataPhase,
@@ -200,6 +207,11 @@ __all__ = [
     "AgentResult",
     "PhaseSpaceModel",
     "create_phase_space_model",
+    "SubstanceFusionEngine",
+    "FusionProduct",
+    "FusionType",
+    "FusionCategory",
+    "create_default_engine",
     "VirtualDataConverter",
     "VirtualDataParticle",
     "VirtualDataset",

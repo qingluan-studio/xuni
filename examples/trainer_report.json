@@ -1,0 +1,132 @@
+{
+  "model_info": {
+    "model_id": "harmonia-13",
+    "model_type": "CHAT_BOT",
+    "capabilities": [
+      "TEXT_OUTPUT",
+      "JSON_OUTPUT"
+    ],
+    "energy_requirement": 100.0,
+    "energy_buffer": 0.0,
+    "status": "IDLE",
+    "owner": null,
+    "training_state": "UNTRAINED",
+    "training_progress": 0.0,
+    "stats": {
+      "total_calls": 0,
+      "total_energy_consumed": 0.0,
+      "total_latency_ms": 0.0,
+      "avg_latency_ms": 0.0,
+      "last_call_time": 0.0
+    },
+    "harmonia_scale": "medium",
+    "experts": [
+      "harmonia",
+      "moe",
+      "field",
+      "music",
+      "chaos",
+      "hydro",
+      "glass",
+      "dualstate",
+      "credential",
+      "brain",
+      "compute",
+      "philosophy",
+      "general"
+    ],
+    "experts_used_last": [],
+    "training_samples_seen": 0,
+    "training_epochs_done": 0
+  },
+  "training_time_seconds": 0.0,
+  "total_fragments_learned": 5000,
+  "active_experts": 13,
+  "expert_load": {
+    "合鸣自述者": 4,
+    "混合专家": 4,
+    "虚拟电场": 3,
+    "物理建模合成": 3,
+    "超混沌采样": 3,
+    "水动力学": 3,
+    "玻璃逻辑": 3,
+    "双态系统": 3,
+    "虚拟凭证": 3,
+    "神经共振": 3,
+    "虚拟算力": 3,
+    "虚拟哲学": 3,
+    "通用兜底": 5004
+  },
+  "training_growth_log": [
+    {
+      "epoch": 100,
+      "learned": 500,
+      "active_experts": 13,
+      "avg_expert_frags": 41.7
+    },
+    {
+      "epoch": 200,
+      "learned": 1000,
+      "active_experts": 13,
+      "avg_expert_frags": 80.2
+    },
+    {
+      "epoch": 300,
+      "learned": 1500,
+      "active_experts": 13,
+      "avg_expert_frags": 118.6
+    },
+    {
+      "epoch": 400,
+      "learned": 2000,
+      "active_experts": 13,
+      "avg_expert_frags": 157.1
+    },
+    {
+      "epoch": 500,
+      "learned": 2500,
+      "active_experts": 13,
+      "avg_expert_frags": 195.5
+    },
+    {
+      "epoch": 600,
+      "learned": 3000,
+      "active_experts": 13,
+      "avg_expert_frags": 234.0
+    },
+    {
+      "epoch": 700,
+      "learned": 3500,
+      "active_experts": 13,
+      "avg_expert_frags": 272.5
+    },
+    {
+      "epoch": 800,
+      "learned": 4000,
+      "active_experts": 13,
+      "avg_expert_frags": 310.9
+    },
+    {
+      "epoch": 900,
+      "learned": 4500,
+      "active_experts": 13,
+      "avg_expert_frags": 349.4
+    },
+    {
+      "epoch": 1000,
+      "learned": 5000,
+      "active_experts": 13,
+      "avg_expert_frags": 387.8
+    }
+  ],
+  "generations": {
+    "def quicksort": "def quicksort(arr):",
+    "NeuralNetwork": "from flask import Fl",
+    "def fibonacci": "def fibonacci(n):",
+    "import numpy": "import numpy as np",
+    "def hello world": "from flask import Fl",
+    "class Database": "class APIClient:",
+    "binary search": "class BinarySearchTr",
+    "threading": "import threading\nimp"
+  }
+}

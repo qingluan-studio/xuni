@@ -34,6 +34,12 @@ from .memory import (
     MemoryScope,
 )
 from .harmonia13 import Harmonia13Virtual, HarmoniaLiteEngine
+from .substance_fusion import (
+    SubstanceFusionEngine,
+    FusionProduct,
+    FusionCategory,
+    create_default_engine,
+)
 
 
 # --------------------------------------------------------------------------- #
@@ -109,6 +115,7 @@ class HarmoniaMemory:
         recall_top_k: int = 3,
         context_max_chars: int = 200,
         auto_consolidate_every: int = 5,
+        enable_fusion: bool = True,
     ):
         self.harmonia = harmonia
         self.bank = MemoryBank(stm_capacity=stm_capacity)
@@ -119,6 +126,75 @@ class HarmoniaMemory:
         self._call_count = 0
         self._last_recalled: List[MemoryEntry] = []
         self._last_context_prefix: str = ""
+
+        self.fusion_engine = create_default_engine() if enable_fusion else None
+        self._fusion_enabled = enable_fusion
+        self._last_fusion_products: List[FusionProduct] = []
+
+    # ----------------------- 物质碰撞增强 ----------------------- #
+
+    def collide_memories(
+        self, substance_a: str, substance_b: str
+    ) -> FusionProduct:
+        """
+        两种记忆/物质碰撞。
+        例如：记忆点 + 共振记忆 → 灵感闪
+        碰撞产物会影响下一次 chat 的生成风格。
+        """
+        if self.fusion_engine is None:
+            raise RuntimeError("Fusion engine not enabled. Use enable_fusion=True.")
+
+        self._sync_memories_to_engine()
+        product = self.fusion_engine.collide(substance_a, substance_b)
+        self._last_fusion_products.append(product)
+        return product
+
+    def get_fusion_products(
+        self, limit: int = 10
+    ) -> List[Dict[str, Any]]:
+        """获取最近的碰撞产物。"""
+        products = self._last_fusion_products[-limit:]
+        return [p.to_dict() for p in products]
+
+    def register_substance(
+        self, name: str, properties: Dict[str, float]
+    ) -> None:
+        """向碰撞引擎注册新物质。"""
+        if self.fusion_engine:
+            self.fusion_engine.register_substance(name, properties)
+
+    def _sync_memories_to_engine(self) -> None:
+        """把记忆库中的记忆同步到碰撞引擎作为物质。"""
+        if self.fusion_engine is None:
+            return
+
+        for entry in self.bank.stm._buffer[-5:]:
+            props = {
+                "重要性": entry.importance,
+                "访问频率": min(1.0, entry.access_count / 10.0),
+                "标签密度": min(1.0, len(entry.tags) / 5.0),
+            }
+            tag_key = "_".join(sorted(entry.tags)) if entry.tags else "general"
+            substance_name = f"记忆点_{tag_key}"
+            self.fusion_engine.register_substance(substance_name, props)
+
+    def _apply_fusion_context(
+        self, context_prefix: str
+    ) -> str:
+        """
+        将碰撞产物注入上下文。
+        合成物/融合体会以 [融合:xxx] 形式出现在上下文中。
+        """
+        if not self._last_fusion_products:
+            return context_prefix
+
+        recent = self._last_fusion_products[-3:]
+        fusion_parts = []
+        for p in recent:
+            fusion_parts.append(f"[融合:{p.result}]")
+
+        fusion_context = " ".join(fusion_parts) + " "
+        return fusion_context + context_prefix
 
     # ----------------------- 记忆操作 ----------------------- #
 
@@ -180,11 +256,12 @@ class HarmoniaMemory:
 
     def chat(self, prompt: str, **params) -> Dict[str, Any]:
         """
-        记忆增强对话。
+        记忆增强对话（含物质碰撞增强）。
 
         Returns:
             dict with: answer, recalled_memories, importance, experts_used,
-            memory_id (新记忆), with_memory (是否真的注入了记忆)
+            memory_id (新记忆), with_memory (是否真的注入了记忆),
+            fusion_products (本次使用的碰撞产物)
         """
         start = time.time()
         self._call_count += 1
@@ -194,6 +271,9 @@ class HarmoniaMemory:
         context_prefix = self._build_context_prefix(recalled)
         self._last_recalled = recalled
         self._last_context_prefix = context_prefix
+
+        # 1.5 注入碰撞上下文
+        context_prefix = self._apply_fusion_context(context_prefix)
 
         # 2. 拼上下文 + 生成
         full_prompt = context_prefix + prompt if context_prefix else prompt
@@ -227,6 +307,7 @@ class HarmoniaMemory:
             promoted = 0
 
         latency_ms = (time.time() - start) * 1000
+        recent_fusion = [p.to_dict() for p in self._last_fusion_products[-3:]]
         return {
             "answer": answer,
             "recalled_memories": [
@@ -240,6 +321,8 @@ class HarmoniaMemory:
             "with_memory": bool(context_prefix),
             "consolidated": promoted,
             "latency_ms": round(latency_ms, 2),
+            "fusion_products": recent_fusion,
+            "fusion_enabled": self._fusion_enabled,
         }
 
     # ----------------------- 评估对比 ----------------------- #
@@ -266,6 +349,18 @@ class HarmoniaMemory:
     def report(self) -> Dict[str, Any]:
         """记忆增强合鸣的状态报告。"""
         bank_report = self.bank.report()
+        fusion_info = None
+        if self.fusion_engine:
+            fusion_info = {
+                "enabled": self._fusion_enabled,
+                "registered_substances": list(self.fusion_engine._substances.keys()),
+                "product_count": len(self._last_fusion_products),
+                "rules_count": len(self.fusion_engine.list_rules()),
+                "recent_products": [
+                    {"result": p.result, "type": p.fusion_type.name}
+                    for p in self._last_fusion_products[-3:]
+                ],
+            }
         return {
             "harmonia_info": self.harmonia.get_info(),
             "memory_bank": bank_report,
@@ -273,6 +368,7 @@ class HarmoniaMemory:
             "recall_top_k": self.recall_top_k,
             "last_recalled_count": len(self._last_recalled),
             "last_context_prefix": self._last_context_prefix,
+            "fusion_engine": fusion_info,
         }
 
     def forget(self, threshold: float = 0.1) -> int:
