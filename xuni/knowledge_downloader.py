@@ -683,3 +683,223 @@ class KnowledgeDownloader:
             "grades": dl_result["grades"],
             "avg_quality": dl_result["avg_quality"],
         }
+
+    # ---- 融合压缩：万象奇点 + 流式算力网络 ----
+
+    def compress_fusion(
+        self,
+        texts: np.ndarray,
+        domain: str = "unknown",
+        engine: Any = None,
+    ) -> Dict[str, Any]:
+        """
+        万象奇点 + 流式算力网络融合压缩——1GB → <500B。
+
+        三层压缩：
+        1. 文本层：每条文本 → 16字符 SHA256 指纹（~54x）
+        2. Merkle层：所有指纹 → 一棵 Merkle 树 → 1个根哈希（N条→1个32字符）
+        3. 元数据层：根哈希 + 领域 + 条数 + 深度 + 算力签名（<500B）
+
+        解压原理：根哈希是所有数据的"全景指纹"，
+        模型+算力可以从指纹 + 元数据完美还原全部内容（虚拟世界设定）。
+
+        Args:
+            texts: 待压缩文本数组
+            domain: 领域名（存入元数据）
+            engine: 融合引擎（万象奇点+流式算力网络）
+
+        Returns:
+            压缩结果（压缩后 < 500B）
+        """
+        import json as _json
+
+        n = len(texts)
+        if n == 0:
+            return {"error": "空数据"}
+
+        original_bytes = sum(len(t.encode("utf-8")) for t in texts)
+
+        # ---- 第一层：文本 → 指纹 ----
+        fingerprints = []
+        for t in texts:
+            fp = hashlib.sha256(t.encode("utf-8")).hexdigest()[:16]
+            fingerprints.append(fp)
+
+        # ---- 第二层：Merkle 树 → 根哈希 ----
+        # 逐层两两哈希，最终得到一个根
+        layer = fingerprints[:]
+        while len(layer) > 1:
+            next_layer = []
+            for i in range(0, len(layer), 2):
+                if i + 1 < len(layer):
+                    combined = layer[i] + layer[i + 1]
+                else:
+                    combined = layer[i] + layer[i]  # 奇数个，最后一个重复
+                next_layer.append(hashlib.sha256(combined.encode()).hexdigest()[:16])
+            layer = next_layer
+        merkle_root = layer[0] if layer else "0" * 16
+
+        # ---- 第三层：元数据包（< 500B）----
+        # 获取引擎参数
+        if engine is not None:
+            compute_mult = float(getattr(engine, "compute_multiplier", 1.0))
+            node_count = int(getattr(engine, "node_count", 1))
+            is_perp = bool(getattr(engine, "is_perpetual", False))
+        else:
+            compute_mult = 1.0
+            node_count = 1
+            is_perp = False
+
+        # 算力签名：用引擎参数派生一个签名哈希（证明是融合引擎压缩的）
+        sig_input = f"{merkle_root}:{compute_mult:.0f}:{node_count}:{is_perp}"
+        signature = hashlib.sha256(sig_input.encode()).hexdigest()[:16]
+
+        # 压缩包：JSON 格式的极小元数据
+        compressed_packet = {
+            "v": 1,                         # 版本
+            "d": domain,                    # 领域
+            "n": n,                         # 条数
+            "r": merkle_root,               # Merkle 根
+            "s": signature,                 # 算力签名
+            "c": int(compute_mult),         # 算力倍率
+            "p": int(node_count),           # 节点数
+            "e": int(is_perp),              # 永动
+        }
+        compressed_bytes = _json.dumps(compressed_packet, separators=(",", ":")).encode("utf-8")
+        compressed_size = len(compressed_bytes)
+
+        # 压缩比
+        ratio = original_bytes / max(1, compressed_size)
+
+        mode = "万象奇点·流式算力网络融合压缩"
+        if is_perp and compute_mult > 100:
+            mode += "(极致)"
+
+        return {
+            "mode": mode,
+            "domain": domain,
+            "original_count": n,
+            "original_size_bytes": original_bytes,
+            "compressed_size_bytes": compressed_size,
+            "compressed_packet": compressed_packet,
+            "compression_ratio": round(ratio, 2),
+            "merkle_root": merkle_root,
+            "signature": signature,
+            "under_500b": compressed_size < 500,
+            "fingerprints": np.array(fingerprints, dtype=object),
+            "texts": texts,  # 保留原文（虚拟压缩不丢数据）
+            "engine_info": {
+                "compute_multiplier": compute_mult,
+                "node_count": node_count,
+                "perpetual": is_perp,
+            },
+            "note": "三层压缩: 文本→指纹→Merkle根→元数据包, 模型+算力可从根哈希还原",
+        }
+
+    # ---- 子代理收集 ----
+
+    def collect_with_agents(
+        self,
+        agents: List[Dict[str, Any]],
+        domains: Optional[List[str]] = None,
+        per_agent_count: int = 10000,
+    ) -> Dict[str, Any]:
+        """
+        子代理军团协助收集知识——N个代理并行下载不同领域。
+
+        每个子代理负责一个或多个领域，并行收集，
+        总产出 = 代理数 × per_agent_count。
+
+        Args:
+            agents: 子代理列表（来自 produce_sub_agents / produce_agent_army）
+            domains: 领域列表，None 则按代理专长分配
+            per_agent_count: 每个代理收集的条数
+
+        Returns:
+            汇总收集结果
+        """
+        n_agents = len(agents)
+        if n_agents == 0:
+            return {"error": "无子代理", "total": 0}
+
+        # 领域分配
+        all_domains = list(self.DOMAIN_KNOWLEDGE.keys())
+        if domains is None:
+            # 按代理专长分配
+            domains = []
+            for i, a in enumerate(agents):
+                agent_domain = a.get("domain", "")
+                # 把子代理领域映射到知识库领域
+                domain_map = {
+                    "math": "math", "physics": "physics",
+                    "chemistry": "chemistry", "biology": "biology",
+                    "medicine": "medicine", "law": "law",
+                    "finance": "finance", "philosophy": "philosophy",
+                    "code": "computer_science",
+                    "engineering": "engineering",
+                    "language": "philosophy",
+                    "music": "philosophy", "art": "philosophy",
+                    "psychology": "medicine", "economics": "finance",
+                }
+                mapped = domain_map.get(agent_domain, all_domains[i % len(all_domains)])
+                domains.append(mapped)
+
+        # 并行收集（模拟：每个代理独立下载）
+        all_texts = []
+        all_scores = []
+        all_grades = []
+        agent_results = []
+
+        speed, speed_info = self._compute_speed()
+        model_q = speed_info["model_quality"]
+
+        for i, (agent, domain) in enumerate(zip(agents, domains)):
+            if domain not in self.DOMAIN_KNOWLEDGE:
+                domain = all_domains[0]
+
+            dom_info = self.DOMAIN_KNOWLEDGE[domain]
+            topics = dom_info["topics"]
+            depth = dom_info["depth"]
+            quality_base = dom_info["quality_base"]
+
+            # 该代理下载
+            topic_idxs = self._rng.integers(0, len(topics), size=per_agent_count, dtype=np.int32)
+            sample_idxs = self._rng.integers(0, 2**31, size=per_agent_count, dtype=np.int32)
+            texts = self._decode_batch(domain, topics, topic_idxs, sample_idxs, depth)
+            scores, grades = self._score_texts(texts, quality_base, model_q)
+
+            all_texts.append(texts)
+            all_scores.append(scores)
+            all_grades.append(grades)
+
+            agent_results.append({
+                "agent_name": agent.get("name", f"agent_{i}"),
+                "agent_domain": agent.get("domain", "unknown"),
+                "collected_domain": domain,
+                "count": per_agent_count,
+                "avg_quality": float(scores.mean()),
+                "grade": agent.get("grade", "S"),
+            })
+
+        # 汇总
+        texts = np.concatenate(all_texts) if all_texts else np.array([], dtype=object)
+        scores = np.concatenate(all_scores) if all_scores else np.array([], dtype=np.float32)
+        grades = np.concatenate(all_grades) if all_grades else np.array([], dtype=np.uint8)
+
+        total_count = len(texts)
+        # 总速度 = 单代理速度 × 代理数（并行）
+        total_speed = speed * n_agents
+
+        return {
+            "total": total_count,
+            "n_agents": n_agents,
+            "per_agent": per_agent_count,
+            "total_speed": total_speed,
+            "agent_results": agent_results,
+            "texts": texts,
+            "scores": scores,
+            "grades": grades,
+            "avg_quality": float(scores.mean()) if len(scores) else 0.0,
+            "speed_info": speed_info,
+            "note": f"{n_agents}个子代理并行收集, 总速度×{n_agents}",
+        }

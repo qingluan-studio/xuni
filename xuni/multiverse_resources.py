@@ -1851,6 +1851,58 @@ class MultiverseResourceFactory:
         })
         return result
 
+    def produce_singularity_streaming(
+        self,
+        bandwidth_channels: int = 999999,
+    ) -> Dict[str, Any]:
+        """
+        万象奇点 + 流式算力网络融合引擎——算力与流量的终极融合。
+
+        在万象奇点基础上接入流式算力网络：
+        - 万象奇点：算力倍率 9999x，永动
+        - 流式算力网络：节点数 = 流量通道数 × 节点倍率
+        - 融合后：总算力 = 奇点算力 × 流式节点数，恐怖级别
+
+        用于驱动：知识下载（万亿条/秒）+ 极致压缩 + 子代理收集
+
+        Args:
+            bandwidth_channels: 虚拟流量通道数，默认999999（接近百万节点）
+
+        Returns:
+            融合引擎 + 配置信息
+        """
+        # 先生产万象奇点
+        sing = self.produce_ultimate_singularity()
+        engine = sing["engine"]
+
+        # 接入流式算力网络
+        engine.apply_fusion("流式算力网络")
+        # 设置大带宽 → 节点数爆炸
+        engine.set_bandwidth(bandwidth_channels)
+
+        # 再接入"全网永动算力"进一步放大
+        engine.apply_fusion("全网永动算力")
+
+        result = {
+            "product": "万象奇点·流式算力网络融合引擎",
+            "engine": engine,
+            "compute_multiplier": engine.compute_multiplier,
+            "node_multiplier": engine.node_multiplier,
+            "node_count": engine.node_count,
+            "bandwidth_channels": bandwidth_channels,
+            "total_vflops": engine.total_vflops,
+            "perpetual": engine.is_perpetual,
+            "singularity": sing,
+            "note": "万象奇点(算力9999x) × 流式算力网络(节点=流量通道) × 全网永动算力",
+        }
+
+        self._log("produce_singularity_streaming", {
+            "compute_mult": engine.compute_multiplier,
+            "node_count": engine.node_count,
+            "bandwidth": bandwidth_channels,
+        })
+        return result
+
     def produce_singularity_batch(self, count: int = 100) -> Dict[str, Any]:
         """
         批量生产万象奇点——一次造多个奇点。
