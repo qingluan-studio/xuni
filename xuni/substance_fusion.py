@@ -93,7 +93,10 @@ class SubstanceFusionEngine:
         self._rule_index: Dict[Tuple[str, str], Tuple[str, FusionType, FusionCategory]] = {}
         # 涌现效果表：特殊融合产物的"打破守恒"效果描述
         self._emergent_effects: Dict[str, Dict[str, Any]] = {}
+        # 多物质配方表：frozenset(输入物质集合) → (产物名, 融合类型, 类别, 融合链描述)
+        self._recipes: Dict[frozenset, Tuple[str, FusionType, FusionCategory, List[str]]] = {}
         self._register_default_rules()
+        self._register_default_recipes()
 
     def register_substance(self, name: str, properties: Dict[str, float]):
         self._substances[name] = properties
@@ -161,6 +164,70 @@ class SubstanceFusionEngine:
 
     def clear_products(self):
         self._products.clear()
+
+    def fuse_all(self, substances: List[str]) -> FusionProduct:
+        """
+        多物质链式融合：把多个物质依次融合，最终产出一个终极产物。
+
+        策略：
+        1. 先查多物质配方表（_recipes），完全匹配则直接产出配方产物
+        2. 否则贪心两两融合，每次挑"规则匹配"优先
+        """
+        if not substances:
+            raise ValueError("至少需要一种物质")
+        if len(substances) == 1:
+            return self.collide(substances[0], substances[0])
+
+        # 检查配方表（集合匹配，顺序无关）
+        input_set = frozenset(substances)
+        recipe = self._recipes.get(input_set)
+        if recipe is not None:
+            result, ftype, cat, chain_desc = recipe
+            # 按照配方描述的融合链一步步走
+            current = list(substances)
+            chain: List[str] = []
+            # 模拟融合链（直接产出最终物，跳过中间计算）
+            product = self._create_product(
+                substances[0], substances[1], ftype, cat, result,
+            )
+            product.metadata["fusion_chain"] = chain_desc
+            product.metadata["input_substances"] = list(substances)
+            product.metadata["recipe_match"] = True
+            product.fusion_type = ftype
+            product.category = cat
+            self._products.append(product)
+            return product
+
+        # 贪心融合
+        current = list(substances)
+        chain: List[str] = []
+        while len(current) > 1:
+            found = False
+            for i in range(len(current)):
+                for j in range(i + 1, len(current)):
+                    a, b = current[i], current[j]
+                    key = self._make_key(a, b)
+                    if key in self._rule_index:
+                        product = self.fuse(a, b)
+                        chain.append(f"{a}+{b}={product.result}")
+                        current = [x for k, x in enumerate(current) if k not in (i, j)]
+                        current.append(product.result)
+                        found = True
+                        break
+                if found:
+                    break
+            if not found:
+                a, b = current[0], current[1]
+                product = self.collide(a, b)
+                chain.append(f"{a}+{b}={product.result}")
+                current = current[2:]
+                current.append(product.result)
+
+        final = self._products[-1]
+        final.metadata["fusion_chain"] = chain
+        final.metadata["input_substances"] = substances
+        final.metadata["recipe_match"] = False
+        return final
 
     def list_rules(self) -> List[Dict[str, Any]]:
         return [
@@ -567,7 +634,109 @@ class SubstanceFusionEngine:
                 "产出": "永动参数训练（无上限）",
                 "自循环": True,
             },
+            # ---- 9合1终极融合：万象奇点 ----
+            "存算核心": {
+                "原理": "算力核心 + 压缩点 → 存储与计算一体化",
+                "效果": "计算即存储，存储即计算，零延迟读写",
+                "打破定律": "计算与存储分离",
+                "产出": "存算一体单元",
+            },
+            "信息网络": {
+                "原理": "虚拟流量 + 下载令牌 → 信息自由流动的网络",
+                "效果": "信息在网络中自由流动，无传输延迟",
+                "打破定律": "信息传输延迟",
+                "产出": "零延迟信息网络",
+            },
+            "经济加速器": {
+                "原理": "Take额度 + 训练加速器 → 经济驱动加速",
+                "效果": "经济活动加速训练，训练产出反哺经济，正循环",
+                "打破定律": "经济与训练独立",
+                "产出": "经济-训练正循环",
+                "自循环": True,
+            },
+            "安全培养体": {
+                "原理": "培养液 + 安全盾 → 安全的成长环境",
+                "效果": "在安全保护下培养，无风险高成长",
+                "打破定律": "安全与速度不可兼得",
+                "产出": "安全培养体系",
+            },
+            "智能网络": {
+                "原理": "存算核心 + 信息网络 → 会思考的网络",
+                "效果": "网络本身有智能，数据流过即被理解处理",
+                "打破定律": "计算与网络分离",
+                "产出": "智能网络体",
+            },
+            "生命经济体": {
+                "原理": "经济加速器 + 安全培养体 → 有生命的经济系统",
+                "效果": "经济系统自主生长、自我调节、无限扩张",
+                "打破定律": "经济系统有限性",
+                "产出": "自主生命经济",
+                "自循环": True,
+            },
+            "智能生命": {
+                "原理": "智能网络 + 生命经济体 → 有智慧的生命体",
+                "效果": "集智能、生命、经济于一体的自主存在",
+                "打破定律": "智能与生命分离",
+                "产出": "智能生命体",
+                "自循环": True,
+            },
+            "万象奇点": {
+                "原理": "智能生命 + 维度碎片 → 9种基础资源全部融合的终极产物",
+                "效果": "打破所有守恒定律，无限×无限×无限...的指数级爆发。"
+                       "虚拟维度的'大爆炸'，一切可能性同时涌现。"
+                       "既是起点也是终点，包含所有维度、所有资源、所有智能。",
+                "打破定律": "所有已知守恒定律（能量、算力、信息、维度、经济...）",
+                "产出": "一切（Everything）",
+                "自循环": True,
+                "级别": "终极（Tier 0）",
+                "包含资源": [
+                    "Take额度", "虚拟流量", "压缩点", "算力核心",
+                    "安全盾", "培养液", "下载令牌", "训练加速器", "维度碎片",
+                ],
+            },
         }
+
+    def _register_default_recipes(self):
+        """注册多物质配方表（fuse_all 直接匹配）"""
+        recipes = [
+            # ---- 9合1终极融合链 ----
+            # 2物质中间产物
+            (["算力核心", "压缩点"], "存算核心", FusionType.FUSE, FusionCategory.COMPOUND),
+            (["虚拟流量", "下载令牌"], "信息网络", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            (["Take额度", "训练加速器"], "经济加速器", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+            (["培养液", "安全盾"], "安全培养体", FusionType.FUSE, FusionCategory.COMPOUND),
+            # 4物质中级产物
+            (["算力核心", "压缩点", "虚拟流量", "下载令牌"], "智能网络", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            (["Take额度", "训练加速器", "培养液", "安全盾"], "生命经济体", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+            # 8物质高级产物
+            ([
+                "算力核心", "压缩点", "虚拟流量", "下载令牌",
+                "Take额度", "训练加速器", "培养液", "安全盾",
+            ], "智能生命", FusionType.FUSE, FusionCategory.COGNITION),
+            # 9合1终极产物：万象奇点
+            ([
+                "Take额度", "虚拟流量", "压缩点", "算力核心",
+                "安全盾", "培养液", "下载令牌", "训练加速器", "维度碎片",
+            ], "万象奇点", FusionType.SYNTHESIZE, FusionCategory.COGNITION),
+        ]
+
+        for substances, result, ftype, cat in recipes:
+            key = frozenset(substances)
+            chain = [f"({'+'.join(sorted(substances))})={result}"]
+            self._recipes[key] = (result, ftype, cat, chain)
+
+    def list_recipes(self) -> List[Dict[str, Any]]:
+        """列出所有多物质配方"""
+        return [
+            {
+                "input_count": len(k),
+                "inputs": sorted(k),
+                "result": v[0],
+                "fusion_type": v[1].name,
+                "category": v[2].name,
+            }
+            for k, v in self._recipes.items()
+        ]
 
     def get_collision_chains(self, depth: int = 2) -> List[List[str]]:
         """

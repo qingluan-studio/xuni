@@ -137,6 +137,53 @@ _FUSION_BOOSTS: Dict[str, FusionBoost] = {
         perpetual=True,
         node_multiplier=5.0,
     ),
+    # ---- 9合1终极融合：万象奇点 ----
+    "存算核心": FusionBoost(
+        name="存算核心",
+        compute_multiplier=3.0,
+    ),
+    "信息网络": FusionBoost(
+        name="信息网络",
+        node_multiplier=3.0,
+    ),
+    "经济加速器": FusionBoost(
+        name="经济加速器",
+        accelerator_multiplier=3.0,
+        energy_regen=0.2,
+    ),
+    "安全培养体": FusionBoost(
+        name="安全培养体",
+        energy_regen=0.1,
+        compute_multiplier=1.5,
+    ),
+    "智能网络": FusionBoost(
+        name="智能网络",
+        compute_multiplier=10.0,
+        node_multiplier=10.0,
+    ),
+    "生命经济体": FusionBoost(
+        name="生命经济体",
+        accelerator_multiplier=10.0,
+        energy_regen=0.8,
+        perpetual=False,
+    ),
+    "智能生命": FusionBoost(
+        name="智能生命",
+        compute_multiplier=50.0,
+        accelerator_multiplier=50.0,
+        node_multiplier=50.0,
+        energy_regen=1.0,
+        perpetual=True,
+    ),
+    "万象奇点": FusionBoost(
+        name="万象奇点",
+        # 9合1终极：所有倍率拉满，打破一切守恒
+        compute_multiplier=9999.0,
+        node_multiplier=9999.0,
+        accelerator_multiplier=9999.0,
+        energy_regen=9999.0,  # 电爆炸式增长
+        perpetual=True,
+    ),
 }
 
 
@@ -354,24 +401,40 @@ class PerpetualTrainingEngine:
         base_increment += diversity_bonus
 
         # ---- 融合产物放大 ----
-        # 参数流式训练场：N 节点并行注入，增量 × 节点数
+        # 参数流式训练场 / 万象奇点：N 节点并行注入，增量 × 节点数
         node_boost = 1.0
-        if "参数流式训练场" in self._boost_names or "流式算力网络" in self._boost_names:
+        if (
+            "参数流式训练场" in self._boost_names
+            or "流式算力网络" in self._boost_names
+            or "万象奇点" in self._boost_names
+            or "智能网络" in self._boost_names
+            or "智能生命" in self._boost_names
+        ):
             node_boost = float(self.node_count)
 
-        # 超频参数训练：增量 × 加速器倍率
+        # 超频参数训练 / 万象奇点：增量 × 加速器倍率
         accel_boost = 1.0
-        if "超频参数训练" in self._boost_names:
+        if (
+            "超频参数训练" in self._boost_names
+            or "永动参数引擎" in self._boost_names
+            or "万象奇点" in self._boost_names
+            or "生命经济体" in self._boost_names
+            or "智能生命" in self._boost_names
+        ):
             accel_boost = self.accelerator_multiplier
 
-        # 永动参数引擎：增量 × 算力倍率
+        # 永动参数引擎 / 万象奇点：增量 × 算力倍率
         compute_boost = 1.0
-        if "永动参数引擎" in self._boost_names:
+        if (
+            "永动参数引擎" in self._boost_names
+            or "万象奇点" in self._boost_names
+            or "智能生命" in self._boost_names
+        ):
             compute_boost = self.compute_multiplier
 
         # 能量参数核心：参数质量随能量增长
         energy_quality_boost = 1.0
-        if "能量参数核心" in self._boost_names:
+        if "能量参数核心" in self._boost_names or "万象奇点" in self._boost_names:
             # 电越大参数质量越高（对数缩放）
             energy_quality_boost = 1.0 + math.log10(max(1.0, self.energy)) * 0.1
 
