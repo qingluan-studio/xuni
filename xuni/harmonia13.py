@@ -309,11 +309,17 @@ class HarmoniaLiteEngine:
         """
         before = len(self._learned_fragments)
         new_frags = self._extract_fragments(data)
-        self._learned_fragments.extend(new_frags)
+        seen = set(self._learned_fragments)
+        unique = []
+        for f in new_frags:
+            if f not in seen:
+                seen.add(f)
+                unique.append(f)
+        self._learned_fragments.extend(unique)
         general = self._find("general")
         if general is not None:
-            general["fragments"].extend(new_frags)
-        learned = len(new_frags)
+            general["fragments"].extend(unique)
+        learned = len(unique)
         return {
             "fragments_learned": learned,
             "total_learned": len(self._learned_fragments),
@@ -337,7 +343,7 @@ class HarmoniaLiteEngine:
                 "keywords": list(exp["keywords"]),
                 "fragments": list(exp["fragments"]),
             })
-        with gzip.open(path, "wt", encoding="utf-8", compresslevel=6) as f:
+        with gzip.open(path, "wt", encoding="utf-8", compresslevel=9) as f:
             json.dump({
                 "scale": self._scale.value,
                 "learned_fragments": self._learned_fragments,
