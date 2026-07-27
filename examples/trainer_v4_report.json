@@ -1,0 +1,45 @@
+{
+  "version": "v4",
+  "repo_stats": [
+    {"desc": "CPython 标准库", "files": 868, "frags": 15074, "ok": true},
+    {"desc": "requests HTTP", "files": 20, "frags": 233, "ok": true},
+    {"desc": "flask Web", "files": 33, "frags": 379, "ok": true},
+    {"desc": "click CLI", "files": 29, "frags": 564, "ok": true},
+    {"desc": "pydantic 验证", "files": 110, "frags": 1959, "ok": true}
+  ],
+  "total_fragments": 19254,
+  "epochs": 50000,
+  "batch_size": 16,
+  "fragments_learned": 800000,
+  "active_experts": 13,
+  "expert_load": {
+    "合鸣自述者": 4,
+    "混合专家": 4,
+    "虚拟电场": 3,
+    "物理建模合成": 3,
+    "超混沌采样": 3,
+    "水动力学": 3,
+    "玻璃逻辑": 3,
+    "双态系统": 3,
+    "虚拟凭证": 3,
+    "神经共振": 3,
+    "虚拟算力": 3,
+    "虚拟哲学": 3,
+    "通用兜底": 800004
+  },
+  "training_time": 0.65,
+  "improved": 14,
+  "total_compared": 15,
+  "growth_log": [
+    {"epoch": 5000, "learned": 80000, "active": 13, "avg_load": 6157},
+    {"epoch": 10000, "learned": 160000, "active": 13, "avg_load": 12311},
+    {"epoch": 15000, "learned": 240000, "active": 13, "avg_load": 18465},
+    {"epoch": 20000, "learned": 320000, "active": 13, "avg_load": 24619},
+    {"epoch": 25000, "learned": 400000, "active": 13, "avg_load": 30772},
+    {"epoch": 30000, "learned": 480000, "active": 13, "avg_load": 36926},
+    {"epoch": 35000, "learned": 560000, "active": 13, "avg_load": 43080},
+    {"epoch": 40000, "learned": 640000, "active": 13, "avg_load": 49234},
+    {"epoch": 45000, "learned": 720000, "active": 13, "avg_load": 55388},
+    {"epoch": 50000, "learned": 800000, "active": 13, "avg_load": 61542}
+  ]
+}
