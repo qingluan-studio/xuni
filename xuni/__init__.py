@@ -131,6 +131,7 @@ from .code_quality import (
     CodeQualityScorer, QualityPoint, CodeQualityForge,
     ASTQualityScorer, RealCodeRefiner,
 )
+from .codebase_scanner import CodebaseScanner
 
 __all__ = [
     "XuniSampler",
@@ -300,4 +301,5 @@ __all__ = [
     "CodeQualityForge",
     "ASTQualityScorer",
     "RealCodeRefiner",
+    "CodebaseScanner",
 ]
