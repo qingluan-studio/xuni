@@ -310,11 +310,10 @@ class HarmoniaLiteEngine:
         before = len(self._learned_fragments)
         new_frags = self._extract_fragments(data)
         self._learned_fragments.extend(new_frags)
-        # 把新语料挂到 general 专家，使其立刻可被检索
         general = self._find("general")
         if general is not None:
             general["fragments"].extend(new_frags)
-        learned = len(self._learned_fragments) - before
+        learned = len(new_frags)
         return {
             "fragments_learned": learned,
             "total_learned": len(self._learned_fragments),
@@ -338,13 +337,13 @@ class HarmoniaLiteEngine:
                 "keywords": list(exp["keywords"]),
                 "fragments": list(exp["fragments"]),
             })
-        with gzip.open(path, "wt", encoding="utf-8") as f:
+        with gzip.open(path, "wt", encoding="utf-8", compresslevel=6) as f:
             json.dump({
                 "scale": self._scale.value,
                 "learned_fragments": self._learned_fragments,
                 "experts": expert_snapshots,
                 "saved_at": time.time(),
-            }, f, ensure_ascii=False, indent=2)
+            }, f, ensure_ascii=False, separators=(",", ":"))
         return {"path": path, "fragments": len(self._learned_fragments), "experts": len(self.experts)}
 
     # ----------------------- 内部：MoE 门控 ----------------------- #
