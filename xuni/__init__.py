@@ -116,6 +116,9 @@ from .lifecycle import (
     ModelLifecycle, LifecycleOrchestrator,
     LifecycleStage, ModelHealth, LifecycleEvent, ModelVitality,
 )
+from .perpetual_engine import (
+    PerpetualTrainingEngine, FusionBoost,
+)
 
 __all__ = [
     "XuniSampler",
