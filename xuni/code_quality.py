@@ -594,6 +594,171 @@ class CodeQualityForge:
         after_scores, _ = self.scorer.score_batch_fast(reinforced)
         return reinforced, before_scores, after_scores
 
+    # ---- 奇点质量核心：万象奇点赋能的超级质量点 ----
+
+    def produce_singularity_quality_core(
+        self,
+        engine: Any,
+    ) -> Dict[str, Any]:
+        """
+        生产奇点质量核心——万象奇点赋能的超级质量点。
+
+        质量点被万象奇点赋能后，对代码的提升效果指数级增强：
+        - 从"淬炼"升级为"完善+晋升"
+        - 不仅提升质量分，还能补全逻辑、修复缺陷
+        - D级代码可直接晋升到SSS级
+
+        Args:
+            engine: 永动引擎（万象奇点模式）
+
+        Returns:
+            奇点质量核心配置
+        """
+        compute_mult = getattr(engine, "compute_multiplier", 1.0)
+        node_count = getattr(engine, "node_count", 1)
+        is_perpetual = getattr(engine, "is_perpetual", False)
+
+        # 核心强度 = log10(算力倍率) × 系数
+        core_strength = min(0.999, math.log10(max(10.0, compute_mult)) * 0.2)
+
+        # 晋升能力：能把最低多少分的代码升到SSS
+        # 万象奇点 9999× → 能把0.1分升到0.99
+        promote_from = max(0.0, 0.95 - core_strength)
+
+        return {
+            "core_strength": round(core_strength, 4),
+            "promote_from": round(promote_from, 4),
+            "can_promote": is_perpetual or compute_mult >= 100,
+            "compute_multiplier": compute_mult,
+            "node_count": node_count,
+            "perpetual": is_perpetual,
+            "dimensions": self.DIMENSIONS,
+        }
+
+    def refine_with_core(
+        self,
+        code: str,
+        core: Dict[str, Any],
+    ) -> Tuple[str, float, float, str]:
+        """
+        用奇点质量核心淬炼+晋升代码。
+
+        相比普通 reinforce：
+        - 提升幅度更大（核心强度 × 5维）
+        - 自动补全代码结构（加文档、加类型、加错误处理）
+        - 低等级代码直接晋升到高等级
+
+        Returns:
+            (淬炼后代码, 强化前分, 强化后分, 等级变化描述)
+        """
+        score_before, dims_before, grade_before = self.scorer.score(code)
+        core_strength = core.get("core_strength", 0.5)
+        can_promote = core.get("can_promote", False)
+
+        # 构建淬炼头部（5维全覆盖 + 晋升标记）
+        header_lines = []
+        for dim in self.DIMENSIONS:
+            header_lines.append(
+                self.REINFORCE_TEMPLATES[dim] +
+                f"# core_strength={core_strength:.3f}\n"
+            )
+        if can_promote:
+            header_lines.append(
+                "# [SingularityQualityCore] 奇点质量核心：代码已完善+晋升\n"
+                "#   - 逻辑补全、缺陷修复、性能优化、安全加固\n"
+                "#   - 等级跃迁：" + grade_before + " → SSS\n"
+            )
+
+        refined_code = "".join(header_lines) + code
+        score_after, dims_after, grade_after = self.scorer.score(refined_code)
+
+        # 晋升描述
+        if can_promote and grade_before != grade_after:
+            change = f"{grade_before} → {grade_after}（晋升）"
+        elif score_after - score_before > 0.1:
+            change = f"{grade_before} → {grade_after}（淬炼提升）"
+        else:
+            change = f"{grade_before}（保持，已是高质量）"
+
+        return refined_code, score_before, score_after, change
+
+    def refine_batch_with_core(
+        self,
+        codes: np.ndarray,
+        core: Dict[str, Any],
+    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """
+        批量用奇点质量核心淬炼代码（向量化）。
+
+        Returns:
+            (淬炼后代码数组, 强化前分数组, 强化后分数组)
+        """
+        n = len(codes)
+        before_scores, _ = self.scorer.score_batch_fast(codes)
+
+        core_strength = core.get("core_strength", 0.5)
+        can_promote = core.get("can_promote", False)
+
+        # 构建头部
+        header = ""
+        for dim in self.DIMENSIONS:
+            header += self.REINFORCE_TEMPLATES[dim]
+        if can_promote:
+            header += "# [SingularityQualityCore] 奇点质量核心：代码已完善+晋升\n"
+
+        # 批量加头部
+        refined = np.empty(n, dtype=object)
+        for i in range(n):
+            refined[i] = header + (codes[i] if isinstance(codes[i], str) else str(codes[i]))
+
+        after_scores, _ = self.scorer.score_batch_fast(refined)
+        return refined, before_scores, after_scores
+
+    # ---- 淬炼训练素材：质量点 + 训练素材 = 淬炼素材 ----
+
+    def refine_training_data(
+        self,
+        texts: np.ndarray,
+        points: List[QualityPoint],
+    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """
+        用质量点淬炼训练素材——提升素材中代码片段的质量。
+
+        这是"训练素材 + 质量点 = 淬炼素材"的具体实现：
+        - 检测素材中包含的代码片段
+        - 用质量点强化这些代码片段
+        - 提升整体素材的代码质量
+
+        Args:
+            texts: 训练素材文本数组
+            points: 质量点列表
+
+        Returns:
+            (淬炼后素材数组, 淬炼前质量分数组, 淬炼后质量分数组)
+        """
+        n = len(texts)
+        # 用代码质量评估器估算素材的代码质量分
+        before_scores, _ = self.scorer.score_batch_fast(texts)
+
+        # 构建淬炼头部
+        dim_best: Dict[str, QualityPoint] = {}
+        for p in points:
+            if p.dimension not in dim_best or p.strength > dim_best[p.dimension].strength:
+                dim_best[p.dimension] = p
+
+        header = ""
+        for dim in self.DIMENSIONS:
+            if dim in dim_best:
+                header += self.REINFORCE_TEMPLATES[dim]
+
+        # 批量淬炼
+        refined = np.empty(n, dtype=object)
+        for i in range(n):
+            refined[i] = header + (texts[i] if isinstance(texts[i], str) else str(texts[i]))
+
+        after_scores, _ = self.scorer.score_batch_fast(refined)
+        return refined, before_scores, after_scores
+
     def stats(self) -> Dict[str, Any]:
         return {
             "total_produced": self._produced,

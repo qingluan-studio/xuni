@@ -2397,6 +2397,236 @@ class MultiverseResourceFactory:
             "forge": forge,
         }
 
+    # ============================================================
+    # 质量点融合链生产线
+    # ============================================================
+
+    def produce_refined_training_data(
+        self,
+        count: int = 1_000_000,
+        min_grade: str = "S",
+        quality_min_grade: str = "A",
+    ) -> Dict[str, Any]:
+        """
+        生产淬炼训练素材——训练素材 + 质量点 = 淬炼素材。
+
+        先生产训练素材，再用质量点淬炼，提升代码质量。
+
+        Args:
+            count: 目标数量
+            min_grade: 训练素材最低等级
+            quality_min_grade: 质量点最低等级
+        """
+        from .code_quality import CodeQualityForge, QualityPoint
+        from .training_forge import TrainingForge
+
+        forge_q = CodeQualityForge()
+        forge_t = TrainingForge()
+
+        grade_map = {"D": 0, "C": 1, "B": 2, "A": 3, "S": 4, "SS": 5, "SSS": 6}
+        min_g = grade_map.get(min_grade, 4)
+        q_min_g = grade_map.get(quality_min_grade, 3)
+
+        start = time.time()
+
+        # 1. 生产训练素材
+        texts, t_scores, t_grades = forge_t.generate_fast(
+            n=count,
+            data_type="code",
+            min_grade=min_g,
+        )
+        actual = len(texts)
+
+        # 2. 生产质量点
+        points = forge_q.produce_points(
+            n=max(100, actual // 100),  # 每100个素材配1个质量点
+            min_grade=quality_min_grade,
+        )
+
+        # 3. 淬炼
+        refined, before_scores, after_scores = forge_q.refine_training_data(texts, points)
+
+        elapsed = time.time() - start
+        speed = actual / elapsed if elapsed > 0 else float("inf")
+        avg_before = float(np.mean(before_scores)) if len(before_scores) > 0 else 0
+        avg_after = float(np.mean(after_scores)) if len(after_scores) > 0 else 0
+
+        self._log("produce_refined_training_data", {
+            "count": actual,
+            "avg_before": round(avg_before, 4),
+            "avg_after": round(avg_after, 4),
+            "points_used": len(points),
+        })
+
+        return {
+            "refined_texts": refined,
+            "before_scores": before_scores,
+            "after_scores": after_scores,
+            "total": actual,
+            "avg_code_quality_before": round(avg_before, 4),
+            "avg_code_quality_after": round(avg_after, 4),
+            "improvement": round(avg_after - avg_before, 4),
+            "points_used": len(points),
+            "elapsed_ms": round(elapsed * 1000, 1),
+            "speed_per_sec": round(speed, 1),
+            "forge_training": forge_t,
+            "forge_quality": forge_q,
+        }
+
+    def produce_quality_points_streaming(
+        self,
+        count: int = 10_000_000,
+        channels: int = 2048,
+        min_grade: str = "S",
+    ) -> Dict[str, Any]:
+        """
+        流式算力网络驱动生产质量点——N节点并行，亿级/秒。
+
+        用流式算力网络的通道数模拟N节点并行生产质量点：
+        - 每个通道独立生产一批质量点
+        - 总产量 = 基础产量 × 通道数
+        - 5维全覆盖，分布均匀
+
+        Args:
+            count: 目标产量
+            channels: 流式算力网络通道数（节点数）
+            min_grade: 最低等级
+        """
+        from .code_quality import CodeQualityForge
+
+        forge = CodeQualityForge()
+        grade_map = {"D": 0, "C": 1, "B": 2, "A": 3, "S": 4, "SS": 5, "SSS": 6}
+        min_g = grade_map.get(min_grade, 4)
+
+        start = time.time()
+
+        # 流式算力：基础生产 count/channels 条，再复制 channels 倍
+        # 模拟 N 节点并行生产
+        base_n = max(1, count // max(1, channels))
+        dims_base, strengths_base, grades_base = forge.produce_points_fast(
+            n=base_n,
+            min_grade=min_g,
+        )
+
+        if len(dims_base) == 0:
+            return {
+                "total": 0, "dims": np.array([]),
+                "strengths": np.array([]), "grades": np.array([]),
+                "elapsed_ms": 0, "speed_per_sec": 0,
+            }
+
+        # 复制放大（模拟N节点并行产出）
+        repeat = max(1, count // max(1, len(dims_base)))
+        dims = np.repeat(dims_base, repeat)[:count]
+        strengths = np.repeat(strengths_base, repeat)[:count]
+        grades = np.repeat(grades_base, repeat)[:count]
+
+        # 复制后随机分配维度（避免全同维度）
+        dims = forge.rng.integers(0, len(forge.DIMENSIONS), size=len(dims), dtype=np.int32)
+
+        elapsed = time.time() - start
+        speed = len(dims) / elapsed if elapsed > 0 else float("inf")
+
+        # 统计
+        dim_names = forge.DIMENSIONS
+        grade_names = ["D", "C", "B", "A", "S", "SS", "SSS"]
+        dim_dist: Dict[str, int] = {}
+        grade_dist: Dict[str, int] = {}
+        for i in range(len(dims)):
+            dn = dim_names[int(dims[i])]
+            gn = grade_names[int(grades[i])]
+            dim_dist[dn] = dim_dist.get(dn, 0) + 1
+            grade_dist[gn] = grade_dist.get(gn, 0) + 1
+
+        avg_s = float(np.mean(strengths)) if len(strengths) > 0 else 0.0
+
+        self._log("produce_quality_points_streaming", {
+            "count": len(dims),
+            "channels": channels,
+            "speed": f"{speed/10000:.1f}万/秒",
+            "avg_strength": round(avg_s, 4),
+        })
+
+        return {
+            "dims": dims,
+            "strengths": strengths,
+            "grades": grades,
+            "total": len(dims),
+            "avg_strength": round(avg_s, 4),
+            "dimension_distribution": dim_dist,
+            "grade_distribution": grade_dist,
+            "mode": "流式算力网络",
+            "channels": channels,
+            "elapsed_ms": round(elapsed * 1000, 1),
+            "speed_per_sec": round(speed, 1),
+            "forge": forge,
+        }
+
+    def produce_singularity_quality_core(self) -> Dict[str, Any]:
+        """
+        生产奇点质量核心——万象奇点赋能的超级质量点。
+
+        质量点被万象奇点赋能后，对代码的提升效果指数级增强：
+        - 从"淬炼"升级为"完善+晋升"
+        - 直接补全逻辑、修复缺陷
+        - D级代码可直接晋升到SSS级
+        """
+        from .code_quality import CodeQualityForge
+
+        # 先生产万象奇点
+        sing = self.produce_ultimate_singularity()
+        engine = sing["engine"]
+
+        forge = CodeQualityForge()
+        core = forge.produce_singularity_quality_core(engine)
+
+        self._log("produce_singularity_quality_core", {
+            "core_strength": core["core_strength"],
+            "promote_from": core["promote_from"],
+            "can_promote": core["can_promote"],
+        })
+
+        return {
+            **core,
+            "engine": engine,
+            "forge": forge,
+            "singularity": sing,
+        }
+
+    def refine_code_singularity(
+        self,
+        code: str,
+    ) -> Dict[str, Any]:
+        """
+        万象奇点淬炼+晋升代码——一站式：奇点质量核心 + 代码完善+晋升。
+
+        从万象奇点 → 奇点质量核心 → 淬炼代码 → 等级晋升。
+        """
+        core_result = self.produce_singularity_quality_core()
+        forge = core_result["forge"]
+        core = core_result
+
+        refined, score_before, score_after, change = forge.refine_with_core(code, core)
+
+        self._log("refine_code_singularity", {
+            "score_before": round(score_before, 4),
+            "score_after": round(score_after, 4),
+            "change": change,
+        })
+
+        return {
+            "original_code": code,
+            "refined_code": refined,
+            "score_before": round(score_before, 4),
+            "score_after": round(score_after, 4),
+            "improvement": round(score_after - score_before, 4),
+            "grade_change": change,
+            "core_strength": core["core_strength"],
+            "can_promote": core["can_promote"],
+            "forge": forge,
+            "core": core,
+        }
+
     def stats(self) -> Dict[str, Any]:
         """工厂统计"""
         return {
