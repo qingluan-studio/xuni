@@ -77,6 +77,8 @@ from .harmonia13 import (
     Harmonia13Virtual, VirtualScale, SCALE_PRESETS,
     VIRTUAL_EXPERTS, HarmoniaLiteEngine,
 )
+from .harmonia_memory import HarmoniaMemory
+from .sub_agent import SubAgent, SubAgentOrchestrator, AgentTask, AgentResult
 from .phase_space_model import PhaseSpaceModel, create_phase_space_model
 from .virtual_data import (
     VirtualDataConverter, VirtualDataParticle, VirtualDataset,
@@ -191,6 +193,11 @@ __all__ = [
     "SCALE_PRESETS",
     "VIRTUAL_EXPERTS",
     "HarmoniaLiteEngine",
+    "HarmoniaMemory",
+    "SubAgent",
+    "SubAgentOrchestrator",
+    "AgentTask",
+    "AgentResult",
     "PhaseSpaceModel",
     "create_phase_space_model",
     "VirtualDataConverter",

@@ -452,6 +452,123 @@ class SubstanceSystem:
             dependencies=["虚拟模型"],
         ))
 
+        # ===== 记忆类物质（工厂新产能） =====
+        self.register(SubstanceDefinition(
+            name="记忆点",
+            name_en="Memory Point",
+            category=SubstanceCategory.INFORMATION,
+            definition="带重要性评分、标签和时间戳的语义记忆条目，是工厂记忆系统的最小单元",
+            icon="🧠",
+            attributes=[
+                SubstanceAttribute("重要性", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("访问次数", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("衰减率", SubstanceUnit.DIMENSIONLESS, 0, 1),
+            ],
+            uses=[
+                "为合鸣模型提供上下文记忆",
+                "跨会话知识沉淀",
+                "重要事实长期保存",
+                "子代理经验积累",
+            ],
+            production_methods=[
+                "MemoryBank.memorize()",
+                "ShortTermMemory.store()",
+                "LongTermMemory.store()",
+            ],
+            dependencies=["生成文本"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="长期记忆",
+            name_en="Long Term Memory",
+            category=SubstanceCategory.INFORMATION,
+            definition="重要性≥0.6 的记忆点晋升为长期记忆，按标签索引、按重要性排序、按时间衰减",
+            icon="💾",
+            attributes=[
+                SubstanceAttribute("容量", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("衰减率", SubstanceUnit.DIMENSIONLESS, 0, 1),
+                SubstanceAttribute("标签数", SubstanceUnit.COUNT, 0, None),
+            ],
+            uses=[
+                "合鸣模型事实检索",
+                "子代理经验库",
+                "跨会话上下文恢复",
+            ],
+            production_methods=[
+                "MemoryBank.consolidate()",
+                "LongTermMemory.store()",
+            ],
+            dependencies=["记忆点"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="共振记忆",
+            name_en="Resonance Memory",
+            category=SubstanceCategory.INFORMATION,
+            definition="XuniBrain 网络共振模式的快照，加载后网络收敛到该 attractor 附近，每次回忆都是独特的",
+            icon="🌀",
+            attributes=[
+                SubstanceAttribute("频率", SubstanceUnit.HERTZ, 0, None),
+                SubstanceAttribute("振幅", SubstanceUnit.DIMENSIONLESS, 0, None),
+                SubstanceAttribute("唤起次数", SubstanceUnit.COUNT, 0, None),
+            ],
+            uses=[
+                "音乐主题回忆",
+                "神经状态恢复",
+                "梦境生成种子",
+            ],
+            production_methods=[
+                "XuniMemory.capture()",
+            ],
+            dependencies=["场能量"],
+        ))
+
+        # ===== 代理类物质（工厂新产能） =====
+        self.register(SubstanceDefinition(
+            name="子代理",
+            name_en="Sub Agent",
+            category=SubstanceCategory.MODEL,
+            definition="由 AI 名称池派生的虚拟子代理，可跨层认领模型并执行任务，是工厂的代理产物",
+            icon="🎭",
+            attributes=[
+                SubstanceAttribute("名称", SubstanceUnit.NONE),
+                SubstanceAttribute("认领模型数", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("完成任务数", SubstanceUnit.COUNT, 0, None),
+            ],
+            uses=[
+                "并行处理多任务",
+                "跨层模型认领与训练",
+                "子任务分发与汇总",
+                "经验记忆沉淀",
+            ],
+            production_methods=[
+                "SubAgentOrchestrator.spawn()",
+                "ModelLayer.auto_assign()",
+            ],
+            dependencies=["虚拟模型", "记忆点"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="代理经验",
+            name_en="Agent Experience",
+            category=SubstanceCategory.INFORMATION,
+            definition="子代理在执行任务过程中积累的经验记忆，按代理名分组存储，可用于后续任务复用",
+            icon="📜",
+            attributes=[
+                SubstanceAttribute("经验条目数", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("成功率", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "子代理经验复用",
+                "任务路由优化",
+                "团队协作学习",
+            ],
+            production_methods=[
+                "SubAgent.execute()",
+            ],
+            dependencies=["子代理", "记忆点"],
+        ))
+
     def register(self, substance: SubstanceDefinition):
         """注册物质"""
         self.substances[substance.name_en] = substance
