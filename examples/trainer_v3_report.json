@@ -1,0 +1,143 @@
+{
+  "version": "v3",
+  "downloader_stats": {
+    "total_urls": 594,
+    "success": 594,
+    "failed": 0,
+    "total_bytes": 11279089,
+    "total_kb": 11014.7,
+    "cache_dir": "/tmp/xuni_corpus_2hk60y91",
+    "failed_urls": []
+  },
+  "real_texts_count": 594,
+  "real_fragments": 12262,
+  "v2_corpus": 358,
+  "total_corpus": 12620,
+  "epochs": 10000,
+  "batch_size": 12,
+  "fragments_learned": 120000,
+  "active_experts": 13,
+  "expert_load": {
+    "合鸣自述者": 4,
+    "混合专家": 4,
+    "虚拟电场": 3,
+    "物理建模合成": 3,
+    "超混沌采样": 3,
+    "水动力学": 3,
+    "玻璃逻辑": 3,
+    "双态系统": 3,
+    "虚拟凭证": 3,
+    "神经共振": 3,
+    "虚拟算力": 3,
+    "虚拟哲学": 3,
+    "通用兜底": 120004
+  },
+  "training_time": 0.14,
+  "download_time": 7.3,
+  "growth_log": [
+    {
+      "epoch": 1000,
+      "learned": 12000,
+      "active": 13,
+      "avg_load": 926.3
+    },
+    {
+      "epoch": 2000,
+      "learned": 24000,
+      "active": 13,
+      "avg_load": 1849.4
+    },
+    {
+      "epoch": 3000,
+      "learned": 36000,
+      "active": 13,
+      "avg_load": 2772.5
+    },
+    {
+      "epoch": 4000,
+      "learned": 48000,
+      "active": 13,
+      "avg_load": 3695.5
+    },
+    {
+      "epoch": 5000,
+      "learned": 60000,
+      "active": 13,
+      "avg_load": 4618.6
+    },
+    {
+      "epoch": 6000,
+      "learned": 72000,
+      "active": 13,
+      "avg_load": 5541.7
+    },
+    {
+      "epoch": 7000,
+      "learned": 84000,
+      "active": 13,
+      "avg_load": 6464.8
+    },
+    {
+      "epoch": 8000,
+      "learned": 96000,
+      "active": 13,
+      "avg_load": 7387.8
+    },
+    {
+      "epoch": 9000,
+      "learned": 108000,
+      "active": 13,
+      "avg_load": 8310.9
+    },
+    {
+      "epoch": 10000,
+      "learned": 120000,
+      "active": 13,
+      "avg_load": 9234.0
+    }
+  ],
+  "improved": 7,
+  "total_compared": 10,
+  "comparison": {
+    "def quicksort": {
+      "before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架构，",
+      "after": "def _estimate_importance(prompt: str,"
+    },
+    "class Counter": {
+      "before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架构，",
+      "after": "def _on_queue_feeder_error(e,"
+    },
+    "def lru_cache": {
+      "before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架构，",
+      "after": "def _tp_cache(func=None, /, *,"
+    },
+    "import functools": {
+      "before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架构，",
+      "after": "def f() -> annotation: ..."
+    },
+    "class deque": {
+      "before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架构，",
+      "after": "class shlex:\n    \"A lexical analyzer cla"
+    },
+    "def namedtuple": {
+      "before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架构，",
+      "after": "def ios_ver(system=\"\", release=\"\","
+    },
+    "class OrderedDict": {
+      "before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架构，",
+      "after": "class _OrderedDictItemsView(_collections"
+    },
+    "def partial": {
+      "before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架构，",
+      "after": "def _get_slots(cls):\n    match cls."
+    },
+    "async def": {
+      "before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架构，",
+      "after": "def _run_forever_setup(self):\n        \"\""
+    },
+    "class Event": {
+      "before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架构，",
+      "after": "class _UnixSubprocessTransport(base_subp"
+    }
+  }
+}
