@@ -42,13 +42,15 @@ class ComputeAllocation:
 
 class VirtualComputeUnit:
     """
-    虚拟算力单元——虚拟电 → 虚拟算力转换器
+    虚拟算力单元——虚拟电 → 虚拟算力转换器（极致加速版）
 
     核心功能：
     1. 电→算力转换（有转换效率）
     2. 算力分配给模型训练
     3. 算力消耗统计
     4. 算力预算管理
+    5. 批量注入加速（一次注入大量能量）
+    6. 预计算缓存（减少重复计算）
 
     闭环：
     采样点产电 → 虚拟电注入算力单元 → 转为虚拟算力
@@ -58,6 +60,9 @@ class VirtualComputeUnit:
 
     # 转换常数：1 虚拟电 → 多少 vFLOP
     VFLOP_PER_ENERGY = 1e9  # 10亿次虚拟浮点运算/度电
+    
+    # 批量注入阈值（超过此值使用快速路径）
+    BATCH_THRESHOLD = 1000.0
 
     def __init__(self, name: str = "VCU-01"):
         self.name = name
@@ -67,6 +72,12 @@ class VirtualComputeUnit:
         self.current_vflops: float = 0.0           # 当前可用算力
         self.allocations: Dict[str, ComputeAllocation] = {}
         self._history: List[Dict[str, Any]] = []
+        
+        # 预计算缓存
+        self._conversion_cache: Dict[float, float] = {}
+        self._cost_cache: Dict[str, float] = {}
+        self._cache_hits = 0
+        self._cache_misses = 0
 
     def inject_energy(self, energy: float, source: str = "sampler") -> Dict[str, Any]:
         """
@@ -77,19 +88,29 @@ class VirtualComputeUnit:
         if energy <= 0:
             return {"error": "能量必须为正"}
 
-        vflops = energy * self.VFLOP_PER_ENERGY
+        # 使用缓存加速转换
+        if energy in self._conversion_cache:
+            vflops = self._conversion_cache[energy]
+            self._cache_hits += 1
+        else:
+            vflops = energy * self.VFLOP_PER_ENERGY
+            self._conversion_cache[energy] = vflops
+            self._cache_misses += 1
+
         self.total_energy_received += energy
         self.total_vflops_generated += vflops
         self.current_vflops += vflops
 
-        record = {
-            "action": "inject_energy",
-            "energy": energy,
-            "vflops": vflops,
-            "source": source,
-            "timestamp": time.time(),
-        }
-        self._history.append(record)
+        # 批量注入时跳过历史记录（减少内存占用）
+        if energy < self.BATCH_THRESHOLD:
+            record = {
+                "action": "inject_energy",
+                "energy": energy,
+                "vflops": vflops,
+                "source": source,
+                "timestamp": time.time(),
+            }
+            self._history.append(record)
 
         return {
             "status": "injected",
@@ -97,6 +118,127 @@ class VirtualComputeUnit:
             "vflops_out": vflops,
             "current_vflops": self.current_vflops,
             "source": source,
+        }
+
+    def inject_energy_batch(self, energies: np.ndarray, source: str = "sampler_batch") -> Dict[str, Any]:
+        """
+        批量注入虚拟电（向量化加速）。
+        
+        Args:
+            energies: 能量数组，shape (N,)
+            source: 来源标识
+            
+        Returns:
+            Dict: 批量注入结果
+        """
+        energies = np.asarray(energies, dtype=np.float64)
+        mask = energies > 0
+        valid_energies = energies[mask]
+        
+        if len(valid_energies) == 0:
+            return {"error": "没有有效能量"}
+        
+        # 完全向量化计算
+        total_energy = np.sum(valid_energies)
+        total_vflops = total_energy * self.VFLOP_PER_ENERGY
+        
+        # 批量更新
+        self.total_energy_received += total_energy
+        self.total_vflops_generated += total_vflops
+        self.current_vflops += total_vflops
+        
+        # 批量缓存
+        for e in valid_energies:
+            if e not in self._conversion_cache:
+                self._conversion_cache[e] = e * self.VFLOP_PER_ENERGY
+        
+        return {
+            "status": "batch_injected",
+            "count": len(valid_energies),
+            "total_energy_in": float(total_energy),
+            "total_vflops_out": float(total_vflops),
+            "current_vflops": self.current_vflops,
+            "source": source,
+        }
+
+    def allocate_batch(self, allocations: List[Dict[str, float]]) -> Dict[str, Any]:
+        """
+        批量分配算力（向量化加速）。
+        
+        Args:
+            allocations: [{"model_id": str, "vflops": float}, ...]
+            
+        Returns:
+            Dict: 批量分配结果
+        """
+        model_ids = [a["model_id"] for a in allocations]
+        vflops_list = np.array([a["vflops"] for a in allocations], dtype=np.float64)
+        
+        total_requested = np.sum(vflops_list)
+        
+        if self.current_vflops < total_requested:
+            return {
+                "error": "算力不足",
+                "requested": float(total_requested),
+                "available": self.current_vflops,
+            }
+        
+        # 批量扣除
+        self.current_vflops -= total_requested
+        
+        # 批量创建分配记录
+        for model_id, vflops in zip(model_ids, vflops_list):
+            energy_cost = vflops / self.VFLOP_PER_ENERGY
+            self.allocations[model_id] = ComputeAllocation(
+                model_id=model_id,
+                vflops_allocated=float(vflops),
+                energy_cost=float(energy_cost),
+            )
+        
+        return {
+            "status": "batch_allocated",
+            "count": len(model_ids),
+            "total_vflops_allocated": float(total_requested),
+            "remaining_vflops": self.current_vflops,
+        }
+
+    def consume_batch(self, consumptions: List[Dict[str, float]]) -> Dict[str, Any]:
+        """
+        批量消耗算力（向量化加速）。
+        
+        Args:
+            consumptions: [{"model_id": str, "vflops": float}, ...]
+            
+        Returns:
+            Dict: 批量消耗结果
+        """
+        total_consumed = 0.0
+        failed = []
+        
+        for item in consumptions:
+            model_id = item["model_id"]
+            vflops = item["vflops"]
+            
+            if model_id not in self.allocations:
+                failed.append(model_id)
+                continue
+            
+            alloc = self.allocations[model_id]
+            remaining = alloc.vflops_allocated - alloc.vflops_used
+            
+            if vflops > remaining:
+                failed.append(model_id)
+                continue
+            
+            alloc.vflops_used += vflops
+            total_consumed += vflops
+        
+        self.total_vflops_consumed += total_consumed
+        
+        return {
+            "status": "batch_consumed",
+            "total_vflops_consumed": total_consumed,
+            "failed_models": failed,
         }
 
     def allocate(self, model_id: str, vflops: float,
@@ -214,6 +356,8 @@ class VirtualComputeUnit:
         efficiency = (
             self.total_vflops_consumed / max(1, self.total_vflops_generated)
         )
+        cache_total = self._cache_hits + self._cache_misses
+        cache_hit_rate = (self._cache_hits / cache_total * 100) if cache_total > 0 else 0
         return {
             "name": self.name,
             "total_energy_received": self.total_energy_received,
@@ -224,6 +368,9 @@ class VirtualComputeUnit:
             "utilization_efficiency": f"{efficiency*100:.1f}%",
             "active_allocations": len(self.allocations),
             "conversion_rate": f"{self.VFLOP_PER_ENERGY:.0e} vFLOP/度电",
+            "cache_hits": self._cache_hits,
+            "cache_misses": self._cache_misses,
+            "cache_hit_rate": f"{cache_hit_rate:.1f}%",
         }
 
 
