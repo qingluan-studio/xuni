@@ -28,6 +28,7 @@ TrainingForge —— 训练素材锻造厂
 
 from __future__ import annotations
 
+import ast
 import hashlib
 import math
 import time
@@ -65,11 +66,36 @@ class QualityScorer:
 
     # 关键词集合——包含越多信息量越高
     KEYWORDS = {
+        # 技术领域（原有）
         "python", "算法", "模型", "函数", "数据", "学习", "训练", "推理",
         "定义", "实现", "优化", "测试", "验证", "计算", "分析", "系统",
         "网络", "参数", "权重", "梯度", "损失", "反向传播", "嵌入", "向量",
         "class", "def", "import", "return", "yield", "self", "np.",
         "采样", "电场", "能量", "虚拟", "融合", "涌现", "共振", "粒子",
+        # 数学
+        "微积分", "线性代数", "概率论", "拓扑", "群论", "数论",
+        "傅里叶变换", "矩阵", "微分方程", "泛函",
+        # 物理
+        "量子力学", "相对论", "热力学", "电磁学", "流体力学",
+        "粒子物理", "弦理论", "波函数", "哈密顿量",
+        # 化学
+        "有机化学", "无机化学", "分子键", "催化", "反应动力学",
+        "氧化还原", "共价键",
+        # 生物
+        "基因", "蛋白质", "细胞", "进化论", "生态学",
+        "神经科学", "CRISPR", "DNA", "RNA",
+        # 医学
+        "药理学", "病理学", "解剖学", "免疫学", "诊断",
+        "治疗方案", "药代动力学", "疫苗",
+        # 法律
+        "合同法", "侵权法", "刑法", "知识产权", "国际法",
+        "判例", "宪法", "违约责任",
+        # 金融
+        "投资组合", "衍生品", "风险管理", "定价模型", "市场分析",
+        "期权", "期货", "对冲", "套利", "波动率",
+        # 哲学
+        "认识论", "伦理学", "形而上学", "逻辑学", "美学",
+        "存在主义", "现象学", "辩证法",
     }
 
     def __init__(self, novelty_basis_size: int = 1000):
@@ -316,11 +342,89 @@ class TrainingForge:
         "with {context} as {var}:\n    {body}\n",
     ]
 
+    # 多领域概念库——key 为领域名，value 为该领域的概念列表
+    DOMAINS: Dict[str, List[str]] = {
+        "math": [
+            "微积分", "线性代数", "概率论", "拓扑", "群论", "数论",
+            "傅里叶变换", "矩阵分解", "微分方程", "泛函分析", "黎曼几何",
+            "实分析", "复分析", "抽象代数", "组合数学", "图论",
+            "数值分析", "优化理论", "动力系统", "测度论", "张量分析",
+            "李群", "同调代数", "范畴论",
+        ],
+        "physics": [
+            "量子力学", "相对论", "热力学", "电磁学", "流体力学",
+            "粒子物理", "弦理论", "统计力学", "光学", "声学",
+            "原子物理", "核物理", "凝聚态物理", "天体物理", "宇宙学",
+            "经典力学", "电动力学", "量子场论", "规范理论", "熵",
+            "波函数", "哈密顿量", "拉格朗日量", "对称性",
+        ],
+        "chemistry": [
+            "有机化学", "无机化学", "分子键", "催化", "反应动力学",
+            "热化学", "分析化学", "物理化学", "生物化学", "高分子化学",
+            "立体化学", "量子化学", "电化学", "配位化学", "同位素",
+            "氧化还原", "酸碱平衡", "化学平衡", "反应机理", "分子轨道",
+            "共价键", "离子键", "氢键", "范德华力",
+        ],
+        "biology": [
+            "基因", "蛋白质", "细胞", "进化论", "生态学",
+            "神经科学", "CRISPR", "遗传学", "代谢", "信号传导",
+            "分子生物学", "免疫学", "微生物学", "酶", "DNA",
+            "RNA", "转录", "翻译", "突变", "自然选择",
+            "细胞分裂", "凋亡", "表观遗传", "干细胞",
+        ],
+        "medicine": [
+            "药理学", "病理学", "解剖学", "免疫学", "诊断",
+            "治疗方案", "内科学", "外科学", "神经病学", "精神病学",
+            "流行病学", "影像学", "药代动力学", "临床试验", "疫苗",
+            "抗生素", "炎症", "肿瘤", "基因治疗", "精准医疗",
+            "内镜", "介入治疗", "预后", "并发症",
+        ],
+        "law": [
+            "合同法", "侵权法", "刑法", "知识产权", "国际法",
+            "判例", "宪法", "行政法", "商法", "劳动法",
+            "民法", "诉讼法", "证据法", "物权法", "债权",
+            "违约责任", "侵权责任", "犯罪构成", "刑罚", "司法管辖",
+            "仲裁", "调解", "立法", "司法解释",
+        ],
+        "finance": [
+            "投资组合", "衍生品", "风险管理", "定价模型", "市场分析",
+            "资产定价", "期权", "期货", "对冲", "套利",
+            "资本资产定价模型", "布莱克-斯科尔斯模型", "蒙特卡洛模拟",
+            "波动率", "收益率曲线", "信用风险", "流动性风险",
+            "量化交易", "高频交易", "价值投资", "宏观经济", "财务报表",
+        ],
+        "philosophy": [
+            "认识论", "伦理学", "形而上学", "逻辑学", "美学",
+            "存在主义", "现象学", "实证主义", "理性主义", "经验主义",
+            "唯物主义", "唯心主义", "辩证法", "功利主义", "义务论",
+            "德性伦理", "怀疑论", "实用主义", "结构主义", "解构主义",
+            "本体论", "心灵哲学", "语言哲学", "科学哲学",
+        ],
+    }
+
+    # 领域知识描述模板——适用于各领域，复用 {a}~{e}/{n} 占位符
+    TEMPLATES_DOMAIN = [
+        "{a}是{b}的核心概念，其本质是{c}在{d}条件下的表现，体现了{e}的规律。",
+        "在{b}中，{a}通过{c}作用形成{d}，这一过程揭示了{e}的深层机制。",
+        "{a}与{b}的关系体现了{c}原理，广泛应用于{d}和{e}的研究领域。",
+        "从{a}出发，可以推导出{b}，进而解释{c}现象，这是{d}理论的基础。",
+        "{a}的研究对象是{b}，其方法包括{c}和{d}，目标是揭示{e}的本质。",
+        "当{a}作用于{b}时，产生{c}效应，这一发现推动了{d}与{e}的发展。",
+        "{a}理论由{b}发展而来，其核心方程描述了{c}与{d}的变换关系，精度达{e}%。",
+        "在{a}的框架下，{b}被视作{c}的特例，统一了{d}与{e}的解释体系。",
+        "{a}的第{n}个公设指出：{b}决定了{c}的性质，从而影响{d}的演化路径。",
+        "{a}与{b}的交叉产生了{c}，这一领域研究{d}，对{e}有深远影响。",
+        "研究{a}需要掌握{b}，其关键在于理解{c}如何转化为{d}，并作用于{e}。",
+        "{a}的经典结论是：在{b}条件下，{c}与{d}成正比，比例系数由{e}决定。",
+    ]
+
     def __init__(self, seed: int = 42):
         self.rng = np.random.default_rng(seed)
         self.scorer = QualityScorer()
         self._generated = 0
         self._total_quality = 0.0
+        # 真实代码种子库——检测到的真实可运行代码存这里，后续生产可变异复用
+        self.real_code_seeds: List[str] = []
 
     # ---- 基础生成：逐句+完整5维评分 ----
 
@@ -340,6 +444,8 @@ class TrainingForge:
         for i in range(n):
             if data_type == "code":
                 content = self._gen_code(i)
+            elif data_type in self.DOMAINS:
+                content = self._gen_domain(i, data_type)
             else:
                 content = self._gen_text(i)
             quality, dims, grade = self.scorer.score(content, data_type)
@@ -386,6 +492,17 @@ class TrainingForge:
             alternative="skip()", context="open(file)", var="f",
         )
 
+    def _gen_domain(self, idx: int, domain: str) -> str:
+        """生成一条领域知识训练素材（用于 generate_basic 的多领域分支）"""
+        rng = np.random.default_rng(
+            int(hashlib.md5(f"{domain}:{idx}:{self._generated}".encode()).hexdigest()[:8], 16) % (2**32)
+        )
+        tmpl = rng.choice(self.TEMPLATES_DOMAIN)
+        concepts = self.DOMAINS[domain]
+        a, b, c, d, e = rng.choice(concepts, 5, replace=False)
+        n_val = rng.integers(1, 100)
+        return tmpl.format(xuni="Xuni", a=a, b=b, c=c, d=d, e=e, n=n_val)
+
     # ---- 快速生成：千万级向量化 ----
 
     def generate_fast(
@@ -426,6 +543,9 @@ class TrainingForge:
         scores = np.concatenate(all_scores) if all_scores else np.array([], dtype=np.float32)
         grades = np.concatenate(all_grades) if all_grades else np.array([], dtype=np.uint8)
 
+        # 扫描产出，检测真实可运行代码并存入种子库（采样以保持千万级速度）
+        self._scan_real_code(texts)
+
         self._generated += n
         self._total_quality += float(scores.sum()) if len(scores) > 0 else 0
         return texts, scores, grades
@@ -442,8 +562,16 @@ class TrainingForge:
         概念重复的影响很小（52个概念中抽6个，重复概率低），
         换来的是从3万/秒 → 500万+/秒的速度提升。
         """
-        tmpls = self.TEMPLATES_TEXT if data_type == "text" else self.TEMPLATES_CODE
-        concepts = self.CONCEPTS_TECH if data_type == "text" else self.CONCEPTS_CODE
+        # 根据数据类型选择模板和概念库（支持 text/code 及各知识领域）
+        if data_type == "code":
+            tmpls = self.TEMPLATES_CODE
+            concepts = self.CONCEPTS_CODE
+        elif data_type in self.DOMAINS:
+            tmpls = self.TEMPLATES_DOMAIN
+            concepts = self.DOMAINS[data_type]
+        else:  # text 或未知类型走默认文本模板
+            tmpls = self.TEMPLATES_TEXT
+            concepts = self.CONCEPTS_TECH
         n_tmpl = len(tmpls)
         n_conc = len(concepts)
 
@@ -484,6 +612,21 @@ class TrainingForge:
                     alternative=f"skip({c})", context=f"open({d})", var=e,
                 )
             )
+
+        # 有概率从真实代码种子库取种子作为生成基础（变异/扩展）
+        # 仅当种子库非空时启用，低概率+小占比，不影响千万级生产速度
+        if self.real_code_seeds and rng.random() < 0.1:
+            n_variants = max(1, n // 50)  # 约 2% 条目用种子变异
+            seed_idxs = rng.integers(0, len(self.real_code_seeds), size=n_variants)
+            replace_idxs = rng.integers(0, n, size=n_variants)
+            variant_tags = rng.integers(0, 100000, size=n_variants)
+            for j in range(n_variants):
+                seed = self.real_code_seeds[int(seed_idxs[j])]
+                pos = int(replace_idxs[j])
+                if 0 <= pos < len(texts_list):
+                    # 变异：在种子末尾追加一行变体标记
+                    texts_list[pos] = seed + f"\n# variant-{int(variant_tags[j])}"
+
         return np.array(texts_list, dtype=object)
 
     def generate_with_engine(
@@ -559,7 +702,10 @@ class TrainingForge:
 
         # 按等级过滤
         mask = grades >= min_grade
-        return texts[mask], scores[mask], grades[mask]
+        out_texts, out_scores, out_grades = texts[mask], scores[mask], grades[mask]
+        # 扫描最终产出，检测真实代码存入种子库
+        self._scan_real_code(out_texts)
+        return out_texts, out_scores, out_grades
 
     # ---- 质量提升：能量→质量 ----
 
@@ -633,4 +779,163 @@ class TrainingForge:
             "total_generated": self._generated,
             "avg_quality": round(avg_q, 4),
             "scorer": "5维质量评估（多样性/连贯性/信息量/新颖性/实用性）",
+            "domains": list(self.DOMAINS.keys()),
+            "real_code_seeds": len(self.real_code_seeds),
         }
+
+    # ---- 多领域混合生产 ----
+
+    def generate_multi_domain(
+        self,
+        n: int = 100000,
+        domains: Optional[List[str]] = None,
+        min_grade: int = 1,
+    ) -> Dict[str, Any]:
+        """
+        多领域混合生产——一次调用覆盖多个知识领域。
+
+        Args:
+            n: 目标总产量（均分到各领域）
+            domains: 参与生产的领域列表（None=DOMAINS 全部领域）
+            min_grade: 最低等级
+
+        Returns:
+            {
+                "total": 实际总产量,
+                "domain_distribution": {领域: 产量},
+                "texts": 合并文本数组,
+                "scores": 合并分数数组,
+                "grades": 合并等级数组,
+            }
+        """
+        if domains is None:
+            domains = list(self.DOMAINS.keys())
+
+        # 过滤掉未知领域
+        valid_domains = [d for d in domains if d in self.DOMAINS]
+        if not valid_domains:
+            return {
+                "total": 0,
+                "domain_distribution": {},
+                "texts": np.array([], dtype=object),
+                "scores": np.array([], dtype=np.float32),
+                "grades": np.array([], dtype=np.uint8),
+            }
+
+        # 均分到各领域
+        per_domain = max(1, n // len(valid_domains))
+
+        all_texts = []
+        all_scores = []
+        all_grades = []
+        domain_distribution: Dict[str, int] = {}
+
+        for domain in valid_domains:
+            texts, scores, grades = self.generate_fast(
+                n=per_domain, data_type=domain, min_grade=min_grade
+            )
+            all_texts.append(texts)
+            all_scores.append(scores)
+            all_grades.append(grades)
+            domain_distribution[domain] = int(len(texts))
+
+        texts = np.concatenate(all_texts) if all_texts else np.array([], dtype=object)
+        scores = np.concatenate(all_scores) if all_scores else np.array([], dtype=np.float32)
+        grades = np.concatenate(all_grades) if all_grades else np.array([], dtype=np.uint8)
+
+        return {
+            "total": int(len(texts)),
+            "domain_distribution": domain_distribution,
+            "texts": texts,
+            "scores": scores,
+            "grades": grades,
+        }
+
+    # ---- 真实代码检测 + 种子库 ----
+
+    def _detect_real_code(self, text: str) -> bool:
+        """
+        检测文本是否包含真实可运行代码。
+
+        判定逻辑：
+        1. 启发式预筛：必须包含 def /class /import /from 等结构关键词
+        2. ast.parse 尝试解析为有效 Python，并检查是否含 def/class/import 节点
+        3. ast 解析失败时，若同时出现多种结构关键词，仍视为代码
+
+        检测到真实代码时，自动复制一份存入 real_code_seeds 种子库。
+
+        Returns:
+            True 表示检测到真实代码
+        """
+        if not text or not isinstance(text, str):
+            return False
+
+        # 启发式预筛：必须包含代码结构关键词
+        structure_keywords = ("def ", "class ", "import ", "from ", "yield ", "return ")
+        if not any(kw in text for kw in structure_keywords):
+            return False
+
+        is_real = False
+        try:
+            tree = ast.parse(text)
+            # 检查是否包含 def/class/import 等真实代码节点
+            for node in ast.walk(tree):
+                if isinstance(
+                    node,
+                    (ast.FunctionDef, ast.AsyncFunctionDef,
+                     ast.ClassDef, ast.Import, ast.ImportFrom),
+                ):
+                    is_real = True
+                    break
+        except (SyntaxError, ValueError):
+            # ast 解析失败：退回启发式，要求多种结构并存才认定
+            structure_count = sum(
+                1 for kw in ("def ", "class ", "import ", "from ") if kw in text
+            )
+            is_real = structure_count >= 2
+
+        if is_real:
+            self.real_code_seeds.append(text)
+            # 控制种子库大小，避免无限增长拖慢生产
+            if len(self.real_code_seeds) > 10000:
+                # 保留最新的 5000 条
+                self.real_code_seeds = self.real_code_seeds[-5000:]
+
+        return is_real
+
+    def _scan_real_code(
+        self,
+        texts: np.ndarray,
+        sample_size: int = 1000,
+    ) -> int:
+        """
+        扫描文本数组，采样检测真实代码并存入种子库。
+
+        为保持千万级生产速度，仅采样 sample_size 条进行 ast 检测，
+        而非全量扫描（全量 ast.parse 会严重拖慢生产）。
+
+        Returns:
+            新检测到的真实代码条数
+        """
+        n = len(texts)
+        if n == 0:
+            return 0
+
+        # 采样以保持速度
+        sample_n = min(n, sample_size)
+        if sample_n < n:
+            # 均匀采样覆盖整个产出区间
+            idxs = np.linspace(0, n - 1, sample_n, dtype=np.int32)
+        else:
+            idxs = np.arange(n, dtype=np.int32)
+
+        detected = 0
+        for idx in idxs:
+            text = texts[int(idx)]
+            if isinstance(text, str) and self._detect_real_code(text):
+                detected += 1
+        return detected
+
+    def get_real_code_seeds(self) -> List[str]:
+        """返回真实代码种子库（返回副本，避免外部修改污染内部状态）"""
+        return list(self.real_code_seeds)

@@ -1140,6 +1140,7 @@ class MultiverseResourceFactory:
             "take": 0, "bw": 0, "cp": 0,
             "core": 0, "shield": 0, "medium": 0,
             "token": 0, "accel": 0, "shard": 0,
+            "agent": 0,
         }
         self.parallel_lines = max(1, parallel_lines)   # 并行产线数
         self.production_speed = production_speed         # 基础速度倍率
@@ -2628,6 +2629,281 @@ class MultiverseResourceFactory:
             "forge": forge,
             "core": core,
         }
+
+    # ============================================================
+    # 子代理生产线——全领域AI助手批量生产
+    # ============================================================
+
+    # 全领域列表
+    AGENT_DOMAINS = [
+        "math", "physics", "chemistry", "biology", "medicine",
+        "law", "finance", "philosophy", "code", "language",
+        "music", "art", "engineering", "psychology", "economics",
+    ]
+
+    # 各领域的默认能力标签
+    _DOMAIN_CAPABILITIES: Dict[str, List[str]] = {
+        "math": ["推理", "计算", "证明", "建模"],
+        "physics": ["推理", "建模", "实验设计", "计算"],
+        "chemistry": ["反应分析", "分子建模", "实验设计", "计算"],
+        "biology": ["分类", "实验设计", "建模", "推理"],
+        "medicine": ["诊断", "病理分析", "药理", "推理"],
+        "law": ["案例检索", "条文解释", "论证", "推理"],
+        "finance": ["风险评估", "建模", "计算", "预测"],
+        "philosophy": ["思辨", "论证", "推理", "建模"],
+        "code": ["编码", "调试", "重构", "架构"],
+        "language": ["翻译", "语法分析", "语义理解", "生成"],
+        "music": ["作曲", "编曲", "和声分析", "节奏"],
+        "art": ["构图", "色彩", "风格分析", "创作"],
+        "engineering": ["设计", "建模", "优化", "计算"],
+        "psychology": ["行为分析", "建模", "推理", "评估"],
+        "economics": ["建模", "预测", "计算", "推理"],
+    }
+
+    # 等级阶梯（强度由低到高）
+    _GRADE_LADDER = ["D", "C", "B", "A", "S", "SS", "SSS"]
+
+    def produce_sub_agents(
+        self,
+        count: int = 10,
+        domains: Optional[list] = None,
+        use_singularity: bool = False,
+    ) -> Dict[str, Any]:
+        """
+        生产子代理——全领域AI助手。
+
+        每个子代理：
+        - 有名字（从AI_NAME_POOL取）
+        - 有领域专长
+        - 有专长强度（0~1）
+        - 有等级（D~SSS）
+
+        万象奇点驱动时：全SSS级专长，强度0.95+
+
+        Args:
+            count: 生产数量
+            domains: 指定领域列表（None=全领域循环覆盖）
+            use_singularity: 是否用万象奇点驱动
+
+        Returns:
+            {agents, total, avg_strength, grade_distribution, domain_coverage, mode}
+        """
+        from .layer import AI_NAME_POOL
+
+        # 确定领域列表（默认全领域）
+        if domains is None:
+            domains = list(self.AGENT_DOMAINS)
+
+        # 万象奇点驱动：复用 produce_ultimate_singularity()
+        singularity_engine = None
+        if use_singularity:
+            sing = self.produce_ultimate_singularity()
+            singularity_engine = sing["engine"]
+
+        # 批量生产子代理
+        agents: List[Dict[str, Any]] = []
+        for i in range(count):
+            # 名字从 AI_NAME_POOL 循环取
+            name = AI_NAME_POOL[i % len(AI_NAME_POOL)]
+            # 领域循环分配
+            domain = domains[i % len(domains)]
+
+            if use_singularity:
+                # 万象奇点驱动：全 SSS 级，强度 0.95+
+                strength = float(np.random.uniform(0.95, 1.0))
+                grade = "SSS"
+                energy = 1000.0
+            else:
+                # 普通模式：随机强度，强度映射到等级
+                strength = float(np.random.uniform(0.3, 0.95))
+                grade_idx = min(
+                    len(self._GRADE_LADDER) - 1,
+                    int(strength * len(self._GRADE_LADDER)),
+                )
+                grade = self._GRADE_LADDER[grade_idx]
+                energy = 100.0
+
+            agent = {
+                "agent_id": self._next_id("agent"),
+                "name": name,
+                "domain": domain,
+                "specialty_strength": round(strength, 4),
+                "grade": grade,
+                "capabilities": list(
+                    self._DOMAIN_CAPABILITIES.get(domain, ["推理", "计算"])
+                ),
+                "energy": energy,
+            }
+            agents.append(agent)
+
+        # 统计分布
+        grade_dist: Dict[str, int] = {}
+        domain_dist: Dict[str, int] = {}
+        for a in agents:
+            grade_dist[a["grade"]] = grade_dist.get(a["grade"], 0) + 1
+            domain_dist[a["domain"]] = domain_dist.get(a["domain"], 0) + 1
+
+        avg_strength = (
+            float(np.mean([a["specialty_strength"] for a in agents]))
+            if agents else 0.0
+        )
+
+        mode = "万象奇点" if use_singularity else "基础"
+        result: Dict[str, Any] = {
+            "agents": agents,
+            "total": len(agents),
+            "avg_strength": round(avg_strength, 4),
+            "grade_distribution": grade_dist,
+            "domain_coverage": domain_dist,
+            "mode": mode,
+        }
+        if singularity_engine is not None:
+            result["engine"] = singularity_engine
+            result["compute_multiplier"] = singularity_engine.compute_multiplier
+
+        self._log("produce_sub_agents", {
+            "count": len(agents),
+            "mode": mode,
+            "avg_strength": round(avg_strength, 4),
+        })
+        return result
+
+    def produce_agent_army(
+        self,
+        agents_per_domain: int = 3,
+        use_singularity: bool = True,
+    ) -> Dict[str, Any]:
+        """
+        生产子代理军团——全领域N个助手。
+
+        每个领域生产 agents_per_domain 个子代理，
+        覆盖所有领域，形成全领域能力。
+
+        万象奇点驱动：全SSS级，算力倍率放大产量。
+
+        Args:
+            agents_per_domain: 每个领域的子代理数
+            use_singularity: 是否用万象奇点驱动（True=SSS级+产量放大）
+
+        Returns:
+            {agents, total, domain_coverage, avg_strength, grade_distribution, mode}
+        """
+        from .layer import AI_NAME_POOL
+
+        # 万象奇点驱动：算力倍率放大产量
+        compute_multiplier = 1.0
+        singularity_engine = None
+        if use_singularity:
+            sing = self.produce_ultimate_singularity()
+            singularity_engine = sing["engine"]
+            compute_multiplier = singularity_engine.compute_multiplier
+            # 算力倍率放大每领域产量（封顶 50 倍避免产量爆炸）
+            amplification = max(1, min(int(compute_multiplier), 50))
+            actual_per_domain = agents_per_domain * amplification
+        else:
+            actual_per_domain = agents_per_domain
+
+        all_domains = list(self.AGENT_DOMAINS)
+
+        # 批量生成所有子代理（向量化加速）
+        total_count = actual_per_domain * len(all_domains)
+        all_agents: List[Dict[str, Any]] = []
+        domain_coverage: Dict[str, int] = {}
+
+        if total_count <= 0:
+            result: Dict[str, Any] = {
+                "agents": all_agents,
+                "total": 0,
+                "domain_coverage": domain_coverage,
+                "domains_count": len(all_domains),
+                "agents_per_domain": actual_per_domain,
+                "base_agents_per_domain": agents_per_domain,
+                "avg_strength": 0.0,
+                "grade_distribution": {},
+                "mode": "万象奇点" if use_singularity else "基础",
+            }
+            if singularity_engine is not None:
+                result["engine"] = singularity_engine
+                result["compute_multiplier"] = compute_multiplier
+            self._log("produce_agent_army", {
+                "total": 0,
+                "domains": len(all_domains),
+                "per_domain": actual_per_domain,
+                "mode": result["mode"],
+            })
+            return result
+
+        # 批量生成 ID（比逐个 _next_id 快 100x）
+        ids = self._batch_ids("agent", total_count)
+
+        # 批量生成强度（NumPy 向量化）
+        if use_singularity:
+            strengths = np.random.uniform(0.95, 1.0, size=total_count)
+            grades = ["SSS"] * total_count
+            energies = [1000.0] * total_count
+        else:
+            strengths = np.random.uniform(0.3, 0.95, size=total_count)
+            grade_idx = np.minimum(
+                len(self._GRADE_LADDER) - 1,
+                (strengths * len(self._GRADE_LADDER)).astype(int),
+            )
+            grades = [self._GRADE_LADDER[i] for i in grade_idx]
+            energies = [100.0] * total_count
+
+        # 按领域组装子代理
+        idx = 0
+        for domain in all_domains:
+            caps = list(self._DOMAIN_CAPABILITIES.get(domain, ["推理", "计算"]))
+            domain_count = 0
+            for _ in range(actual_per_domain):
+                name = AI_NAME_POOL[idx % len(AI_NAME_POOL)]
+                agent = {
+                    "agent_id": ids[idx],
+                    "name": name,
+                    "domain": domain,
+                    "specialty_strength": round(float(strengths[idx]), 4),
+                    "grade": grades[idx],
+                    "capabilities": caps,
+                    "energy": float(energies[idx]),
+                }
+                all_agents.append(agent)
+                domain_count += 1
+                idx += 1
+            domain_coverage[domain] = domain_count
+
+        # 统计等级分布
+        grade_dist: Dict[str, int] = {}
+        for a in all_agents:
+            grade_dist[a["grade"]] = grade_dist.get(a["grade"], 0) + 1
+
+        avg_strength = (
+            float(np.mean([a["specialty_strength"] for a in all_agents]))
+            if all_agents else 0.0
+        )
+
+        mode = "万象奇点" if use_singularity else "基础"
+        result = {
+            "agents": all_agents,
+            "total": len(all_agents),
+            "domain_coverage": domain_coverage,
+            "domains_count": len(all_domains),
+            "agents_per_domain": actual_per_domain,
+            "base_agents_per_domain": agents_per_domain,
+            "avg_strength": round(avg_strength, 4),
+            "grade_distribution": grade_dist,
+            "mode": mode,
+        }
+        if singularity_engine is not None:
+            result["engine"] = singularity_engine
+            result["compute_multiplier"] = compute_multiplier
+
+        self._log("produce_agent_army", {
+            "total": len(all_agents),
+            "domains": len(all_domains),
+            "per_domain": actual_per_domain,
+            "mode": mode,
+        })
+        return result
 
     def stats(self) -> Dict[str, Any]:
         """工厂统计"""
