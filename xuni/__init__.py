@@ -87,6 +87,7 @@ from .substance_fusion import (
     FusionCategory,
     create_default_engine,
 )
+from .corpus_downloader import CorpusDownloader, DownloadResult
 from .virtual_data import (
     VirtualDataConverter, VirtualDataParticle, VirtualDataset,
     VirtualDataGenerator, DataPhase,
@@ -217,6 +218,8 @@ __all__ = [
     "VirtualDataset",
     "VirtualDataGenerator",
     "DataPhase",
+    "CorpusDownloader",
+    "DownloadResult",
     "VirtualComputeUnit",
     "ComputeAllocation",
     "ComputeLoopManager",

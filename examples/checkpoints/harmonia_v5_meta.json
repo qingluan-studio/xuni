@@ -1,0 +1,7 @@
+{
+  "version": "v5",
+  "fragments_learned": 2000000,
+  "active_experts": 13,
+  "training_time": 2.40,
+  "epochs": 100000
+}

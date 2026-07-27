@@ -1,0 +1,55 @@
+{
+  "version": "v5",
+  "repo_stats": [
+    {"desc": "CPython 标准库", "files": 868, "frags": 15074, "ok": true},
+    {"desc": "Django Web框架", "files": 758, "frags": 7485, "ok": true},
+    {"desc": "scikit-learn ML", "files": 325, "frags": 4376, "ok": true},
+    {"desc": "pandas 数据科学", "files": 284, "frags": 6455, "ok": true},
+    {"desc": "pydantic 验证", "files": 110, "frags": 1959, "ok": true},
+    {"desc": "flask Web", "files": 23, "frags": 354, "ok": true},
+    {"desc": "click CLI", "files": 17, "frags": 499, "ok": true},
+    {"desc": "requests HTTP", "files": 20, "frags": 233, "ok": true}
+  ],
+  "total_fragments": 37480,
+  "epochs": 100000,
+  "batch_size": 20,
+  "fragments_learned": 2000000,
+  "active_experts": 13,
+  "expert_load": {
+    "合鸣自述者": 4,
+    "混合专家": 4,
+    "虚拟电场": 3,
+    "物理建模合成": 3,
+    "超混沌采样": 3,
+    "水动力学": 3,
+    "玻璃逻辑": 3,
+    "双态系统": 3,
+    "虚拟凭证": 3,
+    "神经共振": 3,
+    "虚拟算力": 3,
+    "虚拟哲学": 3,
+    "通用兜底": 2000004
+  },
+  "training_time": 2.40,
+  "growth_log": [
+    {"epoch": 10000, "learned": 200000, "active": 13, "avg_load": 15388},
+    {"epoch": 20000, "learned": 400000, "active": 13, "avg_load": 30772},
+    {"epoch": 30000, "learned": 600000, "active": 13, "avg_load": 46157},
+    {"epoch": 40000, "learned": 800000, "active": 13, "avg_load": 61542},
+    {"epoch": 50000, "learned": 1000000, "active": 13, "avg_load": 76926},
+    {"epoch": 60000, "learned": 1200000, "active": 13, "avg_load": 92311},
+    {"epoch": 70000, "learned": 1400000, "active": 13, "avg_load": 107696},
+    {"epoch": 80000, "learned": 1600000, "active": 13, "avg_load": 123080},
+    {"epoch": 90000, "learned": 1800000, "active": 13, "avg_load": 138465},
+    {"epoch": 100000, "learned": 2000000, "active": 13, "avg_load": 153849}
+  ],
+  "improved": 18,
+  "total_compared": 20,
+  "comparison_samples": {
+    "def quicksort": {"before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架构，或者 xuni 的设计哲学", "after": "def argsort(\n        self,\n        *,"},
+    "class Counter": {"before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架构，或者 xuni 的设计哲学", "after": "class HistGradientBoostingRegressor(RegressorMixin"},
+    "def lru_cache": {"before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架构，或者 xuni 的设计哲学", "after": "def check_for_language(lang_code):\n    \"\"\"\n    Che"},
+    "class DataFrame": {"before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架构，或者 xuni 的设计哲学", "after": "class _XMLFrameParser:\n    \"\"\"\n    Internal subcla"},
+    "class QuerySet": {"before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架构，或者 xuni 的设计哲学", "after": "class Lookup(Expression):\n    lookup_name = None"}
+  }
+}
