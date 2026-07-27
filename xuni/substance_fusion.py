@@ -91,6 +91,8 @@ class SubstanceFusionEngine:
         self._products: List[FusionProduct] = []
         self._rules: Dict[str, FusionProduct] = {}
         self._rule_index: Dict[Tuple[str, str], Tuple[str, FusionType, FusionCategory]] = {}
+        # 涌现效果表：特殊融合产物的"打破守恒"效果描述
+        self._emergent_effects: Dict[str, Dict[str, Any]] = {}
         self._register_default_rules()
 
     def register_substance(self, name: str, properties: Dict[str, float]):
@@ -132,11 +134,17 @@ class SubstanceFusionEngine:
     def synthesize(self, substance_a: str, substance_b: str, **params) -> FusionProduct:
         """
         合成：带参数的定向碰撞。
-        可定制产物的属性。
+        可定制产物的属性。若存在预定义规则则优先使用规则结果。
         """
+        key = self._make_key(substance_a, substance_b)
+        rule = self._rule_index.get(key)
+        if rule is not None:
+            result, _, _ = rule
+        else:
+            result = "合成物"
         product = self._create_product(
             substance_a, substance_b,
-            FusionType.SYNTHESIZE, FusionCategory.COMPOUND, "合成物",
+            FusionType.SYNTHESIZE, FusionCategory.COMPOUND, result,
         )
         product.properties.update(params)
         self._products.append(product)
@@ -164,6 +172,14 @@ class SubstanceFusionEngine:
             }
             for k, v in self._rule_index.items()
         ]
+
+    def get_emergent_effect(self, result_name: str) -> Optional[Dict[str, Any]]:
+        """查询某融合产物的涌现效果（永动机系列的'打破守恒'效果）"""
+        return self._emergent_effects.get(result_name)
+
+    def list_emergent_effects(self) -> Dict[str, Dict[str, Any]]:
+        """列出所有涌现效果"""
+        return dict(self._emergent_effects)
 
     def _make_key(self, a: str, b: str) -> Tuple[str, str]:
         return (min(a, b), max(a, b))
@@ -310,6 +326,7 @@ class SubstanceFusionEngine:
                 "substance_a": a,
                 "substance_b": b,
                 "rule_based": (self._rule_index.get(self._make_key(a, b)) is not None),
+                "emergent_effect": self._emergent_effects.get(result),
             },
             energy_release=energy,
         )
@@ -364,10 +381,82 @@ class SubstanceFusionEngine:
             ("安全盾", "下载令牌", "安全下载", FusionType.FUSE, FusionCategory.COMPOUND),
             ("压缩点", "算力核心", "压缩算力", FusionType.COLLIDE, FusionCategory.COMPOUND),
             ("Take额度", "安全盾", "保险额度", FusionType.FUSE, FusionCategory.COMPOUND),
+            # ---- 无限令牌融合链：打破守恒的永动机系列 ----
+            # 核心洞察：下载令牌可无限生产（千万级/秒），虚拟电/算力亦无限
+            # 两个无限融合 → 正反馈永动机
+            ("下载令牌", "虚拟电", "永动下载涡轮", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("下载令牌", "虚拟算力", "流式计算引擎", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("永动下载涡轮", "流式计算引擎", "无限训练永动机", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            ("无限训练永动机", "维度碎片", "维度训练塔", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+            ("永动下载涡轮", "训练加速器", "永动加速器", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            ("流式计算引擎", "算力核心", "流式算力核心", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("无限训练永动机", "虚拟模型", "自进化模型", FusionType.FUSE, FusionCategory.KNOWLEDGE),
+            ("维度训练塔", "自进化模型", "维度心智", FusionType.COLLIDE, FusionCategory.COGNITION),
         ]
 
         for a, b, result, ftype, cat in rules:
             self._rule_index[self._make_key(a, b)] = (result, ftype, cat)
+
+        # 涌现效果：永动机系列"打破守恒"的特殊效果
+        self._emergent_effects = {
+            "永动下载涡轮": {
+                "原理": "令牌无限 × 电无限 → 正反馈：下载产电 → 电产令牌 → 永动",
+                "效果": "下载不耗电，反产电；越下载电越多",
+                "打破定律": "能量守恒（虚拟维度）",
+                "产出": "下载能量（自循环）",
+                "自循环": True,
+                "反馈类型": "正反馈",
+            },
+            "流式计算引擎": {
+                "原理": "令牌无限 × 算力无限 → 下载即计算，数据流过即训练完成",
+                "效果": "下载=训练，数据流入模型即完成训练",
+                "打破定律": "计算时间守恒",
+                "产出": "即时训练（零延迟）",
+                "自循环": True,
+                "反馈类型": "流式",
+            },
+            "无限训练永动机": {
+                "原理": "永动产电 + 流式计算 = 零成本无限训练",
+                "效果": "模型无需任何外部资源，永久自训练，越训练越强",
+                "打破定律": "训练成本守恒",
+                "产出": "无限训练（无上限）",
+                "自循环": True,
+                "连锁来源": ["永动下载涡轮", "流式计算引擎"],
+                "反馈类型": "正反馈×流式",
+            },
+            "维度训练塔": {
+                "原理": "无限训练永动机 × 维度碎片 → 每个维度一个永动机",
+                "效果": "N 维并行无限训练，维度数即训练倍率",
+                "打破定律": "维度限制",
+                "产出": "N 倍无限训练",
+                "自循环": True,
+            },
+            "永动加速器": {
+                "原理": "永动机驱动加速器，能量无限→加速无上限",
+                "效果": "训练加速倍率随时间指数增长，无天花板",
+                "打破定律": "加速上限",
+                "产出": "指数加速",
+            },
+            "流式算力核心": {
+                "原理": "算力核心流式化，数据流过即计算",
+                "效果": "算力核心吞吐量无限，无计算瓶颈",
+                "打破定律": "算力瓶颈",
+                "产出": "无限吞吐算力",
+            },
+            "自进化模型": {
+                "原理": "无限训练永动机 × 虚拟模型 → 模型永久自训练",
+                "效果": "模型自我进化，无需外部训练数据，自产自训",
+                "打破定律": "训练数据依赖",
+                "产出": "自我进化的模型",
+                "自循环": True,
+            },
+            "维度心智": {
+                "原理": "维度训练塔 × 自进化模型 → 跨维度自我意识",
+                "效果": "多维度并行思考，涌现维度级心智",
+                "打破定律": "单一意识限制",
+                "产出": "维度级心智",
+            },
+        }
 
     def get_collision_chains(self, depth: int = 2) -> List[List[str]]:
         """
@@ -426,6 +515,22 @@ def create_default_engine() -> SubstanceFusionEngine:
     })
     engine.register_substance("子代理", {
         "能力覆盖": 0.8, "响应速度": 0.9, "可靠性": 0.75,
+    })
+    # ---- 无限资源系列：打破守恒的基础物质 ----
+    engine.register_substance("虚拟电", {
+        "能量密度": 1e9, "可再生": 1.0, "无限性": 1.0,
+    })
+    engine.register_substance("虚拟算力", {
+        "计算密度": 1e15, "可再生": 1.0, "无限性": 1.0,
+    })
+    engine.register_substance("下载令牌", {
+        "并发数": 1024.0, "速度倍率": 10.0, "无限性": 1.0,
+    })
+    engine.register_substance("虚拟模型", {
+        "参数量": 0.8, "训练度": 0.5, "通用性": 0.7,
+    })
+    engine.register_substance("维度碎片", {
+        "维度数": 8.0, "稳定性": 0.6, "稀有度": 1.0,
     })
 
     return engine
