@@ -109,6 +109,32 @@ def test_factory_performance():
         print(f"  生产 {len(resources)} 个资源: {elapsed:.4f}s, 速度: {rate:,.0f}/s")
     
     print()
+    
+    # 千万级结构化数组测试
+    print("=" * 60)
+    print("测试 4b: 资源工厂千万级结构化数组生产速度")
+    print("=" * 60)
+    
+    factory2 = MultiverseResourceFactory(parallel_lines=1, production_speed=1.0)
+    
+    array_tests = [
+        ("Take额度", lambda: factory2.produce_take_array(count=10000000)),
+        ("虚拟流量", lambda: factory2.produce_bandwidth_array(count=10000000)),
+        ("压缩点", lambda: factory2.produce_compression_array(count=10000000)),
+        ("算力核心", lambda: factory2.produce_compute_core_array(count=10000000)),
+        ("下载令牌", lambda: factory2.produce_download_token_array(count=10000000)),
+        ("训练加速器", lambda: factory2.produce_training_accelerator_array(count=10000000)),
+    ]
+    
+    for name, func in array_tests:
+        start = time.time()
+        arr = func()
+        elapsed = time.time() - start
+        rate = len(arr) / elapsed
+        status = "✓" if rate >= 1_000_000 else "✗"
+        print(f"  {status} {name}: {len(arr):,} 个, {elapsed:.4f}s, {rate:,.0f}/s")
+    
+    print()
 
 
 def test_compute_performance():
