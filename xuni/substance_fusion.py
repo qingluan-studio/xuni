@@ -315,8 +315,9 @@ class SubstanceFusionEngine:
         )
 
     def _register_default_rules(self):
-        """注册 15+ 条预定义碰撞规则"""
+        """注册 30+ 条预定义碰撞规则"""
         rules = [
+            # ---- 原有有机物质规则 ----
             ("记忆点", "记忆点", "知识结晶", FusionType.FUSE, FusionCategory.KNOWLEDGE),
             ("记忆点", "参数包", "思维链", FusionType.FUSE, FusionCategory.KNOWLEDGE),
             ("记忆点", "共振记忆", "灵感闪", FusionType.COLLIDE, FusionCategory.KNOWLEDGE),
@@ -332,6 +333,37 @@ class SubstanceFusionEngine:
             ("代理经验", "代理协作图", "代理心智", FusionType.FUSE, FusionCategory.COMPOUND),
             ("代理心智", "代理心智", "代理知识网", FusionType.FUSE, FusionCategory.COMPOUND),
             ("参数包", "知识结晶", "合成物", FusionType.SYNTHESIZE, FusionCategory.PARAMETER),
+            # ---- 多维度虚拟资源碰撞规则 ----
+            ("Take额度", "参数包", "高级参数包", FusionType.SYNTHESIZE, FusionCategory.PARAMETER),
+            ("算力核心", "虚拟流量", "云算力节点", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("压缩点", "虚拟粒子", "超压缩数据", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("安全盾", "虚拟模型", "受保护模型", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("培养液", "虚拟模型", "成长模型", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("下载令牌", "粒子云", "无限资料流", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("训练加速器", "算力核心", "超算核心", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            ("维度碎片", "Take额度", "增强额度", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+            ("维度碎片", "算力核心", "增强算力核心", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+            ("维度碎片", "压缩点", "超级压缩点", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+            ("维度碎片", "安全盾", "堡垒盾", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+            ("Take额度", "Take额度", "大额额度", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("压缩点", "压缩点", "超级压缩点", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("算力核心", "算力核心", "算力集群", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("安全盾", "安全盾", "堡垒盾", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("培养液", "培养液", "复合培养液", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("虚拟流量", "下载令牌", "极速下载通道", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            ("额度", "训练", "付费训练", FusionType.SYNTHESIZE, FusionCategory.PARAMETER),
+            ("云算力节点", "超算核心", "超级计算中心", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            ("无限资料流", "成长模型", "自学习模型", FusionType.FUSE, FusionCategory.KNOWLEDGE),
+            ("受保护模型", "堡垒盾", "绝对安全模型", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("超级压缩点", "超压缩数据", "零体积数据", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            ("维度碎片", "维度碎片", "维度核心", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("极速下载通道", "无限资料流", "瞬时全库", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            ("超算核心", "训练加速器", "量子训练场", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            ("云算力节点", "虚拟流量", "分布式云", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("培养液", "算力核心", "活算算力", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            ("安全盾", "下载令牌", "安全下载", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("压缩点", "算力核心", "压缩算力", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            ("Take额度", "安全盾", "保险额度", FusionType.FUSE, FusionCategory.COMPOUND),
         ]
 
         for a, b, result, ftype, cat in rules:

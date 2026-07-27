@@ -103,6 +103,17 @@ from .energy_sources import (
     VirtualFusionReactor, ParameterChainReactor,
     BlackHoleGenerator, ZeroPointEnergyExtractor, DysonSphere,
 )
+from .multiverse_resources import (
+    MultiverseResourceFactory, ResourceCollisionEngine,
+    VirtualResource, ResourceDimension, ResourceRarity,
+    TakeQuota, VirtualBandwidth, CompressionPoint, ComputeCore,
+    SecurityShield, CultureMedium, DownloadToken,
+    TrainingAccelerator, DimensionShard, DimensionCore,
+)
+from .lifecycle import (
+    ModelLifecycle, LifecycleOrchestrator,
+    LifecycleStage, ModelHealth, LifecycleEvent, ModelVitality,
+)
 
 __all__ = [
     "XuniSampler",
@@ -235,4 +246,25 @@ __all__ = [
     "BlackHoleGenerator",
     "ZeroPointEnergyExtractor",
     "DysonSphere",
+    "MultiverseResourceFactory",
+    "ResourceCollisionEngine",
+    "VirtualResource",
+    "ResourceDimension",
+    "ResourceRarity",
+    "TakeQuota",
+    "VirtualBandwidth",
+    "CompressionPoint",
+    "ComputeCore",
+    "SecurityShield",
+    "CultureMedium",
+    "DownloadToken",
+    "TrainingAccelerator",
+    "DimensionShard",
+    "DimensionCore",
+    "ModelLifecycle",
+    "LifecycleOrchestrator",
+    "LifecycleStage",
+    "ModelHealth",
+    "LifecycleEvent",
+    "ModelVitality",
 ]
