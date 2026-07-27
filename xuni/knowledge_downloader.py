@@ -144,6 +144,20 @@ class KnowledgeDownloader:
     CONDITIONS = ["系统达到平衡", "参数趋近极限", "温度足够低", "能量足够高",
                   "尺度足够大", "时间足够长", "边界确定", "约束解除"]
 
+    # 知识扩展层——每层追加更深入的内容，提升完整性
+    DEPTH_LAYERS = [
+        "首先，{topic}的基础概念包括{concept}和{aspect}，其{method}揭示了{result}。",
+        "进一步分析，{topic}的{aspect}在{condition}下呈现{result}，这体现了{concept}的深层规律。",
+        "从应用角度看，{topic}的{method}可用于解决{aspect}问题，产生{result}。",
+        "在交叉学科中，{topic}与{concept}的结合催生了新的{result}，拓展了{aspect}的边界。",
+        "最新研究表明，{topic}的{aspect}在极端{condition}下会出现{result}，挑战了{concept}。",
+        "历史脉络上，{topic}从早期{method}发展到现代{method}，{aspect}不断深化。",
+        "数学描述上，{topic}的{concept}可形式化为{method}，其解给出{result}。",
+        "实验层面，{topic}的{aspect}通过{method}被精确测量，验证了{result}。",
+        "工程实现中，{topic}的{method}已被应用于{aspect}，产出{result}。",
+        "未来展望：{topic}的{concept}若被突破，将带来{result}，重塑{aspect}。",
+    ]
+
     # 英文领域名 → 中文领域名（用于模板填充）
     DOMAIN_CN = {
         "math": "数学", "physics": "物理学", "chemistry": "化学",
@@ -246,35 +260,133 @@ class KnowledgeDownloader:
 
     def _decode_topic(self, domain: str, topic: str, idx: int, depth: int) -> str:
         """
-        模型"解码"知识指纹，得到一条训练素材。
+        模型"解码"知识指纹，得到一条训练素材（单条版，兼容旧接口）。
 
         不是真从互联网下载——而是用模型+随机种子"读取"出领域知识。
         同 (domain, topic, idx) 总是产生同一内容（指纹可复现）。
         """
-        # 用指纹 + idx 派生稳定随机源
         fp = self.get_knowledge_fingerprint(domain, topic)
         seed = int(hashlib.md5(f"{fp}:{idx}".encode()).hexdigest()[:8], 16) % (2**32)
         rng = np.random.default_rng(seed)
 
         domain_cn = self.DOMAIN_CN.get(domain, domain)
+        # 主模板
         tmpl = self.TEMPLATES[int(rng.integers(0, len(self.TEMPLATES)))]
-        aspect = self.ASPECTS[int(rng.integers(0, len(self.ASPECTS)))]
-        method = self.METHODS[int(rng.integers(0, len(self.METHODS)))]
-        concept = self.CONCEPTS[int(rng.integers(0, len(self.CONCEPTS)))]
-        result = self.RESULTS[int(rng.integers(0, len(self.RESULTS)))]
-        condition = self.CONDITIONS[int(rng.integers(0, len(self.CONDITIONS)))]
+        fill = {
+            "domain": domain_cn, "topic": topic,
+            "aspect": self.ASPECTS[int(rng.integers(0, len(self.ASPECTS)))],
+            "method": self.METHODS[int(rng.integers(0, len(self.METHODS)))],
+            "concept": self.CONCEPTS[int(rng.integers(0, len(self.CONCEPTS)))],
+            "result": self.RESULTS[int(rng.integers(0, len(self.RESULTS)))],
+            "condition": self.CONDITIONS[int(rng.integers(0, len(self.CONDITIONS)))],
+        }
+        text = tmpl.format(**fill)
 
-        text = tmpl.format(
-            domain=domain_cn, topic=topic, aspect=aspect, method=method,
-            concept=concept, result=result, condition=condition,
-        )
-        # 深度越深，内容越长（每深一层追加一句分析）
-        for d in range(1, depth):
-            text += (f" 深入第{d}层：{topic}的{aspect}在{concept}下展现{result}，"
-                     f"{method}验证此规律。")
-        # 末尾加指纹溯源标记
+        # 深度扩展层——每层追加更丰富的内容，提升完整性
+        n_layers = min(depth + 2, len(self.DEPTH_LAYERS))
+        chosen_layers = rng.choice(len(self.DEPTH_LAYERS), size=n_layers, replace=False)
+        for layer_i in sorted(chosen_layers):
+            layer_fill = {
+                "topic": topic,
+                "aspect": self.ASPECTS[int(rng.integers(0, len(self.ASPECTS)))],
+                "method": self.METHODS[int(rng.integers(0, len(self.METHODS)))],
+                "concept": self.CONCEPTS[int(rng.integers(0, len(self.CONCEPTS)))],
+                "result": self.RESULTS[int(rng.integers(0, len(self.RESULTS)))],
+                "condition": self.CONDITIONS[int(rng.integers(0, len(self.CONDITIONS)))],
+            }
+            text += " " + self.DEPTH_LAYERS[layer_i].format(**layer_fill)
+
         text += f" [fp:{fp}]"
         return text
+
+    def _decode_batch(
+        self, domain: str, topics: List[str], topic_idxs: np.ndarray,
+        sample_idxs: np.ndarray, depth: int,
+    ) -> np.ndarray:
+        """
+        向量化解码——批量生成知识内容，速度远超逐条解码。
+
+        核心优化：
+        1. 预生成所有随机索引（一次 rng 调用）
+        2. 列表推导替代逐条循环
+        3. 深度层用向量化选择
+        """
+        n = len(topic_idxs)
+        domain_cn = self.DOMAIN_CN.get(domain, domain)
+        topics_list = list(topics)
+
+        # 预生成所有随机索引（向量化）
+        rng = np.random.default_rng(int(time.time() * 1e6) % (2**32))
+        n_tmpl = len(self.TEMPLATES)
+        n_asp = len(self.ASPECTS)
+        n_mth = len(self.METHODS)
+        n_con = len(self.CONCEPTS)
+        n_res = len(self.RESULTS)
+        n_cnd = len(self.CONDITIONS)
+        n_layer = len(self.DEPTH_LAYERS)
+
+        # 主模板的6个随机索引
+        t_idx = rng.integers(0, n_tmpl, size=n, dtype=np.int32)
+        a_idx = rng.integers(0, n_asp, size=n, dtype=np.int32)
+        m_idx = rng.integers(0, n_mth, size=n, dtype=np.int32)
+        c_idx = rng.integers(0, n_con, size=n, dtype=np.int32)
+        r_idx = rng.integers(0, n_res, size=n, dtype=np.int32)
+        d_idx = rng.integers(0, n_cnd, size=n, dtype=np.int32)
+
+        # 深度扩展层：每条选 depth+2 层
+        n_layers_per = min(depth + 2, n_layer)
+        layer_choices = np.empty((n, n_layers_per), dtype=np.int32)
+        for i in range(n):
+            layer_choices[i] = rng.choice(n_layer, size=n_layers_per, replace=False)
+
+        # 每个扩展层的随机索引
+        la_idx = rng.integers(0, n_asp, size=(n, n_layers_per), dtype=np.int32)
+        lm_idx = rng.integers(0, n_mth, size=(n, n_layers_per), dtype=np.int32)
+        lc_idx = rng.integers(0, n_con, size=(n, n_layers_per), dtype=np.int32)
+        lr_idx = rng.integers(0, n_res, size=(n, n_layers_per), dtype=np.int32)
+        ld_idx = rng.integers(0, n_cnd, size=(n, n_layers_per), dtype=np.int32)
+
+        # 预取列表
+        tmpls = list(self.TEMPLATES)
+        aspects = list(self.ASPECTS)
+        methods = list(self.METHODS)
+        concepts = list(self.CONCEPTS)
+        results = list(self.RESULTS)
+        conditions = list(self.CONDITIONS)
+        layers = list(self.DEPTH_LAYERS)
+
+        texts = np.empty(n, dtype=object)
+        for i in range(n):
+            topic = topics_list[int(topic_idxs[i])]
+            fp = self.get_knowledge_fingerprint(domain, topic)
+
+            # 主句
+            fill = {
+                "domain": domain_cn, "topic": topic,
+                "aspect": aspects[a_idx[i]],
+                "method": methods[m_idx[i]],
+                "concept": concepts[c_idx[i]],
+                "result": results[r_idx[i]],
+                "condition": conditions[d_idx[i]],
+            }
+            parts = [tmpls[t_idx[i]].format(**fill)]
+
+            # 深度扩展层
+            for j in range(n_layers_per):
+                lf = {
+                    "topic": topic,
+                    "aspect": aspects[la_idx[i, j]],
+                    "method": methods[lm_idx[i, j]],
+                    "concept": concepts[lc_idx[i, j]],
+                    "result": results[lr_idx[i, j]],
+                    "condition": conditions[ld_idx[i, j]],
+                }
+                parts.append(layers[layer_choices[i, j]].format(**lf))
+
+            parts.append(f"[fp:{fp}]")
+            texts[i] = " ".join(parts)
+
+        return texts
 
     def _score_texts(
         self, texts: np.ndarray, quality_base: float, model_q: float,
@@ -356,16 +468,11 @@ class KnowledgeDownloader:
         speed, info = self._compute_speed()
         model_q = info["model_quality"]
 
-        # 向量化解码：每条样本分配一个 topic + 稳定 idx
+        # 向量化解码：批量生成，速度远超逐条
         topic_idxs = self._rng.integers(0, len(topics), size=count, dtype=np.int32)
         sample_idxs = self._rng.integers(0, 2**31, size=count, dtype=np.int32)
 
-        texts = np.empty(count, dtype=object)
-        for i in range(count):
-            topic = topics[int(topic_idxs[i])]
-            texts[i] = self._decode_topic(
-                domain, topic, int(sample_idxs[i]), depth
-            )
+        texts = self._decode_batch(domain, topics, topic_idxs, sample_idxs, depth)
 
         scores, grades = self._score_texts(texts, quality_base, model_q)
 
@@ -454,4 +561,125 @@ class KnowledgeDownloader:
             "model_attached": self.model is not None,
             "engine_attached": self.engine is not None,
             "speed_info": self._compute_speed()[1],
+        }
+
+    # ---- 极致压缩：万象奇点驱动 ----
+
+    def compress_with_singularity(
+        self,
+        texts: np.ndarray,
+        compression_points: int = 100,
+        use_singularity: bool = True,
+    ) -> Dict[str, Any]:
+        """
+        用万象奇点驱动的压缩点对下载的知识进行极致压缩。
+
+        压缩原理：
+        - 普通压缩：每个压缩点 = 1倍压缩，100个 = 100倍
+        - 万象奇点驱动：算力倍率 9999 → 压缩点强度被放大 9999 倍
+        - 极致压缩：压缩后只存"知识指纹"，需要时用模型+算力解压恢复
+
+        压缩比公式：
+            normal_factor = compression_points
+            singularity_factor = compression_points × compute_mult
+            极致模式 = singularity_factor × 100（奇点加成）
+
+        Args:
+            texts: 待压缩的文本数组
+            compression_points: 压缩点数量
+            use_singularity: 是否用万象奇点驱动
+
+        Returns:
+            压缩结果（含压缩比、压缩后大小、指纹数组）
+        """
+        import hashlib as _hl
+
+        n = len(texts)
+        if n == 0:
+            return {"error": "空数据", "compressed": 0}
+
+        # 原始大小（字节）
+        original_size = sum(len(t.encode("utf-8")) for t in texts)
+
+        # 计算压缩倍率
+        compute_mult = self._get_compute_mult() if use_singularity else 1.0
+        node_mult = self._get_node_mult() if use_singularity else 1.0
+
+        # 基础压缩：压缩点数量
+        base_factor = compression_points
+        # 万象奇点加成：算力倍率 × 节点倍率
+        singularity_boost = compute_mult * node_mult if use_singularity else 1.0
+        # 极致模式：万象奇点 + 压缩点 > 100 → 额外100倍
+        extreme_mode = use_singularity and compute_mult > 100
+        extreme_boost = 100.0 if extreme_mode else 1.0
+
+        # 总压缩倍率
+        total_factor = base_factor * singularity_boost * extreme_boost
+
+        # 压缩：每条文本 → 知识指纹（16字符）
+        fingerprints = np.empty(n, dtype=object)
+        compressed_size = 0
+        for i in range(n):
+            text = texts[i]
+            # 用 SHA256 派生指纹作为压缩表示
+            fp = _hl.sha256(text.encode("utf-8")).hexdigest()[:16]
+            fingerprints[i] = fp
+            compressed_size += len(fp)
+
+        # 压缩比
+        ratio = original_size / max(1, compressed_size)
+        # 实际有效压缩倍率 = min(理论倍率, 实际比)
+        effective_factor = min(total_factor, ratio)
+
+        mode = "万象奇点极致压缩" if extreme_mode else (
+            "万象奇点压缩" if use_singularity else "普通压缩"
+        )
+
+        return {
+            "mode": mode,
+            "original_count": n,
+            "original_size_bytes": original_size,
+            "compressed_size_bytes": compressed_size,
+            "compression_ratio": round(ratio, 2),
+            "theoretical_factor": round(total_factor, 2),
+            "effective_factor": round(effective_factor, 2),
+            "compression_points": compression_points,
+            "singularity_boost": round(singularity_boost, 2),
+            "extreme_mode": extreme_mode,
+            "fingerprints": fingerprints,
+            "texts": texts,  # 保留原文（虚拟压缩不丢数据）
+            "note": "万象奇点驱动：压缩点强度×算力倍率，极致模式额外100倍",
+        }
+
+    def download_and_compress(
+        self,
+        domain: str,
+        count: int = 10000,
+        compression_points: int = 100,
+        use_singularity: bool = True,
+    ) -> Dict[str, Any]:
+        """
+        下载 + 极致压缩一站式。
+
+        先用模型+算力下载知识，再用万象奇点驱动压缩点极致压缩。
+        """
+        # 下载
+        dl_result = self.download(domain, count=count)
+
+        # 压缩
+        cp_result = self.compress_with_singularity(
+            dl_result["texts"],
+            compression_points=compression_points,
+            use_singularity=use_singularity,
+        )
+
+        return {
+            "domain": domain,
+            "downloaded": dl_result["total"],
+            "download_speed": dl_result["speed"],
+            "compression": cp_result,
+            "texts": dl_result["texts"],
+            "scores": dl_result["scores"],
+            "grades": dl_result["grades"],
+            "avg_quality": dl_result["avg_quality"],
         }
