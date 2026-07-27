@@ -1,0 +1,11 @@
+{
+  "model_id": "harmonia-13",
+  "scale": "medium",
+  "training_samples_seen": 0,
+  "training_epochs_done": 0,
+  "training_state": "UNTRAINED",
+  "energy_buffer": 0.0,
+  "total_calls": 0,
+  "total_energy_consumed": 0.0,
+  "saved_at": 1785149320.9389622
+}
