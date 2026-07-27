@@ -2184,6 +2184,219 @@ class MultiverseResourceFactory:
             "node_count": engine.node_count,
         }
 
+    # ============================================================
+    # 质量点生产线——强化代码质量
+    # ============================================================
+
+    def produce_quality_points(
+        self,
+        count: int = 1000,
+        dimension: Optional[str] = None,
+        min_grade: str = "C",
+    ) -> Dict[str, Any]:
+        """
+        生产质量点——强化代码质量的最小单元。
+
+        质量点针对5个维度：
+        - syntax（语法正确性）
+        - complexity（复杂度）
+        - readability（可读性）
+        - security（安全性）
+        - performance（性能）
+
+        Args:
+            count: 生产数量
+            dimension: 指定维度（None=随机）
+            min_grade: 最低等级
+        """
+        from .code_quality import CodeQualityForge
+        forge = CodeQualityForge()
+        points = forge.produce_points(
+            n=count,
+            dimension=dimension,
+            min_grade=min_grade,
+        )
+
+        # 统计
+        dim_dist: Dict[str, int] = {}
+        grade_dist: Dict[str, int] = {}
+        for p in points:
+            dim_dist[p.dimension] = dim_dist.get(p.dimension, 0) + 1
+            grade_dist[p.grade] = grade_dist.get(p.grade, 0) + 1
+
+        avg_strength = (
+            sum(p.strength for p in points) / len(points) if points else 0.0
+        )
+
+        self._log("produce_quality_points", {
+            "count": len(points),
+            "dimension": dimension or "mixed",
+            "avg_strength": round(avg_strength, 4),
+        })
+
+        return {
+            "points": points,
+            "total": len(points),
+            "dimension": dimension or "mixed",
+            "avg_strength": round(avg_strength, 4),
+            "dimension_distribution": dim_dist,
+            "grade_distribution": grade_dist,
+            "forge": forge,
+        }
+
+    def produce_quality_points_singularity(
+        self,
+        count: int = 1_000_000,
+        dimension: Optional[str] = None,
+        min_grade: str = "S",
+    ) -> Dict[str, Any]:
+        """
+        万象奇点驱动生产质量点——千万级/秒 + SSS级强度。
+
+        用万象奇点的算力倍率（9999x）+ 节点数（9999）放大产量，
+        并自动锻造到 SSS 级强度。
+
+        Args:
+            count: 目标产量（千万级）
+            dimension: 指定维度（None=随机）
+            min_grade: 最低等级（万象奇点模式建议 S/SS/SSS）
+        """
+        from .code_quality import CodeQualityForge
+
+        # 先生产万象奇点获取引擎
+        sing = self.produce_ultimate_singularity()
+        engine = sing["engine"]
+
+        forge = CodeQualityForge()
+        grade_map = {"D": 0, "C": 1, "B": 2, "A": 3, "S": 4, "SS": 5, "SSS": 6}
+        min_g = grade_map.get(min_grade, 4)
+
+        start = time.time()
+        dims, strengths, grades = forge.produce_points_with_engine(
+            n=count,
+            engine=engine,
+            dimension=dimension,
+            min_grade=min_g,
+        )
+        elapsed = time.time() - start
+
+        # 维度+等级分布
+        dim_names = forge.DIMENSIONS
+        grade_names = ["D", "C", "B", "A", "S", "SS", "SSS"]
+        dim_dist: Dict[str, int] = {}
+        grade_dist: Dict[str, int] = {}
+        for i in range(len(dims)):
+            dn = dim_names[int(dims[i])]
+            gn = grade_names[int(grades[i])]
+            dim_dist[dn] = dim_dist.get(dn, 0) + 1
+            grade_dist[gn] = grade_dist.get(gn, 0) + 1
+
+        avg_s = float(np.mean(strengths)) if len(strengths) > 0 else 0.0
+        speed = len(dims) / elapsed if elapsed > 0 else float("inf")
+
+        self._log("produce_quality_points_singularity", {
+            "count": len(dims),
+            "speed": f"{speed/10000:.1f}万/秒",
+            "avg_strength": round(avg_s, 4),
+            "mode": "万象奇点",
+        })
+
+        return {
+            "dims": dims,
+            "strengths": strengths,
+            "grades": grades,
+            "total": len(dims),
+            "avg_strength": round(avg_s, 4),
+            "dimension_distribution": dim_dist,
+            "grade_distribution": grade_dist,
+            "dimension": dimension or "mixed",
+            "mode": "万象奇点",
+            "elapsed_ms": round(elapsed * 1000, 1),
+            "speed_per_sec": round(speed, 1),
+            "compute_multiplier": engine.compute_multiplier,
+            "node_count": engine.node_count,
+            "forge": forge,
+        }
+
+    def reinforce_code(
+        self,
+        code: str,
+        dimension: Optional[str] = None,
+        min_grade: str = "S",
+        use_singularity: bool = True,
+    ) -> Dict[str, Any]:
+        """
+        用质量点强化代码——生产线一站式：生产质量点 + 注入代码。
+
+        Args:
+            code: 待强化的代码
+            dimension: 指定强化维度（None=全维度）
+            min_grade: 质量点最低等级
+            use_singularity: 是否用万象奇点驱动（True=SSS级强化）
+
+        Returns:
+            强化结果（含强化前后质量分）
+        """
+        from .code_quality import CodeQualityForge, QualityPoint
+
+        forge = CodeQualityForge()
+
+        # 生产5个质量点（每个维度一个）
+        if use_singularity:
+            sing = self.produce_ultimate_singularity()
+            engine = sing["engine"]
+            grade_map = {"D": 0, "C": 1, "B": 2, "A": 3, "S": 4, "SS": 5, "SSS": 6}
+            min_g = grade_map.get(min_grade, 4)
+            dims, strengths, grades = forge.produce_points_with_engine(
+                n=50,  # 每个维度10个，取最强
+                engine=engine,
+                dimension=dimension,
+                min_grade=min_g,
+            )
+            # 转成 QualityPoint 对象
+            points = []
+            dim_names = forge.DIMENSIONS
+            grade_names = ["D", "C", "B", "A", "S", "SS", "SSS"]
+            for i in range(len(dims)):
+                points.append(QualityPoint(
+                    point_id=f"qp_sing_{i:08x}",
+                    dimension=dim_names[int(dims[i])],
+                    strength=float(strengths[i]),
+                    grade=grade_names[int(grades[i])],
+                    energy=float(strengths[i]) * 100,
+                    source="singularity",
+                ))
+            mode = "万象奇点"
+        else:
+            result = self.produce_quality_points(
+                count=50,
+                dimension=dimension,
+                min_grade=min_grade,
+            )
+            points = result["points"]
+            mode = "基础"
+
+        # 强化代码
+        reinforced, score_before, score_after = forge.reinforce(code, points)
+
+        self._log("reinforce_code", {
+            "score_before": round(score_before, 4),
+            "score_after": round(score_after, 4),
+            "points_used": len(points),
+            "mode": mode,
+        })
+
+        return {
+            "original_code": code,
+            "reinforced_code": reinforced,
+            "score_before": round(score_before, 4),
+            "score_after": round(score_after, 4),
+            "improvement": round(score_after - score_before, 4),
+            "points_used": len(points),
+            "mode": mode,
+            "forge": forge,
+        }
+
     def stats(self) -> Dict[str, Any]:
         """工厂统计"""
         return {

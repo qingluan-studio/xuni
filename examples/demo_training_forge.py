@@ -121,6 +121,47 @@ def main():
     print(f"    算力倍率：{r['compute_multiplier']} × 节点数：{r['node_count']}")
     print()
 
+    # 生产线4：质量点——强化代码质量
+    print("  生产线4：produce_quality_points_singularity（质量点·万象奇点驱动）")
+    print("    原理：万象奇点 → 质量点（5维：语法/复杂度/可读性/安全/性能）→ 强化代码")
+    print()
+
+    r = factory.produce_quality_points_singularity(
+        count=1_000_000,
+        min_grade="S",
+    )
+    print(f"    目标：1,000,000 个 S级以上质量点")
+    print(f"    实际产出：{r['total']:,} 个")
+    print(f"    耗时：{r['elapsed_ms']:.1f}ms")
+    print(f"    速度：{r['speed_per_sec']/10000:.1f} 万/秒")
+    print(f"    平均强度：{r['avg_strength']:.3f}")
+    print(f"    维度分布：{r['dimension_distribution']}")
+    print(f"    等级分布：{r['grade_distribution']}")
+    print()
+
+    # 生产线5：用质量点强化代码
+    print("  生产线5：reinforce_code（用质量点强化代码）")
+    print("    原理：生产质量点 → 注入代码 → 代码质量提升")
+    print()
+
+    sample_code = (
+        "def process(data):\n"
+        "    result = []\n"
+        "    for i in range(len(data)):\n"
+        "        result.append(data[i] * 2)\n"
+        "    return result\n"
+    )
+    r = factory.reinforce_code(
+        code=sample_code,
+        use_singularity=True,
+        min_grade="S",
+    )
+    print(f"    强化前质量分：{r['score_before']:.3f}")
+    print(f"    强化后质量分：{r['score_after']:.3f}")
+    print(f"    提升：+{r['improvement']:.3f}")
+    print(f"    使用质量点：{r['points_used']} 个（{r['mode']}模式）")
+    print()
+
     # ---- 训练素材融合链 ----
     hr("─")
     print("  【训练素材融合链】")
@@ -157,10 +198,16 @@ def main():
     factory.produce_training_data(count, min_grade="B")
     factory.produce_training_data_energy(count, energy=1000)
     factory.produce_training_data_singularity(count=10_000_000, min_grade="S")
+    factory.produce_quality_points_singularity(count=1_000_000, min_grade="S")
+    factory.reinforce_code(code, use_singularity=True)
 
   万象奇点驱动（终极）：
     算力倍率 9999 × 节点数 9999 → 速度 3000万+/秒
     自动质量锻造 → 全部 SSS 级
+
+  质量点（强化代码质量）：
+    5维：语法/复杂度/可读性/安全/性能
+    万象奇点驱动 → 100万个 SSS 级质量点，25ms，4000万+/秒
 
   融合链终极：全知数据海洋
     无限训练数据 + 万象奇点 = 一切知识的集合

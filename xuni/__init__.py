@@ -125,6 +125,9 @@ from .ultra_context import (
 from .training_forge import (
     TrainingForge, QualityScorer, TrainingSample,
 )
+from .code_quality import (
+    CodeQualityScorer, QualityPoint, CodeQualityForge,
+)
 
 __all__ = [
     "XuniSampler",
@@ -285,4 +288,10 @@ __all__ = [
     "ModelHealth",
     "LifecycleEvent",
     "ModelVitality",
+    "TrainingForge",
+    "QualityScorer",
+    "TrainingSample",
+    "CodeQualityScorer",
+    "QualityPoint",
+    "CodeQualityForge",
 ]
