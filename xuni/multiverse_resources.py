@@ -1980,6 +1980,210 @@ class MultiverseResourceFactory:
         })
         return memory
 
+    # ============================================================
+    # 训练素材生产线：质量评估 + 千万级生产 + 能量锻造
+    # ============================================================
+
+    def produce_training_data(
+        self,
+        count: int = 1000,
+        data_type: str = "text",
+        min_grade: str = "C",
+    ) -> Dict[str, Any]:
+        """
+        生产训练素材——带质量评级。
+
+        解决"直接生产质量未知"的问题：
+        每条素材都有5维质量评分 + 等级（D~SSS），可按等级过滤。
+
+        Args:
+            count: 生产数量
+            data_type: text / code / dialog / music
+            min_grade: 最低等级（D/C/B/A/S/SS/SSS）
+
+        Returns:
+            {samples, total, avg_quality, grade_distribution}
+        """
+        from .training_forge import TrainingForge, QualityScorer
+        forge = TrainingForge()
+        grade_map = {"D": 0, "C": 1, "B": 2, "A": 3, "S": 4, "SS": 5, "SSS": 6}
+        min_g = grade_map.get(min_grade, 1)
+
+        # 快速生成 + 过滤
+        texts, scores, grades = forge.generate_fast(
+            n=count * 2,  # 多生成一些，过滤后达标
+            data_type=data_type,
+            min_grade=min_g,
+        )
+
+        # 截取count条（确保够数
+        if len(texts) > count:
+            texts = texts[:count]
+            scores = scores[:count]
+            grades = grades[:count]
+
+        # 等级分布统计
+        grade_names = ["D", "C", "B", "A", "S", "SS", "SSS"]
+        dist = {}
+        for g in range(7):
+            cnt = int(np.sum(grades == g))
+            if cnt > 0:
+                dist[grade_names[g]] = cnt
+
+        avg_q = float(np.mean(scores)) if len(scores) > 0 else 0.0
+
+        self._log("produce_training_data", {
+            "count": len(texts),
+            "data_type": data_type,
+            "min_grade": min_grade,
+            "avg_quality": round(avg_q, 4),
+        })
+
+        return {
+            "texts": texts,
+            "scores": scores,
+            "grades": grades,
+            "total": len(texts),
+            "avg_quality": round(avg_q, 4),
+            "grade_distribution": dist,
+            "data_type": data_type,
+            "forge": forge,
+        }
+
+    def produce_training_data_energy(
+        self,
+        count: int = 1000,
+        energy: float = 100.0,
+        data_type: str = "text",
+        target_grade: str = "A",
+    ) -> Dict[str, Any]:
+        """
+        生产锻造级训练素材——用能量提升质量。
+
+        能量锻造：先生产基础素材 + 能量锻造 → 高质量素材
+        质量 = 基础质量 + log10(能量) × 系数
+
+        Args:
+            count: 数量
+            energy: 投入虚拟电（越高质量越高
+            data_type: 类型
+            target_grade: 目标等级
+        """
+        from .training_forge import TrainingForge
+        forge = TrainingForge()
+
+        # 先生成C级以上的
+        texts, scores, grades = forge.generate_fast(
+            n=count * 2,
+            data_type=data_type,
+            min_grade=1,  # C级以上
+        )
+        if len(texts) > count:
+            texts = texts[:count]
+            scores = scores[:count]
+            grades = grades[:count]
+
+        # 能量锻造提升质量
+        new_scores, new_grades = forge.upgrade_fast(scores, grades, energy)
+
+        grade_names = ["D", "C", "B", "A", "S", "SS", "SSS"]
+        dist = {}
+        for g in range(7):
+            cnt = int(np.sum(new_grades == g))
+            if cnt > 0:
+                dist[grade_names[g]] = cnt
+
+        avg_q = float(np.mean(new_scores)) if len(new_scores) > 0 else 0.0
+
+        self._log("produce_training_data_energy", {
+            "count": len(texts),
+            "energy": energy,
+            "target_grade": target_grade,
+            "avg_quality": round(avg_q, 4),
+        })
+
+        return {
+            "texts": texts,
+            "scores": new_scores,
+            "grades": new_grades,
+            "total": len(texts),
+            "avg_quality": round(avg_q, 4),
+            "grade_distribution": dist,
+            "energy_used": energy,
+            "forge": forge,
+        }
+
+    def produce_training_data_singularity(
+        self,
+        count: int = 10000000,
+        data_type: str = "text",
+        min_grade: str = "S",
+    ) -> Dict[str, Any]:
+        """
+        万象奇点驱动生产——千万级/秒 + SSS级质量。
+
+        用万象奇点的算力倍率（9999x）+ 节点数（9999）放大产量：
+        基础生成 N 条 → 算力放大 → N × 9999 × 9999 条实际产出
+
+        万象奇点模式下所有素材自动锻造到 SSS 级。
+
+        Args:
+            count: 目标产量（千万级）
+            data_type: text/code
+            min_grade: 最低等级（万象奇点模式建议 S/SS/SSS）
+        """
+        from .training_forge import TrainingForge
+
+        # 先生产万象奇点获取引擎
+        sing = self.produce_ultimate_singularity()
+        engine = sing["engine"]
+
+        forge = TrainingForge()
+        grade_map = {"D": 0, "C": 1, "B": 2, "A": 3, "S": 4, "SS": 5, "SSS": 6}
+        min_g = grade_map.get(min_grade, 4)
+
+        start = time.time()
+        # 用引擎驱动生产
+        texts, scores, grades = forge.generate_with_engine(
+            n=count,
+            engine=engine,
+            data_type=data_type,
+            min_grade=min_g,
+        )
+        elapsed = time.time() - start
+
+        grade_names = ["D", "C", "B", "A", "S", "SS", "SSS"]
+        dist = {}
+        for g in range(7):
+            cnt = int(np.sum(grades == g))
+            if cnt > 0:
+                dist[grade_names[g]] = cnt
+
+        avg_q = float(np.mean(scores)) if len(scores) > 0 else 0.0
+        speed = len(texts) / elapsed if elapsed > 0 else float("inf")
+
+        self._log("produce_training_data_singularity", {
+            "count": len(texts),
+            "speed": f"{speed/10000:.1f}万/秒",
+            "avg_quality": round(avg_q, 4),
+            "mode": "万象奇点",
+        })
+
+        return {
+            "texts": texts,
+            "scores": scores,
+            "grades": grades,
+            "total": len(texts),
+            "avg_quality": round(avg_q, 4),
+            "grade_distribution": dist,
+            "data_type": data_type,
+            "mode": "万象奇点",
+            "elapsed_ms": round(elapsed * 1000, 1),
+            "speed_per_sec": round(speed, 1),
+            "compute_multiplier": engine.compute_multiplier,
+            "node_count": engine.node_count,
+        }
+
     def stats(self) -> Dict[str, Any]:
         """工厂统计"""
         return {
