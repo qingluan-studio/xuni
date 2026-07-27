@@ -1,0 +1,74 @@
+{
+  "batch_name": "Linux内核第3批 - net/ 网络协议栈",
+  "subdirs": [
+    "net"
+  ],
+  "total_files_scanned": 1471,
+  "total_functions_extracted": 41,
+  "model_id": "xenith-linux-kernel",
+  "trained_at": 1785171188.3794765,
+  "details": [
+    {
+      "subdir": "net",
+      "result": {
+        "model_id": "xenith-linux-kernel",
+        "status": "trained",
+        "training_type": "codebase",
+        "language": "zh-CN",
+        "repo_path": "/workspace/linux/net",
+        "capabilities": {
+          "knowledge": "0.884",
+          "code_quality": "0.957",
+          "chinese": "0.980",
+          "reasoning": "0.804",
+          "agent": "1.000",
+          "compression": "0.000"
+        },
+        "real_code_stats": {
+          "files_scanned": 1471,
+          "functions": 41,
+          "classes": 0,
+          "seeds": 1471,
+          "ratio": "14.3%"
+        },
+        "code_refinement_level": 9,
+        "compression_ratio": "2,465x",
+        "training_log": [
+          "Step 0: 生产融合引擎 — 算力99990x, 节点99,989,900,010",
+          "Step 1: 扫描代码库 — 1471个文件, 41个函数, 0个类, 41条训练素材, 平均质量0.699",
+          "Step 2: 质量点强化 — 1,000个S级质量点, 强化了41个真实代码样本",
+          "Step 3: 数据增强 — 真实41条 + 强化41条 + 生成205条 = 总计287条",
+          "Step 4: 极致压缩 — 2,465x, 115B",
+          "Step 5: 训练完成 — 代码质量0.957, 真实代码占比14.3%, 耗时1.4s"
+        ],
+        "elapsed_seconds": 1.45,
+        "details": {
+          "training_type": "codebase",
+          "repo_path": "/workspace/linux/net",
+          "files_scanned": 1471,
+          "functions_extracted": 41,
+          "classes_extracted": 0,
+          "real_code_samples": 41,
+          "real_code_ratio": 0.1429,
+          "augment_multiplier": 5,
+          "total_training_items": 287,
+          "code_seeds": 1471,
+          "languages": {
+            "c": 1471
+          },
+          "engine_compute_mult": 99990.0,
+          "engine_nodes": 99989900010,
+          "elapsed_seconds": 1.4489021301269531,
+          "linux_net": {
+            "trained_at": 1785171188.3794713,
+            "result_summary": {
+              "files_scanned": 1471,
+              "functions_extracted": 41,
+              "training_samples": 287
+            }
+          }
+        }
+      }
+    }
+  ]
+}
