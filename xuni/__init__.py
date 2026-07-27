@@ -119,6 +119,9 @@ from .lifecycle import (
 from .perpetual_engine import (
     PerpetualTrainingEngine, FusionBoost,
 )
+from .ultra_context import (
+    UltraContextMemory, MemoryPoint,
+)
 
 __all__ = [
     "XuniSampler",

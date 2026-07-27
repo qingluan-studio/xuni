@@ -1876,6 +1876,110 @@ class MultiverseResourceFactory:
             ),
         }
 
+    # ============================================================
+    # 记忆点生产线：超长上下文记忆
+    # ============================================================
+
+    def produce_memory_points(self, count: int = 1000) -> List[Any]:
+        """
+        生产记忆点——工厂产出的最小记忆单元。
+
+        记忆点是带嵌入向量、能量、重要性的语义记忆条目，
+        可注入 UltraContextMemory 实现超长上下文。
+
+        Args:
+            count: 生产数量
+
+        Returns:
+            记忆点列表（MemoryPoint 对象）
+        """
+        from .ultra_context import MemoryPoint
+        points = []
+        for i in range(count):
+            p = MemoryPoint(
+                point_id=self._next_id("mem"),
+                content=f"记忆点-{i:06d}",
+                importance=0.5,
+                energy=1.0,
+            )
+            points.append(p)
+        self._log("produce_memory_points", {"count": count})
+        return points
+
+    def produce_ultra_context(
+        self,
+        node_count: int = 2048,
+        perpetual: bool = False,
+    ) -> Any:
+        """
+        生产超长上下文记忆系统——记忆点 + 流式算力网络。
+
+        工厂生产记忆点 + 接入流式算力网络的节点数 → 超长上下文记忆。
+
+        原始 MemoryBank：短期20条
+        超长上下文记忆：1000条/节点 × 2048节点 = 200万条
+        万象奇点模式：无限容量 + 不衰减
+
+        Args:
+            node_count: 网络节点数（来自流式算力网络的流量通道数）
+            perpetual: 是否永动模式（接入万象奇点 = True）
+
+        Returns:
+            UltraContextMemory 实例
+        """
+        from .ultra_context import UltraContextMemory
+
+        if perpetual:
+            # 万象奇点模式：无限容量
+            memory = UltraContextMemory(
+                node_count=node_count,
+                perpetual=True,
+                compute_multiplier=9999.0,
+            )
+        else:
+            # 流式算力网络模式：按节点数扩展容量
+            memory = UltraContextMemory(
+                node_count=node_count,
+                perpetual=False,
+                compute_multiplier=1.0,
+            )
+
+        self._log("produce_ultra_context", {
+            "node_count": node_count,
+            "perpetual": perpetual,
+            "max_capacity": memory.max_capacity_display,
+        })
+        return memory
+
+    def produce_ultra_context_singularity(self) -> Any:
+        """
+        生产万象奇点级超长上下文记忆——无限容量 + 瞬时检索 + 不衰减。
+
+        工厂先生产万象奇点，再用奇点的节点数和永动模式
+        驱动超长上下文记忆。
+
+        Returns:
+            UltraContextMemory 实例（万象奇点级，无限容量）
+        """
+        from .ultra_context import UltraContextMemory
+        # 先生产万象奇点获取节点配置
+        sing = self.produce_ultimate_singularity()
+        engine = sing["engine"]
+
+        # 用奇点的节点数创建无限记忆
+        memory = UltraContextMemory(
+            node_count=engine.node_count,
+            perpetual=True,
+            compute_multiplier=engine.compute_multiplier,
+        )
+
+        self._log("produce_ultra_context_singularity", {
+            "mode": "万象奇点",
+            "node_count": engine.node_count,
+            "max_capacity": "∞",
+        })
+        return memory
+
     def stats(self) -> Dict[str, Any]:
         """工厂统计"""
         return {
