@@ -1,0 +1,123 @@
+{
+  "version": "v2",
+  "training_time_seconds": 0.04,
+  "total_corpus": 470,
+  "real_corpus": 358,
+  "synth_corpus": 112,
+  "epochs": 5000,
+  "fragments_learned": 40000,
+  "active_experts": 13,
+  "expert_load": {
+    "合鸣自述者": 4,
+    "混合专家": 4,
+    "虚拟电场": 3,
+    "物理建模合成": 3,
+    "超混沌采样": 3,
+    "水动力学": 3,
+    "玻璃逻辑": 3,
+    "双态系统": 3,
+    "虚拟凭证": 3,
+    "神经共振": 3,
+    "虚拟算力": 3,
+    "虚拟哲学": 3,
+    "通用兜底": 40004
+  },
+  "growth_log": [
+    {
+      "epoch": 500,
+      "learned": 4000,
+      "active_experts": 13,
+      "avg_load": 310.9
+    },
+    {
+      "epoch": 1000,
+      "learned": 8000,
+      "active_experts": 13,
+      "avg_load": 618.6
+    },
+    {
+      "epoch": 1500,
+      "learned": 12000,
+      "active_experts": 13,
+      "avg_load": 926.3
+    },
+    {
+      "epoch": 2000,
+      "learned": 16000,
+      "active_experts": 13,
+      "avg_load": 1234.0
+    },
+    {
+      "epoch": 2500,
+      "learned": 20000,
+      "active_experts": 13,
+      "avg_load": 1541.7
+    },
+    {
+      "epoch": 3000,
+      "learned": 24000,
+      "active_experts": 13,
+      "avg_load": 1849.4
+    },
+    {
+      "epoch": 3500,
+      "learned": 28000,
+      "active_experts": 13,
+      "avg_load": 2157.1
+    },
+    {
+      "epoch": 4000,
+      "learned": 32000,
+      "active_experts": 13,
+      "avg_load": 2464.8
+    },
+    {
+      "epoch": 4500,
+      "learned": 36000,
+      "active_experts": 13,
+      "avg_load": 2772.5
+    },
+    {
+      "epoch": 5000,
+      "learned": 40000,
+      "active_experts": 13,
+      "avg_load": 3080.2
+    }
+  ],
+  "comparison": {
+    "def quicksort": {
+      "before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架",
+      "after": "def _estimate_importance(promp"
+    },
+    "class XuniSampler": {
+      "before": "XuniSampler 实时生成上亿采样点而不存储，",
+      "after": "class SamplerUnit:\n    \"\"\"集群中的"
+    },
+    "def generate": {
+      "before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架",
+      "after": "def generate_batch(self,"
+    },
+    "import numpy": {
+      "before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架",
+      "after": "import pandas as pd\nimport num"
+    },
+    "class MemoryBank": {
+      "before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架",
+      "after": "class APIResponse:\n    \"\"\"虚拟 A"
+    },
+    "def train": {
+      "before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架",
+      "after": "def print_card(self) -> None:"
+    },
+    "class Harmonia": {
+      "before": "合鸣（Harmonia）是 xuni 虚拟生态中的旗舰对话模",
+      "after": "class APIEndpoint(Enum):\n    M"
+    },
+    "def collide": {
+      "before": "我可以聊聊合鸣模型、虚拟电场、音乐合成、双态系统、MoE 架",
+      "after": "def _estimate_importance(promp"
+    }
+  },
+  "improved_count": 1,
+  "total_compared": 8
+}
