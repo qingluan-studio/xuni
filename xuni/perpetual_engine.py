@@ -96,6 +96,47 @@ _FUSION_BOOSTS: Dict[str, FusionBoost] = {
         compute_multiplier=2.0,
         accelerator_multiplier=2.0,
     ),
+    # ---- 参数融合链加成 ----
+    "参数流式训练场": FusionBoost(
+        name="参数流式训练场",
+        compute_multiplier=1.0,
+        # train_with_params 中检测此名称启用节点并行注入
+    ),
+    "能量参数核心": FusionBoost(
+        name="能量参数核心",
+        compute_multiplier=1.5,
+        energy_regen=0.15,
+    ),
+    "无限参数流": FusionBoost(
+        name="无限参数流",
+        compute_multiplier=2.0,
+        energy_regen=0.2,
+        perpetual=False,
+    ),
+    "超频参数训练": FusionBoost(
+        name="超频参数训练",
+        accelerator_multiplier=5.0,
+        compute_multiplier=2.0,
+    ),
+    "多维参数训练": FusionBoost(
+        name="多维参数训练",
+        compute_multiplier=3.0,
+        node_multiplier=3.0,
+    ),
+    "参数自进化体": FusionBoost(
+        name="参数自进化体",
+        compute_multiplier=3.0,
+        accelerator_multiplier=3.0,
+        energy_regen=0.3,
+    ),
+    "永动参数引擎": FusionBoost(
+        name="永动参数引擎",
+        compute_multiplier=10.0,
+        accelerator_multiplier=10.0,
+        energy_regen=1.0,
+        perpetual=True,
+        node_multiplier=5.0,
+    ),
 }
 
 
@@ -253,18 +294,7 @@ class PerpetualTrainingEngine:
         # 进度增量 ∝ sqrt(总算力) —— 平方根缩放，避免溢出
         progress_gain = min(1.0, math.sqrt(self.effective_speed / 1e12) * 0.1 * epochs)
 
-        trained = False
-        if hasattr(model, "training_progress"):
-            old = model.training_progress
-            model.training_progress = min(1.0, old + progress_gain)
-            if model.training_progress >= 1.0 and hasattr(model, "complete_training"):
-                model.complete_training()
-                trained = True
-            elif hasattr(model, "update_training"):
-                model.update_training(model.training_progress)
-        if hasattr(model, "start_training") and getattr(model, "training_state", None):
-            if str(model.training_state).endswith("IDLE") or str(model.training_state).endswith("CLAIMED"):
-                model.start_training()
+        trained = self._apply_progress(model, progress_gain)
 
         # 消耗模型能量缓冲（若有）
         if hasattr(model, "_energy_buffer"):
@@ -273,6 +303,7 @@ class PerpetualTrainingEngine:
         elapsed = time.time() - start
         result = {
             "status": "trained",
+            "method": "compute",
             "epochs": epochs,
             "energy_consumed": energy_consumed,
             "energy_regen": regen,
@@ -288,6 +319,159 @@ class PerpetualTrainingEngine:
         }
         self._train_log.append(result)
         return result
+
+    def train_with_params(self, model, pack, energy_cost: float = None) -> Dict[str, Any]:
+        """
+        用参数包 + 流式算力网络训练模型（指数级加速）。
+
+        核心公式（来自融合链涌现效果）：
+            原始增量 = 参数质量 × 0.005          （ParameterTrainer 线性）
+            流式增量 = 原始增量 × 节点数          （参数流式训练场：N节点并行注入）
+            超频增量 = 流式增量 × 加速器倍率       （超频参数训练）
+            永动增量 = 超频增量 × 算力倍率         （永动参数引擎）
+
+        没有融合产物时退化为原始 ParameterTrainer 的线性效果。
+        """
+        start = time.time()
+
+        # 检查模型认领
+        if getattr(model, "owner", None) is None:
+            return {"error": "模型未被认领，无法训练"}
+
+        # 检查训练状态（用 .name 精确匹配，避免 UNTRAINED 误判）
+        state = getattr(model, "training_state", None)
+        state_name = state.name if state else ""
+        if state_name == "TRAINED":
+            return {"error": "模型已训练完成", "progress": 1.0}
+
+        # 参数质量
+        quality = max(0.0, min(100.0, getattr(pack, "quality", 50.0)))
+        param_count = len(getattr(pack, "params", {}))
+
+        # 基础增量（与 ParameterTrainer 一致）
+        base_increment = quality * 0.005
+        diversity_bonus = min(0.05, param_count * 0.002)
+        base_increment += diversity_bonus
+
+        # ---- 融合产物放大 ----
+        # 参数流式训练场：N 节点并行注入，增量 × 节点数
+        node_boost = 1.0
+        if "参数流式训练场" in self._boost_names or "流式算力网络" in self._boost_names:
+            node_boost = float(self.node_count)
+
+        # 超频参数训练：增量 × 加速器倍率
+        accel_boost = 1.0
+        if "超频参数训练" in self._boost_names:
+            accel_boost = self.accelerator_multiplier
+
+        # 永动参数引擎：增量 × 算力倍率
+        compute_boost = 1.0
+        if "永动参数引擎" in self._boost_names:
+            compute_boost = self.compute_multiplier
+
+        # 能量参数核心：参数质量随能量增长
+        energy_quality_boost = 1.0
+        if "能量参数核心" in self._boost_names:
+            # 电越大参数质量越高（对数缩放）
+            energy_quality_boost = 1.0 + math.log10(max(1.0, self.energy)) * 0.1
+
+        # 总增量（乘法扩展，从线性→指数）
+        total_increment = (
+            base_increment
+            * node_boost
+            * accel_boost
+            * compute_boost
+            * energy_quality_boost
+        )
+        # 平方根缩放防止溢出（增量太大也最多一步完成）
+        total_increment = min(1.0, total_increment)
+
+        # 激活能量
+        if energy_cost is None:
+            energy_cost = max(1.0, quality * 0.1)
+
+        energy_consumed = 0.0
+        regen = 0.0
+        if self.is_perpetual:
+            regen = self.energy * self.energy_regen_rate
+            self.energy += regen
+            self.total_energy_regen += regen
+        else:
+            if self.energy < energy_cost:
+                return {
+                    "error": f"激活能量不足：需 {energy_cost:.1f}，当前 {self.energy:.1f}",
+                }
+            self.energy -= energy_cost
+            regen = self.energy * self.energy_regen_rate
+            self.energy += regen
+            self.total_energy_regen += regen
+            energy_consumed = energy_cost
+
+        # 注入参数到模型
+        injected = 0
+        if hasattr(model, "_energy_buffer"):
+            model._energy_buffer = max(0.0, model._energy_buffer - energy_consumed * 0.5)
+        try:
+            from .parameter import ParameterInjector
+            injected = ParameterInjector.inject(model, pack)
+        except Exception:
+            injected = param_count
+
+        # 应用训练进度
+        trained = self._apply_progress(model, total_increment)
+
+        # 记录训练样本
+        if hasattr(model, "training_samples_seen"):
+            model.training_samples_seen += param_count * max(1, self.node_count)
+        if hasattr(model, "training_epochs_done"):
+            model.training_epochs_done += 1
+
+        elapsed = time.time() - start
+        result = {
+            "status": "trained",
+            "method": "parameter_fusion",
+            "pack_id": getattr(pack, "pack_id", "?"),
+            "pack_quality": quality,
+            "param_count": param_count,
+            "base_increment": base_increment,
+            "node_boost": node_boost,
+            "accel_boost": accel_boost,
+            "compute_boost": compute_boost,
+            "energy_quality_boost": energy_quality_boost,
+            "total_increment": total_increment,
+            "progress_before": getattr(model, "training_progress", 0.0) - total_increment,
+            "progress_after": getattr(model, "training_progress", 0.0),
+            "energy_consumed": energy_consumed,
+            "energy_regen": regen,
+            "nodes": self.node_count,
+            "effective_speed": self.effective_speed,
+            "perpetual": self.is_perpetual,
+            "model_trained": trained,
+            "elapsed_ms": elapsed * 1000,
+        }
+        self._train_log.append(result)
+        return result
+
+    def _apply_progress(self, model, increment: float) -> bool:
+        """应用训练进度到模型，返回是否训练完成"""
+        # 开始训练
+        state = getattr(model, "training_state", None)
+        state_name = state.name if state else ""
+        if state_name in ("IDLE", "CLAIMED", "UNTRAINED"):
+            if hasattr(model, "start_training"):
+                model.start_training()
+
+        old = getattr(model, "training_progress", 0.0)
+        new_progress = min(1.0, old + increment)
+        if hasattr(model, "update_training"):
+            model.update_training(new_progress)
+        else:
+            model.training_progress = new_progress
+
+        if new_progress >= 1.0 and hasattr(model, "complete_training"):
+            model.complete_training()
+            return True
+        return False
 
     def stats(self) -> Dict[str, Any]:
         """引擎统计"""
