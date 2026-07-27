@@ -132,6 +132,7 @@ from .code_quality import (
     ASTQualityScorer, RealCodeRefiner,
 )
 from .codebase_scanner import CodebaseScanner
+from .black_hole_trainer import BlackHoleTrainer
 
 __all__ = [
     "XuniSampler",
@@ -302,4 +303,5 @@ __all__ = [
     "ASTQualityScorer",
     "RealCodeRefiner",
     "CodebaseScanner",
+    "BlackHoleTrainer",
 ]
