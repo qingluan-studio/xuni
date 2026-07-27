@@ -1781,6 +1781,101 @@ class MultiverseResourceFactory:
         """千万级训练加速器生产（结构化数组版本，最快）"""
         return self.mass_produce_array({"training_accelerator": {"factor": factor, "count": count}})["training_accelerator"]
 
+    # ============================================================
+    # 终极生产线：9合1 万象奇点
+    # ============================================================
+
+    def produce_ultimate_singularity(self) -> Dict[str, Any]:
+        """
+        生产万象奇点——9种基础资源全融合的终极产物。
+
+        工厂一次性生产9种基础资源 → 全部融合 → 万象奇点。
+        接入 PerpetualTrainingEngine，打破所有守恒定律。
+
+        返回：
+            万象奇点产物 + 永动训练引擎（已接入奇点加成）
+        """
+        # 1. 一次性生产9种基础资源
+        blueprint = {
+            "take": {"amount": 1000.0, "count": 1},
+            "bandwidth": {"channels": 2048, "count": 1},
+            "compression": {"factor": 100.0, "count": 1},
+            "compute_core": {"density": 1e15, "count": 1},
+            "security_shield": {"layers": 5, "count": 1},
+            "culture_medium": {"culture_type": "cognitive", "count": 1},
+            "download_token": {"speed": 100.0, "count": 1},
+            "training_accelerator": {"factor": 100.0, "count": 1},
+            "dimension_shard": {"level": 3, "count": 1},
+        }
+        resources = self.mass_produce(blueprint)
+
+        # 2. 融合引擎全融合
+        from .substance_fusion import create_default_engine
+        engine_f = create_default_engine()
+        nine_names = [
+            "Take额度", "虚拟流量", "压缩点", "算力核心",
+            "安全盾", "培养液", "下载令牌", "训练加速器", "维度碎片",
+        ]
+        ultimate = engine_f.fuse_all(nine_names)
+        eff = engine_f.get_emergent_effect(ultimate.result) or {}
+
+        # 3. 接入永动训练引擎
+        from .perpetual_engine import PerpetualTrainingEngine
+        engine_p = PerpetualTrainingEngine()
+        engine_p.inject_energy(1.0)   # 只需1度电启动
+        engine_p.set_bandwidth(1)     # 只需1个通道
+        engine_p.apply_fusion(ultimate.result)  # 接入万象奇点
+
+        result = {
+            "product": ultimate.result,
+            "level": eff.get("级别", "终极"),
+            "effect": eff.get("效果", ""),
+            "broken_laws": eff.get("打破定律", ""),
+            "output": eff.get("产出", ""),
+            "self_loop": eff.get("自循环", False),
+            "energy_release": ultimate.energy_release,
+            "resources_fused": len(resources),
+            "contained": eff.get("包含资源", nine_names),
+            "engine": engine_p,
+            "compute_multiplier": engine_p.compute_multiplier,
+            "node_multiplier": engine_p.node_multiplier,
+            "accelerator_multiplier": engine_p.accelerator_multiplier,
+            "energy_regen_rate": engine_p.energy_regen_rate,
+            "perpetual": engine_p.is_perpetual,
+        }
+        self._log("produce_ultimate_singularity", {
+            "product": ultimate.result,
+            "resources_fused": len(resources),
+            "perpetual": True,
+        })
+        return result
+
+    def produce_singularity_batch(self, count: int = 100) -> Dict[str, Any]:
+        """
+        批量生产万象奇点——一次造多个奇点。
+
+        每个奇点都是完整的9合1融合，可独立驱动永动训练。
+        """
+        start = time.time()
+        singularities = []
+        engine_p = None
+        for _ in range(count):
+            sing = self.produce_ultimate_singularity()
+            singularities.append(sing)
+            if engine_p is None:
+                engine_p = sing["engine"]
+        elapsed = time.time() - start
+        return {
+            "count": count,
+            "singularities": singularities,
+            "primary_engine": engine_p,
+            "elapsed_ms": elapsed * 1000,
+            "throughput": count / elapsed if elapsed > 0 else float("inf"),
+            "total_compute_power": sum(
+                s["engine"].effective_speed for s in singularities
+            ),
+        }
+
     def stats(self) -> Dict[str, Any]:
         """工厂统计"""
         return {
