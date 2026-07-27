@@ -48,6 +48,7 @@ from .model import (
     XuniClassifier, XuniChatBot, XuniDiffusion, XuniPredictor, XuniAutoencoder,
     XuniModelRegistry,
     ModelType, ModelStatus, TrainingState, ModelCapability, ModelInput, ModelOutput, ModelStats,
+    XenithModel, XenithCapabilities, XenithDomain,
 )
 from .gateway import XuniGateway, APIEndpoint, APIError, APIRequest, APIResponse
 from .dualstate import (
