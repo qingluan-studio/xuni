@@ -1,0 +1,17 @@
+{
+  "code_generation": {
+    "files": 7,
+    "total_lines": 7,
+    "output_dir": "/workspace/xuni/examples/generated_backend"
+  },
+  "long_analysis": {
+    "topic": "现代 Web 后端架构演进与最佳实践深度分析",
+    "char_count": 17344,
+    "word_count": 16574,
+    "line_count": 324,
+    "sections": 10,
+    "output_path": "/workspace/xuni/examples/generated_long_analysis.md"
+  },
+  "model_quality": 1.0,
+  "code_refinement_level": 9
+}
