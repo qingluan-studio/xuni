@@ -127,6 +127,7 @@ from .training_forge import (
 )
 from .code_quality import (
     CodeQualityScorer, QualityPoint, CodeQualityForge,
+    ASTQualityScorer, RealCodeRefiner,
 )
 
 __all__ = [
@@ -294,4 +295,6 @@ __all__ = [
     "CodeQualityScorer",
     "QualityPoint",
     "CodeQualityForge",
+    "ASTQualityScorer",
+    "RealCodeRefiner",
 ]

@@ -2606,12 +2606,13 @@ class MultiverseResourceFactory:
         forge = core_result["forge"]
         core = core_result
 
-        refined, score_before, score_after, change = forge.refine_with_core(code, core)
+        refined, score_before, score_after, change, changes = forge.refine_with_core(code, core)
 
         self._log("refine_code_singularity", {
             "score_before": round(score_before, 4),
             "score_after": round(score_after, 4),
             "change": change,
+            "ast_changes": len(changes),
         })
 
         return {
@@ -2623,6 +2624,7 @@ class MultiverseResourceFactory:
             "grade_change": change,
             "core_strength": core["core_strength"],
             "can_promote": core["can_promote"],
+            "ast_changes": changes,
             "forge": forge,
             "core": core,
         }
