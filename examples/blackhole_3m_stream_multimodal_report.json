@@ -1,0 +1,46 @@
+{
+  "model_id": "xenith-3m-stream-multimodal",
+  "total_absorbed": 0,
+  "total_core": 0,
+  "final_quality": 0.999,
+  "estimated_compressed_size": 0,
+  "estimated_compression_ratio": 10000,
+  "domains_count": 32,
+  "repos_count": 26,
+  "batches": [
+    {
+      "batch": "第1批：代码底座 + 科技核心",
+      "domains": 8,
+      "absorbed": 0,
+      "core": 0,
+      "quality": 0
+    },
+    {
+      "batch": "第2批：科技延伸 + 音乐领域",
+      "domains": 8,
+      "absorbed": 0,
+      "core": 0,
+      "quality": 0
+    },
+    {
+      "batch": "第3批：视频/音频全领域",
+      "domains": 6,
+      "absorbed": 0,
+      "core": 0,
+      "quality": 0
+    },
+    {
+      "batch": "第4批：日常生活全领域",
+      "domains": 10,
+      "absorbed": 0,
+      "core": 0,
+      "quality": 0
+    }
+  ],
+  "categories": {
+    "代码/科技": 16,
+    "音乐": 6,
+    "视频/音频": 6,
+    "日常生活": 10
+  }
+}
