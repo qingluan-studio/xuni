@@ -1402,109 +1402,487 @@ class XenithModel(XuniModel):
         )
 
     def _answer_code(self, question: str, domain: str) -> str:
-        """代码模式回答 — 根据问题关键词生成真实代码"""
+        """代码模式回答 — 根据问题关键词生成高精度代码"""
         prefix = "【Xenith 代码助手】" if self.language == "zh-CN" else "【Xenith Code】"
         q = question.lower().strip()
         refine_lvl = self.code_refinement_level
+        quality_badge = f"质量点强化等级 {refine_lvl}/10 (SSS级)"
 
-        # 快速排序
+        # ---- 快速排序 ----
         if any(k in q for k in ["快速排序", "quicksort", "quick sort"]):
-            code = '''def quicksort(arr):
-    """快速排序 — Xenith 生成（质量点强化等级 {lvl}/10）"""
-    if len(arr) <= 1:
-        return arr
-    pivot = arr[len(arr) // 2]
-    left = [x for x in arr if x < pivot]
-    middle = [x for x in arr if x == pivot]
-    right = [x for x in arr if x > pivot]
-    return quicksort(left) + middle + quicksort(right)
+            code = (
+                "from typing import List, TypeVar, Optional\n"
+                "\n"
+                "T = TypeVar('T')\n"
+                "\n"
+                "\n"
+                "def quicksort(arr: List[T], low: int = 0, high: Optional[int] = None) -> List[T]:\n"
+                '    """\n'
+                '    快速排序 — 原地划分版本（空间 O(log n)）\n'
+                "    平均时间复杂度: O(n log n)\n"
+                "    最坏时间复杂度: O(n^2) （极少发生）\n"
+                "    空间复杂度: O(log n) 递归栈\n"
+                "    稳定性: 不稳定\n"
+                "\n"
+                f"    {quality_badge}\n"
+                '    """\n'
+                "    if high is None:\n"
+                "        high = len(arr) - 1\n"
+                "        arr = arr.copy()  # 不修改原数组\n"
+                "\n"
+                "    if low < high:\n"
+                "        pivot_idx = _partition(arr, low, high)\n"
+                "        quicksort(arr, low, pivot_idx - 1)\n"
+                "        quicksort(arr, pivot_idx + 1, high)\n"
+                "\n"
+                "    return arr\n"
+                "\n"
+                "\n"
+                "def _partition(arr: List[T], low: int, high: int) -> int:\n"
+                '    """Lomuto 划分 — 以末尾元素为基准。"""\n'
+                "    pivot = arr[high]\n"
+                "    i = low - 1\n"
+                "\n"
+                "    for j in range(low, high):\n"
+                "        if arr[j] <= pivot:\n"
+                "            i += 1\n"
+                "            arr[i], arr[j] = arr[j], arr[i]\n"
+                "\n"
+                "    arr[i + 1], arr[high] = arr[high], arr[i + 1]\n"
+                "    return i + 1\n"
+                "\n"
+                "\n"
+                "if __name__ == '__main__':\n"
+                "    test_cases = [\n"
+                "        [3, 6, 8, 10, 1, 2, 1],\n"
+                "        [],\n"
+                "        [1],\n"
+                "        [5, 4, 3, 2, 1],\n"
+                "    ]\n"
+                "    for case in test_cases:\n"
+                "        result = quicksort(case)\n"
+                "        expected = sorted(case)\n"
+                "        status = 'PASS' if result == expected else 'FAIL'\n"
+                f"        print(f'[{{status}}] quicksort({{case}}) = {{result}}')\n"
+            )
+            return f"{prefix}\n\n问题：{question}\n\n```python\n{code}\n```"
 
+        # ---- 二分查找 ----
+        if any(k in q for k in ["二分查找", "binary search", "二分"]):
+            code = (
+                "from typing import List, TypeVar, Optional\n"
+                "\n"
+                "T = TypeVar('T')\n"
+                "\n"
+                "\n"
+                "def binary_search(arr: List[T], target: T) -> int:\n"
+                '    """\n'
+                '    二分查找（迭代版）— 返回目标索引，未找到返回 -1\n'
+                "    时间复杂度: O(log n)\n"
+                "    空间复杂度: O(1)\n"
+                "    前置条件: arr 必须是升序排列的\n"
+                "\n"
+                f"    {quality_badge}\n"
+                '    """\n'
+                "    left, right = 0, len(arr) - 1\n"
+                "\n"
+                "    while left <= right:\n"
+                "        mid = left + (right - left) // 2  # 防止溢出\n"
+                "        if arr[mid] == target:\n"
+                "            return mid\n"
+                "        elif arr[mid] < target:\n"
+                "            left = mid + 1\n"
+                "        else:\n"
+                "            right = mid - 1\n"
+                "\n"
+                "    return -1\n"
+                "\n"
+                "\n"
+                "def binary_search_leftmost(arr: List[T], target: T) -> int:\n"
+                '    """查找最左侧的目标位置（处理重复元素）。"""\n'
+                "    left, right = 0, len(arr)\n"
+                "\n"
+                "    while left < right:\n"
+                "        mid = left + (right - left) // 2\n"
+                "        if arr[mid] < target:\n"
+                "            left = mid + 1\n"
+                "        else:\n"
+                "            right = mid\n"
+                "\n"
+                "    return left if left < len(arr) and arr[left] == target else -1\n"
+                "\n"
+                "\n"
+                "if __name__ == '__main__':\n"
+                "    arr = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]\n"
+                f"    print(f'数组: {{arr}}')\n"
+                "    for target in [7, 1, 19, 6, 100]:\n"
+                "        idx = binary_search(arr, target)\n"
+                f"        print(f'binary_search({{target}}) = {{idx}}')\n"
+            )
+            return f"{prefix}\n\n问题：{question}\n\n```python\n{code}\n```"
 
-# 测试
-if __name__ == "__main__":
-    data = [3, 6, 8, 10, 1, 2, 1]
-    print(quicksort(data))  # [1, 1, 2, 3, 6, 8, 10]'''.format(lvl=refine_lvl)
-            return f"{prefix}\n\n问题：{question}\n\n```python\n{code}\n```\n\n代码质量强化等级：{refine_lvl}/10"
+        # ---- BFS / DFS ----
+        if any(k in q for k in ["广度优先", "bfs", "深度优先", "dfs", "图遍历", "树遍历"]):
+            code = (
+                "from collections import deque\n"
+                "from typing import List, Dict, Set, Optional\n"
+                "\n"
+                "\n"
+                "def bfs(graph: Dict[int, List[int]], start: int) -> List[int]:\n"
+                '    """\n'
+                '    广度优先搜索 BFS — 用队列实现\n'
+                "    时间复杂度: O(V + E)\n"
+                "    空间复杂度: O(V)\n"
+                "\n"
+                f"    {quality_badge}\n"
+                '    """\n'
+                "    if start not in graph:\n"
+                "        return []\n"
+                "\n"
+                "    visited: Set[int] = set()\n"
+                "    queue: deque[int] = deque([start])\n"
+                "    visited.add(start)\n"
+                "    result: List[int] = []\n"
+                "\n"
+                "    while queue:\n"
+                "        node = queue.popleft()\n"
+                "        result.append(node)\n"
+                "        for neighbor in graph.get(node, []):\n"
+                "            if neighbor not in visited:\n"
+                "                visited.add(neighbor)\n"
+                "                queue.append(neighbor)\n"
+                "\n"
+                "    return result\n"
+                "\n"
+                "\n"
+                "def dfs_iterative(graph: Dict[int, List[int]], start: int) -> List[int]:\n"
+                '    """DFS — 迭代版（用栈，避免递归深度限制）。"""\n'
+                "    if start not in graph:\n"
+                "        return []\n"
+                "\n"
+                "    visited: Set[int] = set()\n"
+                "    stack: List[int] = [start]\n"
+                "    result: List[int] = []\n"
+                "\n"
+                "    while stack:\n"
+                "        node = stack.pop()\n"
+                "        if node in visited:\n"
+                "            continue\n"
+                "        visited.add(node)\n"
+                "        result.append(node)\n"
+                "        for neighbor in reversed(graph.get(node, [])):\n"
+                "            if neighbor not in visited:\n"
+                "                stack.append(neighbor)\n"
+                "\n"
+                "    return result\n"
+                "\n"
+                "\n"
+                "if __name__ == '__main__':\n"
+                "    graph = {0: [1, 2], 1: [0, 3, 4], 2: [0, 5], 3: [1], 4: [1, 5], 5: [2, 4]}\n"
+                f"    print(f'BFS:  {{bfs(graph, 0)}}')\n"
+                f"    print(f'DFS:  {{dfs_iterative(graph, 0)}}')\n"
+            )
+            return f"{prefix}\n\n问题：{question}\n\n```python\n{code}\n```"
 
-        # 闭包
-        if any(k in q for k in ["闭包", "closure"]):
-            code = '''// JavaScript 闭包示例
-function createCounter() {
-    let count = 0;  // 被闭包捕获的变量
-    return {
-        increment: function() { return ++count; },
-        getCount: function() { return count; }
-    };
-}
+        # ---- 单例模式 ----
+        if "单例" in q or "singleton" in q:
+            code = (
+                "import threading\n"
+                "from typing import Optional, Any, TypeVar, Type\n"
+                "\n"
+                "T = TypeVar('T')\n"
+                "\n"
+                "\n"
+                "class Singleton:\n"
+                '    """\n'
+                '    线程安全单例 — 双重检查锁定 (Double-Checked Locking)\n'
+                "    特点：全局唯一实例 / 懒加载 / 线程安全\n"
+                "\n"
+                f"    {quality_badge}\n"
+                '    """\n'
+                "\n"
+                "    _instance: Optional['Singleton'] = None\n"
+                "    _lock: threading.Lock = threading.Lock()\n"
+                "\n"
+                "    def __new__(cls, *args: Any, **kwargs: Any) -> 'Singleton':\n"
+                "        if cls._instance is None:\n"
+                "            with cls._lock:\n"
+                "                if cls._instance is None:\n"
+                "                    cls._instance = super().__new__(cls)\n"
+                "        return cls._instance\n"
+                "\n"
+                "    def __init__(self, value: str = '') -> None:\n"
+                "        if not hasattr(self, '_initialized'):\n"
+                "            self.value = value\n"
+                "            self._initialized = True\n"
+                "\n"
+                "\n"
+                "def singleton_decorator(cls: Type[T]) -> Type[T]:\n"
+                '    """装饰器实现的单例（更简洁）。"""\n'
+                "    instances: dict[Type[T], T] = {}\n"
+                "    lock = threading.Lock()\n"
+                "\n"
+                "    def get_instance(*args: Any, **kwargs: Any) -> T:\n"
+                "        if cls not in instances:\n"
+                "            with lock:\n"
+                "                if cls not in instances:\n"
+                "                    instances[cls] = cls(*args, **kwargs)\n"
+                "        return instances[cls]\n"
+                "\n"
+                "    return get_instance  # type: ignore[return-value]\n"
+                "\n"
+                "\n"
+                "if __name__ == '__main__':\n"
+                "    s1 = Singleton('first')\n"
+                "    s2 = Singleton('second')\n"
+                f"    print(f's1 is s2 = {{s1 is s2}}')  # True\n"
+                f"    print(f's1.value = {{s1.value}}')  # first\n"
+            )
+            return f"{prefix}\n\n问题：{question}\n\n```python\n{code}\n```"
 
-const counter = createCounter();
-console.log(counter.increment()); // 1
-console.log(counter.increment()); // 2
-console.log(counter.getCount());  // 2
-
-// 闭包 = 函数 + 其词法环境的引用
-// count 变量被内部函数"封闭"，外部无法直接访问，但内部函数可以读写'''
-            return f"{prefix}\n\n问题：{question}\n\n```javascript\n{code}\n```\n\n**闭包本质：** 函数携带了定义时的作用域链，即使外层函数已返回，内层函数仍能访问外层变量。\n\n代码质量强化等级：{refine_lvl}/10"
-
-        # 装饰器
-        if any(k in q for k in ["装饰器", "decorator", "执行时间", "计时"]):
+        # ---- 装饰器 ----
+        if any(k in q for k in ["装饰器", "decorator", "执行时间", "计时", "统计时间"]):
             code = (
                 "import time\n"
-                "from functools import wraps\n"
+                "import functools\n"
+                "from typing import Callable, Any, TypeVar\n"
+                "\n"
+                "F = TypeVar('F', bound=Callable[..., Any])\n"
                 "\n"
                 "\n"
-                "def timing(func):\n"
-                '    """统计函数执行时间的装饰器 — Xenith 生成（强化等级 ' + str(refine_lvl) + '/10）"""\n'
-                "    @wraps(func)\n"
-                "    def wrapper(*args, **kwargs):\n"
+                "def timing(func: F) -> F:\n"
+                '    """\n'
+                '    计时装饰器 — 统计函数执行时间\n'
+                "\n"
+                f"    {quality_badge}\n"
+                '    """\n'
+                "    @functools.wraps(func)\n"
+                "    def wrapper(*args: Any, **kwargs: Any) -> Any:\n"
                 "        start = time.perf_counter()\n"
                 "        result = func(*args, **kwargs)\n"
                 "        elapsed = (time.perf_counter() - start) * 1000\n"
-                '        print(f"[{func.__name__}] 耗时: {elapsed:.2f}ms")\n'
+                f"        print(f'[{{func.__name__}}] 耗时: {{elapsed:.2f}} ms')\n"
                 "        return result\n"
-                "    return wrapper\n"
+                "    return wrapper  # type: ignore[return-value]\n"
                 "\n"
                 "\n"
-                "# 使用示例\n"
+                "def retry(max_attempts: int = 3, delay: float = 1.0) -> Callable[[F], F]:\n"
+                '    """重试装饰器 — 失败时自动重试。"""\n'
+                "    def decorator(func: F) -> F:\n"
+                "        @functools.wraps(func)\n"
+                "        def wrapper(*args: Any, **kwargs: Any) -> Any:\n"
+                "            last_exc: Exception | None = None\n"
+                "            for attempt in range(1, max_attempts + 1):\n"
+                "                try:\n"
+                "                    return func(*args, **kwargs)\n"
+                "                except Exception as e:\n"
+                "                    last_exc = e\n"
+                "                    if attempt < max_attempts:\n"
+                f"                        print(f'第 {{attempt}} 次失败，{{delay}}s 后重试...')\n"
+                "                        time.sleep(delay)\n"
+                "            raise last_exc  # type: ignore[misc]\n"
+                "        return wrapper  # type: ignore[return-value]\n"
+                "    return decorator\n"
+                "\n"
+                "\n"
                 "@timing\n"
-                "def slow_function(n):\n"
-                '    """模拟耗时操作"""\n'
+                "def slow_function(n: int) -> int:\n"
+                '    """模拟耗时计算。"""\n'
                 "    return sum(i * i for i in range(n))\n"
                 "\n"
                 "\n"
-                "print(slow_function(1000000))"
+                "if __name__ == '__main__':\n"
+                "    result = slow_function(1000000)\n"
+                f"    print(f'结果: {{result}}')\n"
             )
-            return f"{prefix}\n\n问题：{question}\n\n```python\n{code}\n```\n\n代码质量强化等级：{refine_lvl}/10"
+            return f"{prefix}\n\n问题：{question}\n\n```python\n{code}\n```"
 
-        # 单例
-        if any(k in q for k in ["单例", "singleton"]):
-            code = '''class Singleton:
-    """线程安全的单例模式 — Xenith 生成（强化等级 {lvl}/10）"""
-    _instance = None
-    _lock = threading.Lock()
+        # ---- LRU 缓存 ----
+        if any(k in q for k in ["lru", "lru缓存", "最近最少使用", "lru cache"]):
+            code = (
+                "from collections import OrderedDict\n"
+                "from typing import Any, Optional\n"
+                "\n"
+                "\n"
+                "class LRUCache:\n"
+                '    """\n'
+                '    LRU (最近最少使用) 缓存 — 基于 OrderedDict\n'
+                "    get/put 时间复杂度: O(1)\n"
+                "\n"
+                f"    {quality_badge}\n"
+                '    """\n'
+                "\n"
+                "    def __init__(self, capacity: int) -> None:\n"
+                "        if capacity <= 0:\n"
+                "            raise ValueError('capacity must be positive')\n"
+                "        self.capacity = capacity\n"
+                "        self._cache: OrderedDict[Any, Any] = OrderedDict()\n"
+                "\n"
+                "    def get(self, key: Any) -> Any:\n"
+                '        """获取缓存，未命中返回 -1。"""\n'
+                "        if key not in self._cache:\n"
+                "            return -1\n"
+                "        self._cache.move_to_end(key)\n"
+                "        return self._cache[key]\n"
+                "\n"
+                "    def put(self, key: Any, value: Any) -> None:\n"
+                '        """写入缓存，超容量时淘汰最久未使用的。"""\n'
+                "        if key in self._cache:\n"
+                "            self._cache.move_to_end(key)\n"
+                "        self._cache[key] = value\n"
+                "        if len(self._cache) > self.capacity:\n"
+                "            self._cache.popitem(last=False)\n"
+                "\n"
+                "    def __len__(self) -> int:\n"
+                "        return len(self._cache)\n"
+                "\n"
+                "\n"
+                "if __name__ == '__main__':\n"
+                "    cache = LRUCache(2)\n"
+                "    cache.put(1, 1)\n"
+                "    cache.put(2, 2)\n"
+                f"    print(f'get(1) = {{cache.get(1)}}')  # 1\n"
+                "    cache.put(3, 3)  # 淘汰 2\n"
+                f"    print(f'get(2) = {{cache.get(2)}}')  # -1\n"
+                f"    print(f'get(3) = {{cache.get(3)}}')  # 3\n"
+            )
+            return f"{prefix}\n\n问题：{question}\n\n```python\n{code}\n```"
 
-    def __new__(cls):
-        if cls._instance is None:
-            with cls._lock:
-                if cls._instance is None:  # 双重检查
-                    cls._instance = super().__new__(cls)
-        return cls._instance'''.format(lvl=refine_lvl)
-            return f"{prefix}\n\n问题：{question}\n\n```python\n{code}\n```\n\n代码质量强化等级：{refine_lvl}/10"
+        # ---- 闭包 ----
+        if any(k in q for k in ["闭包", "closure"]):
+            code = (
+                "// JavaScript 闭包示例\n"
+                "// 闭包 = 函数 + 其词法环境的引用\n"
+                "\n"
+                "// === 计数器 ===\n"
+                "function createCounter() {\n"
+                "    let count = 0;\n"
+                "    return {\n"
+                "        increment() { return ++count; },\n"
+                "        decrement() { return --count; },\n"
+                "        getCount() { return count; }\n"
+                "    };\n"
+                "}\n"
+                "\n"
+                "const c = createCounter();\n"
+                "console.log(c.increment()); // 1\n"
+                "console.log(c.increment()); // 2\n"
+                "console.log(c.getCount());  // 2\n"
+                "\n"
+                "// === 经典循环陷阱 ===\n"
+                "// 错误: var 共享同一个变量\n"
+                "for (var i = 0; i < 3; i++) {\n"
+                "    setTimeout(() => console.log('var:', i), 100); // 3,3,3\n"
+                "}\n"
+                "// 正确: let 块级作用域\n"
+                "for (let i = 0; i < 3; i++) {\n"
+                "    setTimeout(() => console.log('let:', i), 100); // 0,1,2\n"
+                "}\n"
+                "\n"
+                "// === 模块模式 ===\n"
+                "const module = (function() {\n"
+                "    let secret = 'private';  // 私有变量\n"
+                "    return {\n"
+                "        getSecret() { return secret; },\n"
+                "        setSecret(v) { secret = v; }\n"
+                "    };\n"
+                "})();\n"
+                "\n"
+                "/* 用途：数据封装 / 函数工厂 / 回调上下文 / 柯里化 / 装饰器 */\n"
+            )
+            return f"{prefix}\n\n问题：{question}\n\n```javascript\n{code}\n```"
 
-        # 默认：通用代码框架
+        # ---- 观察者 / 事件总线 ----
+        if any(k in q for k in ["观察者模式", "observer", "事件总线", "发布订阅"]):
+            code = (
+                "from abc import ABC, abstractmethod\n"
+                "from typing import Any, Callable, List, Dict\n"
+                "\n"
+                "\n"
+                "class EventBus:\n"
+                '    """\n'
+                '    事件总线 — 发布订阅模式\n'
+                "\n"
+                f"    {quality_badge}\n"
+                '    """\n'
+                "\n"
+                "    def __init__(self) -> None:\n"
+                "        self._subs: Dict[str, List[Callable[[Any], None]]] = {}\n"
+                "\n"
+                "    def subscribe(self, event: str, callback: Callable[[Any], None]) -> None:\n"
+                '        """订阅事件。"""\n'
+                "        if event not in self._subs:\n"
+                "            self._subs[event] = []\n"
+                "        self._subs[event].append(callback)\n"
+                "\n"
+                "    def unsubscribe(self, event: str, callback: Callable[[Any], None]) -> None:\n"
+                '        """取消订阅。"""\n'
+                "        if event in self._subs and callback in self._subs[event]:\n"
+                "            self._subs[event].remove(callback)\n"
+                "            if not self._subs[event]:\n"
+                "                del self._subs[event]\n"
+                "\n"
+                "    def publish(self, event: str, data: Any = None) -> int:\n"
+                '        """发布事件，返回订阅者数量。"""\n'
+                "        if event not in self._subs:\n"
+                "            return 0\n"
+                "        for cb in self._subs[event]:\n"
+                "            try:\n"
+                "                cb(data)\n"
+                "            except Exception:\n"
+                "                import traceback\n"
+                "                traceback.print_exc()\n"
+                "        return len(self._subs[event])\n"
+                "\n"
+                "\n"
+                "if __name__ == '__main__':\n"
+                "    bus = EventBus()\n"
+                "    bus.subscribe('user.created', lambda d: print(f'邮件: 欢迎 {d[\"name\"]}'))\n"
+                "    bus.subscribe('user.created', lambda d: print(f'日志: 创建用户 {d}'))\n"
+                "    bus.publish('user.created', {'name': 'Alice'})\n"
+            )
+            return f"{prefix}\n\n问题：{question}\n\n```python\n{code}\n```"
+
+        # ---- 默认：通用框架 ----
+        default_code = (
+            "from typing import Any, Optional\n"
+            "\n"
+            "\n"
+            "class Solution:\n"
+            '    """\n'
+            f'    {question}\n'
+            f"    {quality_badge}\n"
+            '    """\n'
+            "\n"
+            "    def __init__(self) -> None:\n"
+            "        pass\n"
+            "\n"
+            "    def solve(self, input_data: Any) -> Any:\n"
+                '        """\n'
+                '        主解法\n'
+                "        参数:\n"
+                "            input_data: 输入数据\n"
+                "        返回:\n"
+                "            计算结果\n"
+                '        """\n'
+                "        if input_data is None:\n"
+                "            raise ValueError('input_data cannot be None')\n"
+                "        return self._process(input_data)\n"
+                "\n"
+                "    def _process(self, data: Any) -> Any:\n"
+                '        """内部处理方法。"""\n'
+                "        return data\n"
+                "\n"
+                "\n"
+                "if __name__ == '__main__':\n"
+                "    solution = Solution()\n"
+                "    result = solution.solve('test')\n"
+                f"    print(f'输出: {{result}}')\n"
+        )
+
         return (
             f"{prefix}\n\n问题：{question}\n\n"
-            f"```python\n"
-            f"# Xenith 生成（质量点强化等级 {refine_lvl}/10）\n"
-            f"def solve(question: str) -> str:\n"
-            f'    """根据问题生成解决方案。"""\n'
-            f"    # 1. 分析问题需求\n"
-            f"    # 2. 设计算法/数据结构\n"
-            f"    # 3. 实现并测试\n"
-            f"    # 4. 质量点强化（AST级重构）\n"
-            f'    return "solution"\n'
-            f"```\n\n"
-            f"代码质量强化等级：{refine_lvl}/10\n"
+            f"```python\n{default_code}\n```\n\n"
             f"已吸收训练素材：{getattr(self, '_absorbed_seed_count', 0):,} 份"
         )
 

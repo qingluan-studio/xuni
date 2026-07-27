@@ -1,0 +1,72 @@
+[
+  {
+    "question": "快速排序",
+    "lines": 53,
+    "syntax_ok": true,
+    "exec_ok": true,
+    "error": null,
+    "comment_lines": 3,
+    "docstrings": 2,
+    "type_annotations": 2
+  },
+  {
+    "question": "二分查找",
+    "lines": 48,
+    "syntax_ok": true,
+    "exec_ok": true,
+    "error": null,
+    "comment_lines": 3,
+    "docstrings": 2,
+    "type_annotations": 2
+  },
+  {
+    "question": "单例模式",
+    "lines": 50,
+    "syntax_ok": true,
+    "exec_ok": true,
+    "error": null,
+    "comment_lines": 3,
+    "docstrings": 2,
+    "type_annotations": 4
+  },
+  {
+    "question": "装饰器 计时",
+    "lines": 51,
+    "syntax_ok": true,
+    "exec_ok": true,
+    "error": null,
+    "comment_lines": 4,
+    "docstrings": 3,
+    "type_annotations": 6
+  },
+  {
+    "question": "LRU缓存",
+    "lines": 45,
+    "syntax_ok": true,
+    "exec_ok": true,
+    "error": null,
+    "comment_lines": 4,
+    "docstrings": 3,
+    "type_annotations": 4
+  },
+  {
+    "question": "BFS 图遍历",
+    "lines": 57,
+    "syntax_ok": true,
+    "exec_ok": true,
+    "error": null,
+    "comment_lines": 3,
+    "docstrings": 2,
+    "type_annotations": 2
+  },
+  {
+    "question": "观察者模式 事件总线",
+    "lines": 45,
+    "syntax_ok": true,
+    "exec_ok": true,
+    "error": null,
+    "comment_lines": 5,
+    "docstrings": 4,
+    "type_annotations": 4
+  }
+]
