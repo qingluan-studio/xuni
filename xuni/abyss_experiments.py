@@ -80,15 +80,12 @@ from typing import List, Dict, Any, Optional
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from xuni.dimension_system import (
-    Dimension, DimensionGate, DimensionExplorer,
-    DimensionNature, DimensionSize, DimensionEntryShield,
+    Dimension, DimensionNature, DimensionSize,
     AbyssalCode, FusionShard,
 )
 from xuni.multiverse_resources import (
-    MultiverseResourceFactory, CultureMedium,
-    DimensionShard, DimensionCore, ResourceRarity,
+    MultiverseResourceFactory, DimensionShard, DimensionCore,
 )
-from xuni.culture_data import CULTURE_CATALOG
 
 
 def create_camouflage_probes(tamed_codes: List[AbyssalCode], count: int = 100) -> List[AbyssalCode]:
@@ -165,8 +162,7 @@ def analyze_probe_logs(probes: List[AbyssalCode]) -> Dict[str, Any]:
 
 def run_deep_dive_experiment():
     """伪装深潜实验——无盾 + 驯化探针 + 融合碎片触角"""
-    factory = MultiverseResourceFactory(level=5)
-    explorer = DimensionExplorer()
+    factory = MultiverseResourceFactory()
 
     print("=" * 70)
     print("  深渊核心区伪装深潜实验 (Mimic Deep Dive)")
@@ -220,11 +216,9 @@ def run_deep_dive_experiment():
         size=DimensionSize.STANDARD,
         core=core,
     )
-    # 关键: 不带盾进入！no_shield=True 意味着门不会创建盾
-    gate = dim.open_gate()
 
     # 注入伪装探针到维度内
-    print(f"    门: {gate.gate_id[:8]}")
+    print(f"    维度: {dim.name}")
     print(f"    注入 {len(probes)} 个伪装探针 + {len(antennas)} 个触角")
     print(f"    盾: 无 (naked entry)")
     for probe in probes:
@@ -232,7 +226,7 @@ def run_deep_dive_experiment():
     for antenna in antennas:
         dim._residents.append(antenna)
 
-    factory_deployed = dim.deploy_factory(factory, gate.gate_id)
+    factory_deployed = dim.deploy_factory(factory)
     print(f"    工厂已部署: {factory_deployed}")
 
     # === 第5步: 周期深入追踪 ===
@@ -313,9 +307,9 @@ def run_deep_dive_experiment():
             fs_count = sum(1 for r in non_abyss if isinstance(r, FusionShard))
             print(f"      融合碎片存活: {fs_count} (未被同化)")
 
-    # === 第8步: 关门 ===
-    print("\n  [8] 关门提取与封印")
-    extracted = dim.extract(gate.gate_id, limit=0)  # 提取全部
+    # === 第8步: 提取 ===
+    print("\n  [8] 提取产物")
+    extracted = dim.extract_products(count=99999)
     print(f"    提取: {len(extracted)} 产物")
 
     # 分类提取物
@@ -325,9 +319,6 @@ def run_deep_dive_experiment():
 
     print(f"    其中伪装探针: {len(extracted_probes)} (存活)")
     print(f"    非深渊代码: {len(extracted_other)}")
-
-    dim_sealed = dim.seal_gate(gate.gate_id, permanent=True)
-    print(f"    封印: {dim_sealed}")
 
     # === 最终报告 ===
     print("\n" + "=" * 70)
@@ -360,7 +351,6 @@ def run_deep_dive_experiment():
         'assimilation_rate': final_stats['assimilated'] / max(final_stats['total_probes'], 1),
         'defense_resistances': final_stats['defense_triggers'],
         'non_abyss_types': set(type(r).__name__ for r in extracted_other),
-        'dimension_sealed': dim_sealed,
     }
 
 
