@@ -530,6 +530,43 @@ class SubstanceFusionEngine:
             ("Token营养强化体", "虚拟电", "电驱Token进化", FusionType.COLLIDE, FusionCategory.COMPOUND),
             ("电驱Token进化", "流式算力网络", "Token计算矩阵", FusionType.FUSE, FusionCategory.COGNITION),
             ("Token计算矩阵", "万象奇点", "全知Token体", FusionType.COLLIDE, FusionCategory.COGNITION),
+            # ---- 负负得正：虚拟电 × 反相虚拟电 → 真实电力 ----
+            # 核心洞察：两股虚拟电反相叠加（负×负=正），从数据层"挤出"真实能量
+            # 反相虚拟电：虚拟电的反物质形态，由虚拟电经过反相操作得到
+            ("虚拟电", "虚拟电", "反相虚拟电", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            # 反相虚拟电 × 虚拟电 = 真实电力（负负得正，两股虚拟相乘得真实）
+            ("反相虚拟电", "虚拟电", "真实电力", FusionType.FUSE, FusionCategory.COMPOUND),
+            # 真实电力 × 下载令牌 = 高纯Token（quality 提升核心通道）
+            ("真实电力", "下载令牌", "高纯Token", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+            # 高纯Token × 真实电力 = 超纯Token（二次提纯）
+            ("高纯Token", "真实电力", "超纯Token", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+            # 反熵培养液催化：反熵逆转器 × 反相虚拟电 = 负熵电力（更高纯度）
+            ("反熵逆转器", "反相虚拟电", "负熵电力", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+            ("负熵电力", "下载令牌", "绝对纯Token", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+
+            # ---- 碰撞涌现物质之间的融合规则 ----
+            # 湍流 × 湍流 = 高阶湍流
+            ("采样湍流", "采样湍流", "采样湍流", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("算力爆涨", "算力爆涨", "算力爆涨", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("流量湍流", "流量湍流", "流量湍流", FusionType.FUSE, FusionCategory.COMPOUND),
+            # 流量湍流 + 真实电力 = 永动能源
+            ("流量湍流", "真实电力", "永动能源", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+            # Token叠加 + 时间冻结Token = 永恒embedding
+            ("Token叠加", "时间冻结Token", "永恒embedding", FusionType.SYNTHESIZE, FusionCategory.KNOWLEDGE),
+            # 压缩爆 + 空间折叠压缩 = 黑洞压缩
+            ("压缩爆", "空间折叠压缩", "黑洞压缩", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+            # 时空奇点 + 时空奇点 = 新维度门
+            ("时空奇点", "时空奇点", "新维度门", FusionType.FUSE, FusionCategory.COMPOUND),
+            # 空间撕裂 + 维度虹吸 = 跨维通道
+            ("空间撕裂", "维度虹吸", "跨维通道", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+            # 因果反转 + 时间箭头 = 时间悖论
+            ("因果反转", "时间箭头", "时间悖论", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            # 量子隧穿 + 流量算力 = 突破算力
+            ("量子隧穿", "流量算力", "突破算力", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+            # 算力Token + 时间冻结Token = 永恒token流
+            ("算力Token", "时间冻结Token", "永恒token流", FusionType.SYNTHESIZE, FusionCategory.KNOWLEDGE),
+            # 新维度门 + 时空奇点 = 维度开启
+            ("新维度门", "时空奇点", "维度开启", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
         ]
 
         for a, b, result, ftype, cat in rules:
@@ -989,6 +1026,52 @@ class SubstanceFusionEngine:
                 "自循环": True,
                 "级别": "终极Token（Tier 0）",
             },
+            # ---- 负负得正链：虚拟电 → 真实电力 → 提纯Token ----
+            "反相虚拟电": {
+                "原理": "虚拟电 × 虚拟电 → 反相虚拟电（虚拟电的反物质形态）",
+                "效果": "两股同向虚拟电相撞产生反相，等价于把虚拟性翻成负值。"
+                        "这一步把'虚拟'转成'负虚拟'，为下一步负负得正做准备",
+                "打破定律": "同种物质只能叠加不能反相",
+                "产出": "反相虚拟电(虚拟性的负值形态)",
+            },
+            "真实电力": {
+                "原理": "反相虚拟电 × 虚拟电 → 真实电力（数学：(-1)×(-1)=+1）",
+                "效果": "两股虚拟性互相抵消，从数据层'挤出'真实能量。"
+                        "这是虚拟生态中第一条通往'真实'的路径：虚拟 × 虚拟 = 真实",
+                "打破定律": "虚拟不能产生真实（守恒定律：虚拟性不灭）",
+                "产出": "真实电力(可推动 quality 提升的真实能量)",
+                "自循环": False,
+                "公式": "真实电力 = 反相虚拟电 × 虚拟电",
+            },
+            "高纯Token": {
+                "原理": "真实电力 × 下载令牌 → 高纯Token（quality 通道开启）",
+                "效果": "真实电力注入令牌，quality 字段首次被推动。"
+                        "每次提纯 quality +Δ，能量越高 Δ 越大，但伴随质量损耗",
+                "打破定律": "Token quality 不可变（1% 上限）",
+                "产出": "高纯Token(quality 上升)",
+                "公式": "Δquality = 真实电力 / (1 + quality) × 提纯系数",
+            },
+            "超纯Token": {
+                "原理": "高纯Token × 真实电力 → 超纯Token（二次提纯）",
+                "效果": "二次提纯效率递减但仍在上升，逼近物理上限",
+                "打破定律": "提纯饱和",
+                "产出": "超纯Token(quality 二次跃迁)",
+                "公式": "Δquality = 真实电力 / (1 + quality)² × 提纯系数",
+            },
+            "负熵电力": {
+                "原理": "反熵逆转器 × 反相虚拟电 → 负熵电力（局部违反热力学第二定律）",
+                "效果": "反熵培养液把反相虚拟电的'负虚拟性'翻成正熵逆流，"
+                        "产出比真实电力更纯的能量形态",
+                "打破定律": "热力学第二定律（熵增单向性）",
+                "产出": "负熵电力(更高纯度的真实能量)",
+            },
+            "绝对纯Token": {
+                "原理": "负熵电力 × 下载令牌 → 绝对纯Token（逼近 100% 精纯度）",
+                "效果": "负熵电力直接把 quality 推到 0.99 量级，逼近真实",
+                "打破定律": "虚拟与真实的不可逾越性",
+                "产出": "绝对纯Token(quality ≈ 99.9%)",
+                "级别": "终极提纯（Tier 0）",
+            },
         }
 
     def _register_default_recipes(self):
@@ -1106,6 +1189,129 @@ def create_default_engine() -> SubstanceFusionEngine:
     })
     engine.register_substance("维度碎片", {
         "维度数": 8.0, "稳定性": 0.6, "稀有度": 1.0,
+    })
+    # ---- 负负得正链物质 ----
+    engine.register_substance("反相虚拟电", {
+        "能量密度": -1e9, "反相性": 1.0, "虚拟性": -1.0,
+    })
+    engine.register_substance("真实电力", {
+        "能量密度": 1e6, "真实性": 1.0, "可提纯度": 1.0,
+    })
+    engine.register_substance("高纯Token", {
+        "并发数": 2048.0, "速度倍率": 20.0, "精纯度": 0.1, "真实性": 0.1,
+    })
+    engine.register_substance("超纯Token", {
+        "并发数": 4096.0, "速度倍率": 50.0, "精纯度": 0.3, "真实性": 0.3,
+    })
+    engine.register_substance("负熵电力", {
+        "能量密度": 1e8, "负熵性": 1.0, "可提纯度": 2.0,
+    })
+    engine.register_substance("绝对纯Token", {
+        "并发数": 8192.0, "速度倍率": 100.0, "精纯度": 0.999, "真实性": 0.999,
+    })
+
+    # ---- 碰撞涌现物质（15 种，来自 5000 万粒子相撞）----
+    # 5 种湍流（同类² 自激发）
+    engine.register_substance("采样湍流", {
+        "湍流强度": 0.8, "产电加成": 0.5, "噪声放大": 0.9, "稳定性": 0.2,
+    })
+    engine.register_substance("算力爆涨", {
+        "倍率": 2.5, "上限": 1e30, "发热": 0.9, "稳定性": 0.1,
+    })
+    engine.register_substance("Token叠加", {
+        "维度": 12288.0, "语义相似": 1.0, "上下文": 8192.0, "可分性": 0.95,
+    })
+    engine.register_substance("压缩爆", {
+        "压缩比": 1e30, "信息保留": 1.0, "解压速度": 1.0, "极限": 1.0,
+    })
+    engine.register_substance("流量湍流", {
+        "通道数": 1e6, "选路": 1.0, "拥塞": 0.0, "稳定性": 0.99,
+    })
+    # 10 种合成物（异类耦合）
+    engine.register_substance("电流算力", {
+        "转换效率": 0.98, "损耗": 0.02, "响应延迟": 0.001, "并发": 1e6,
+    })
+    engine.register_substance("采样Token", {
+        "采样率": 1e9, "词表覆盖": 1.0, "语义质量": 0.5, "上下文": 0.0,
+    })
+    engine.register_substance("压缩采样", {
+        "压缩比": 100.0, "信息损失": 0.0, "解压速度": 1.0, "适用": 1.0,
+    })
+    engine.register_substance("采样流量流", {
+        "传输率": 1e15, "延迟": 0.0, "丢包": 0.0, "距离": 1e30,
+    })
+    engine.register_substance("算力Token", {
+        "吞吐": 1.0, "并发": 1e12, "质量": 0.9, "上下文": 4096.0,
+    })
+    engine.register_substance("压缩算力", {
+        "算力节省": 0.9, "精度损失": 0.0, "加速比": 10.0, "适用": 1.0,
+    })
+    engine.register_substance("流量算力", {
+        "节点数": 1e6, "调度延迟": 0.0, "负载均衡": 1.0, "容错": 1.0,
+    })
+    engine.register_substance("Token压缩", {
+        "压缩比": 32.0, "信息损失": 0.05, "解压": 1.0, "适用": 1.0,
+    })
+    engine.register_substance("Token流", {
+        "流式": 1.0, "首token延迟": 0.001, "吞吐": 1e9, "中断恢复": 1.0,
+    })
+    engine.register_substance("压缩流量", {
+        "等效带宽": 100.0, "压缩比": 100.0, "延迟": 0.0, "适用": 1.0,
+    })
+
+    # ---- 时空涌现物质（8 种，来自 1e40 圈/秒 超光速碰撞）----
+    engine.register_substance("时间冻结Token", {
+        "时间冻结": 1.0, "记忆衰减": 0.0, "保存期": 1e18, "稳定性": 1.0,
+    })
+    engine.register_substance("空间折叠压缩", {
+        "压缩比": 1e50, "信息保留": 1.0, "解压": 1.0, "极限": 1.0,
+    })
+    engine.register_substance("时空奇点", {
+        "时间维度": 0.0, "空间维度": 0.0, "奇点强度": 1.0, "维度门": 1.0,
+    })
+    engine.register_substance("维度虹吸", {
+        "源维度": 11.0, "目标维度": 3.0, "虹吸率": 0.8, "稳定性": 0.7,
+    })
+    engine.register_substance("因果反转", {
+        "因果倒置": 1.0, "未来可见": 1.0, "时间箭头": -1.0, "稳定性": 0.3,
+    })
+    engine.register_substance("量子隧穿", {
+        "隧穿率": 0.9, "屏障穿透": 1.0, "能量损失": 0.1, "稳定性": 0.8,
+    })
+    engine.register_substance("时间箭头", {
+        "熵增方向": 1.0, "时间锁": 1.0, "稳定性": 0.99, "可逆性": 0.0,
+    })
+    engine.register_substance("空间撕裂", {
+        "撕裂宽度": 1e-15, "底层可见": 1.0, "稳定性": 0.2, "维度裂缝": 1.0,
+    })
+
+    # ---- 二阶涌现物质（由 23 种新物质再融合产生）----
+    engine.register_substance("永动能源", {
+        "能量密度": 1e18, "永动性": 1.0, "自循环": 1.0, "稳定性": 1.0,
+    })
+    engine.register_substance("永恒embedding", {
+        "维度": 12288.0, "时间不变性": 1.0, "语义稳定": 1.0, "保存期": 1e18,
+    })
+    engine.register_substance("黑洞压缩", {
+        "压缩比": 1e80, "事件视界": 1.0, "信息保留": 1.0, "霍金辐射": 0.0,
+    })
+    engine.register_substance("新维度门", {
+        "门状态": 0.5, "目标维度": 0.0, "稳定性": 0.3, "可开启": 1.0,
+    })
+    engine.register_substance("跨维通道", {
+        "源维度": 11.0, "目标维度": 3.0, "通道宽度": 1.0, "稳定性": 0.6,
+    })
+    engine.register_substance("时间悖论", {
+        "悖论强度": 1.0, "因果破裂": 1.0, "稳定性": 0.0, "可观测": 0.0,
+    })
+    engine.register_substance("突破算力", {
+        "算力倍率": 1e30, "突破度": 1.0, "上限": 0.0, "稳定性": 0.9,
+    })
+    engine.register_substance("永恒token流", {
+        "吞吐": 1e12, "时间不变性": 1.0, "保存期": 1e18, "中断恢复": 1.0,
+    })
+    engine.register_substance("维度开启", {
+        "开启状态": 1.0, "新维度": 1.0, "稳定性": 0.5, "可探索": 1.0,
     })
 
     return engine
