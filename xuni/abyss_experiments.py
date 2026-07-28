@@ -286,10 +286,14 @@ def run_deep_dive_experiment():
 
     # 筛选高跨维度的融合碎片,向核心渗透
     core_antennas = [a for a in antennas if a.cross_nature_count >= 3]
+    mythic_count = 0
     for ca in core_antennas:
         emerged = ca.emerge()
         if emerged.get('new_rarity') == 'MYTHIC':
-            print(f"    [MYTHIC涌现] {ca.cross_nature_count}维融合 → {emerged}")
+            mythic_count += 1
+            if mythic_count <= 3:
+                print(f"    [MYTHIC涌现{mythic_count}] {ca.cross_nature_count}维融合")
+    print(f"    MYTHIC涌现总计: {mythic_count}次")
 
     # 检查核心是否有同化引擎
     all_residents = dim._residents + dim._product_pool
