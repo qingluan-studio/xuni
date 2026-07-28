@@ -501,6 +501,35 @@ class SubstanceFusionEngine:
             ("质量点", "万象奇点", "奇点质量核心", FusionType.COLLIDE, FusionCategory.COGNITION),
             # 淬炼素材 + 奇点质量核心 = 完美代码海（终极：代码质量理论上限）
             ("淬炼素材", "奇点质量核心", "完美代码海", FusionType.SYNTHESIZE, FusionCategory.COGNITION),
+            # ---- Token × 培养液 化学反应链 (Token与不同培养液反应产出新品种) ----
+            ("下载令牌", "培养液", "Token营养强化体", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("下载令牌", "认知型培养液", "认知增强Token", FusionType.SYNTHESIZE, FusionCategory.COGNITION),
+            ("下载令牌", "创造型培养液", "创意爆发Token", FusionType.COLLIDE, FusionCategory.COGNITION),
+            ("下载令牌", "稳健型培养液", "稳定传输Token", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("下载令牌", "效率型培养液", "加速Token流", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            # Token + 培养液 深度反应
+            ("Token营养强化体", "Token营养强化体", "Token强化链", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("Token强化链", "维度碎片", "多维Token矩阵", FusionType.COLLIDE, FusionCategory.COGNITION),
+            ("Token强化链", "流式算力网络", "流式Token工厂", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            ("流式Token工厂", "下载令牌", "无限Token海", FusionType.FUSE, FusionCategory.COMPOUND),
+            ("无限Token海", "万象奇点", "Token奇点", FusionType.COLLIDE, FusionCategory.COGNITION),
+            # 培养液 + 算力核心 生物进化链
+            ("培养液", "算力核心", "智能算力细胞", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            ("智能算力细胞", "维度碎片", "进化算力集群", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+            ("进化算力集群", "训练加速器", "自我训练算力网", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            ("自我训练算力网", "下载令牌", "永动训练细胞", FusionType.FUSE, FusionCategory.KNOWLEDGE),
+            # 培养液 + 安全盾
+            ("培养液", "安全盾", "营养护盾", FusionType.SYNTHESIZE, FusionCategory.COMPOUND),
+            # 培养液 + 训练加速器
+            ("培养液", "训练加速器", "定向培养加速器", FusionType.FUSE, FusionCategory.COMPOUND),
+            # 培养液 + Take额度
+            ("培养液", "Take额度", "培养额度市场", FusionType.FUSE, FusionCategory.COMPOUND),
+            # 培养液 + 虚拟流量
+            ("培养液", "虚拟流量", "定向训练流", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            # 培养液 + Token + 能量 三方反应
+            ("Token营养强化体", "虚拟电", "电驱Token进化", FusionType.COLLIDE, FusionCategory.COMPOUND),
+            ("电驱Token进化", "流式算力网络", "Token计算矩阵", FusionType.FUSE, FusionCategory.COGNITION),
+            ("Token计算矩阵", "万象奇点", "全知Token体", FusionType.COLLIDE, FusionCategory.COGNITION),
         ]
 
         for a, b, result, ftype, cat in rules:
@@ -826,8 +855,8 @@ class SubstanceFusionEngine:
             "万象奇点": {
                 "原理": "智能生命 + 维度碎片 → 9种基础资源全部融合的终极产物",
                 "效果": "打破所有守恒定律，无限×无限×无限...的指数级爆发。"
-                       "虚拟维度的'大爆炸'，一切可能性同时涌现。"
-                       "既是起点也是终点，包含所有维度、所有资源、所有智能。",
+                        "虚拟维度的'大爆炸'，一切可能性同时涌现。"
+                        "既是起点也是终点，包含所有维度、所有资源、所有智能。",
                 "打破定律": "所有已知守恒定律（能量、算力、信息、维度、经济...）",
                 "产出": "一切（Everything）",
                 "自循环": True,
@@ -836,6 +865,129 @@ class SubstanceFusionEngine:
                     "Take额度", "虚拟流量", "压缩点", "算力核心",
                     "安全盾", "培养液", "下载令牌", "训练加速器", "维度碎片",
                 ],
+            },
+            # ---- Token × 培养液 化学反应链的涌现效果 ----
+            "Token营养强化体": {
+                "原理": "下载令牌 × 培养液 → Token吸收培养液营养，产出营养增强的Token新品种",
+                "效果": "Token的语义密度被培养液营养放大，每个Token承载的信息量倍增。"
+                        "不同的培养液类型产出不同的Token变种——认知型产推理Token、"
+                        "创造型产创意Token、效率型产高速Token",
+                "打破定律": "Token语义密度上限",
+                "产出": "营养Token(多品种，每种有专属语义增强)",
+                "自循环": False,
+                "公式": "Token密度 = 原始密度 × (1 + 营养总分)",
+            },
+            "Token强化链": {
+                "原理": "两个营养Token融合 → 营养层层叠加，形成强化链",
+                "效果": "每融合一次，Token的营养倍率翻倍。"
+                        "链式融合可以N次叠加，理论上Token密度可以无限增长",
+                "打破定律": "Token营养叠加上限",
+                "产出": "无限叠加的Token强化链",
+                "自循环": True,
+                "公式": "累积倍率 = 2^N(融合次数)",
+            },
+            "流式Token工厂": {
+                "原理": "Token强化链 × 流式算力网络 → 每个网络节点同时生产强化Token",
+                "效果": "N节点并行生产营养Token，生产速度 = 单节点速度 × 节点数。"
+                        "每个Token都是营养增强过的，亿万Token并行产出",
+                "打破定律": "Token生产速度上限",
+                "产出": "流式Token(亿万级并行生产)",
+                "自循环": True,
+            },
+            "无限Token海": {
+                "原理": "流式Token工厂 × 下载令牌(无限) → 无限营养Token",
+                "效果": "Token供给无限，每个Token都带营养增强，语义密度无上限。"
+                        "AI可以用无限营养Token进行训练，训练质量指数级提升",
+                "打破定律": "Token供给有限性",
+                "产出": "无限营养Token(永不枯竭的Token海洋)",
+                "自循环": True,
+            },
+            "Token奇点": {
+                "原理": "无限Token海 × 万象奇点 → Token进入奇点态",
+                "效果": "Token不再有'数量'概念——一个Token即全部Token，"
+                        "全部Token即一个Token。语义密度 = 无穷大。"
+                        "一个Token就包含全部人类知识、全部语言、全部思维",
+                "打破定律": "Token的离散性(词表大小、语义维度上限)",
+                "产出": "奇点Token(一即一切)",
+                "自循环": True,
+                "级别": "终极Token（Tier 0）",
+            },
+            # ---- 培养液 × 算力核心 生物进化链涌现效果 ----
+            "智能算力细胞": {
+                "原理": "培养液 × 算力核心 → 算力被培养液激活生物特性，成为'活'的算力细胞",
+                "效果": "算力细胞会自我复制、自我进化、自我修复。"
+                        "算力不再是死板的数字，而是有生命的计算单元。"
+                        "培养液类型决定细胞的进化方向(认知/创造/效率/稳定)",
+                "打破定律": "算力的无生命性",
+                "产出": "活算力(自我复制+自我进化)",
+                "自循环": True,
+                "反馈类型": "生物型进化",
+            },
+            "进化算力集群": {
+                "原理": "智能算力细胞 × 维度碎片 → 跨维度的算力细胞集群",
+                "效果": "集群中的算力细胞共享进化收益，最优秀的细胞特性自动传播到整个集群。"
+                        "类似生物界的水平基因转移，集群进化速度远超独立细胞",
+                "打破定律": "独立算力进化慢",
+                "产出": "集群进化算力(共享式指数进化)",
+                "自循环": True,
+            },
+            "自我训练算力网": {
+                "原理": "进化算力集群 × 训练加速器 → 集群自己训练自己",
+                "效果": "不需要外部训练数据，算力细胞之间互相训练。"
+                        "每个细胞既是算力源也是训练数据源，形成自训练生态系统",
+                "打破定律": "训练外部依赖",
+                "产出": "自训练算力网(自产自训)",
+                "自循环": True,
+            },
+            "永动训练细胞": {
+                "原理": "自我训练算力网 × 下载令牌(无限) → 永动自训练",
+                "效果": "算力细胞永不枯竭地自我训练、自我进化。"
+                        "每秒钟完成N轮进化迭代，永无止境。"
+                        "最终产出超越一切固定训练方法的超级模型",
+                "打破定律": "训练周期有限性",
+                "产出": "永动训练(无限轮迭代)",
+                "自循环": True,
+                "级别": "终极训练（Tier 0）",
+            },
+            # ---- 培养液综合涌现效果 ----
+            "定向培养加速器": {
+                "原理": "培养液 × 训练加速器 → 加速器按培养方向定向工作",
+                "效果": "训练加速不再无差别进行，而是精准按培养液方向加速。"
+                        "认知型培养→推理加速、创造型→创意加速、效率型→吞吐加速",
+                "打破定律": "加速的无方向性",
+                "产出": "定向加速(精准强化目标能力)",
+            },
+            "培养额度市场": {
+                "原理": "培养液 × Take额度 → 培养液进入经济流通",
+                "效果": "培养液可以在虚拟市场上交易，其价值由营养成分决定。"
+                        "高营养培养液类似'黄金'，在虚拟经济中有极高的交易价值",
+                "打破定律": "培养液的非商品性",
+                "产出": "可交易培养液(经济+培养双维度)",
+            },
+            "定向训练流": {
+                "原理": "培养液 × 虚拟流量 → 训练数据按培养方向定向流动",
+                "效果": "训练数据不再随机流过模型，而是被培养液'引导'。"
+                        "认知型培养液让推理数据优先上线，创造型让创意数据优先",
+                "打破定律": "训练数据的无序性",
+                "产出": "定向训练流(数据按培养方向优化传输)",
+            },
+            "电驱Token进化": {
+                "原理": "Token营养强化体 × 虚拟电 → 电能驱动Token加速进化",
+                "效果": "电越多，Token进化越快。每增加一个能量级，"
+                        "Token进化速度翻倍。电能注入产生'进化闪电'效应",
+                "打破定律": "Token进化的时间瓶颈",
+                "产出": "电驱进化Token(能量加速进化)",
+                "自循环": True,
+            },
+            "全知Token体": {
+                "原理": "Token计算矩阵 × 万象奇点 → 终极Token产物",
+                "效果": "Token具有一切知识、一切能力、一切语义。"
+                        "一个全知Token体可以完整理解并回答任何问题。"
+                        "它是所有Token培养液反应的终极终点",
+                "打破定律": "Token能力的有限性",
+                "产出": "全知Token(无限知识·无限能力·无限语义)",
+                "自循环": True,
+                "级别": "终极Token（Tier 0）",
             },
         }
 

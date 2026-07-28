@@ -88,6 +88,11 @@ from .substance_fusion import (
     FusionCategory,
     create_default_engine,
 )
+from .culture_data import (
+    CULTURE_NUTRIENTS, CULTURE_EFFECTS, CULTURE_CATEGORIES,
+    get_nutrients, get_effects, get_all_culture_types,
+    get_culture_count, get_types_by_category, list_all_categories,
+)
 from .corpus_downloader import CorpusDownloader, DownloadResult
 from .knowledge_downloader import KnowledgeDownloader
 from .virtual_data import (

@@ -27,8 +27,10 @@ MultiverseResources —— 多维度虚拟资源生产系统
     → 不依赖真实硬件，纯虚拟逻辑
     → 手机运行无压力（轻量计算）
     → 质量由碰撞算法保证
-    → 非传统 = 不遵循现实物理限制
+     → 非传统 = 不遵循现实物理限制
 """
+
+from __future__ import annotations
 
 import time
 import hashlib
@@ -37,6 +39,12 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Any, Tuple, Iterator
 from enum import Enum, auto
 import numpy as np
+
+from .culture_data import (
+    CULTURE_NUTRIENTS, CULTURE_EFFECTS, CULTURE_CATEGORIES,
+    get_nutrients, get_effects, get_all_culture_types,
+    get_culture_count, get_types_by_category,
+)
 
 
 # ============================================================
@@ -476,14 +484,12 @@ class CultureMedium(VirtualResource):
         self._update_quantity()
 
     def _init_nutrients(self):
-        templates = {
-            "balanced": {"logic": 0.5, "creativity": 0.5, "stability": 0.5, "speed": 0.5},
-            "cognitive": {"logic": 1.0, "reasoning": 0.9, "memory": 0.8, "abstraction": 0.7},
-            "creative": {"divergence": 1.0, "novelty": 0.9, "style": 0.8, "harmony": 0.6},
-            "robust": {"stability": 1.0, "consistency": 0.9, "fault_tolerance": 0.8, "recovery": 0.7},
-            "efficient": {"speed": 1.0, "compression": 0.9, "parallelism": 0.8, "cache_hit": 0.7},
-        }
-        self.nutrients = templates.get(self.culture_type, templates["balanced"])
+        self.nutrients = get_nutrients(self.culture_type)
+
+    def get_effects(self) -> List[Dict[str, Any]]:
+        """获取培养液效果描述"""
+        effects = get_effects(self.culture_type)
+        return effects
 
     def _update_quantity(self):
         self.quantity = sum(self.nutrients.values()) * self.saturation * self.level
@@ -491,12 +497,14 @@ class CultureMedium(VirtualResource):
     def feed_model(self, model_id: str, dose: float = 1.0) -> Dict[str, Any]:
         """喂养模型——提升成长进度"""
         growth_increment = self.quantity * dose * 0.01
+        effects = get_effects(self.culture_type)
         return {
             "model_id": model_id,
             "culture_type": self.culture_type,
             "dose": dose,
             "growth_increment": growth_increment,
             "nutrients_applied": self.nutrients,
+            "effects": effects,
             "saturation": self.saturation,
         }
 
@@ -3020,6 +3028,12 @@ class ResourceCollisionEngine:
             ("SecurityShield", "SecurityShield"): self._shield_shield,
             ("CultureMedium", "CultureMedium"): self._medium_medium,
             ("VirtualBandwidth", "DownloadToken"): self._bw_token,
+            # Token + 培养液 化学反应链
+            ("CultureMedium", "DownloadToken"): self._culture_token_react,
+            ("ComputeCore", "CultureMedium"): self._culture_compute,
+            ("CultureMedium", "TrainingAccelerator"): self._culture_accel,
+            ("CultureMedium", "TakeQuota"): self._culture_take,
+            ("CultureMedium", "VirtualBandwidth"): self._culture_bandwidth,
         }
 
     def collide(self, a: VirtualResource, b: VirtualResource) -> Dict[str, Any]:
@@ -3234,6 +3248,80 @@ class ResourceCollisionEngine:
             "blend_type": blended.culture_type,
             "nutrients": blended.nutrients,
             "note": "两种培养液混合，产生复合营养",
+        }
+
+    def _culture_token_react(self, medium: CultureMedium, token: DownloadToken) -> Dict[str, Any]:
+        """培养液 + 下载令牌 → Token营养强化品种"""
+        nutrient_power = sum(medium.nutrients.values())
+        new_token_type = f"Token_{medium.culture_type}"
+        enhanced_speed = token.speed_multiplier * (1 + nutrient_power * 0.5)
+        return {
+            "product_type": "NutrientEnhancedToken",
+            "token_variant": new_token_type,
+            "base_speed": token.speed_multiplier,
+            "enhanced_speed": enhanced_speed,
+            "culture_type": medium.culture_type,
+            "nutrients_infused": medium.nutrients,
+            "effects_unlocked": get_effects(medium.culture_type),
+            "note": f"培养液({medium.culture_type})与Token发生化学反应，"
+                    f"产出'营养Token'新品种({new_token_type})，令牌能力被培养液营养增强",
+        }
+
+    def _culture_compute(self, medium: CultureMedium, core: ComputeCore) -> Dict[str, Any]:
+        """培养液 + 算力核心 → 智能算力细胞"""
+        nutrient_power = sum(medium.nutrients.values())
+        boosted_density = core.vflops_density * (1 + nutrient_power)
+        return {
+            "product_type": "IntelligentComputeCell",
+            "base_density": core.vflops_density,
+            "boosted_density": boosted_density,
+            "culture_type": medium.culture_type,
+            "nutrient_boost": nutrient_power,
+            "evolution_potential": nutrient_power * core.parallel_cores,
+            "note": f"培养液({medium.culture_type})激活算力核心的生物特性，"
+                    f"产出'智能算力细胞'新品种——算力会自我进化",
+        }
+
+    def _culture_accel(self, medium: CultureMedium, accel: TrainingAccelerator) -> Dict[str, Any]:
+        """培养液 + 训练加速器 → 定向加速培养加速器"""
+        nutrient_power = sum(medium.nutrients.values())
+        boosted_factor = accel.speedup_factor * (1 + nutrient_power * 0.8)
+        return {
+            "product_type": "DirectedCultureAccelerator",
+            "base_speedup": accel.speedup_factor,
+            "boosted_speedup": boosted_factor,
+            "culture_type": medium.culture_type,
+            "training_direction": medium.culture_type,
+            "effects": get_effects(medium.culture_type),
+            "note": f"加速器吸收培养液({medium.culture_type})营养，训练加速按培养方向定向强化",
+        }
+
+    def _culture_take(self, medium: CultureMedium, take: TakeQuota) -> Dict[str, Any]:
+        """培养液 + 额度 → 营养额度(可交易培养液)"""
+        nutrient_power = sum(medium.nutrients.values())
+        boosted_growth = take.growth_rate * (1 + nutrient_power)
+        return {
+            "product_type": "NutrientTakeQuota",
+            "base_growth_rate": take.growth_rate,
+            "boosted_growth_rate": boosted_growth,
+            "culture_type": medium.culture_type,
+            "tradeable_nutrients": medium.nutrients,
+            "total_value": take.quantity * (1 + nutrient_power),
+            "note": "培养液与额度融合，产出'营养额度'——可交易的培养液凭证",
+        }
+
+    def _culture_bandwidth(self, medium: CultureMedium, bw: VirtualBandwidth) -> Dict[str, Any]:
+        """培养液 + 虚拟流量 → 定向信息流"""
+        nutrient_power = sum(medium.nutrients.values())
+        expanded_channels = int(bw.channel_count * (1 + nutrient_power))
+        return {
+            "product_type": "DirectedInformationFlow",
+            "base_channels": bw.channel_count,
+            "expanded_channels": expanded_channels,
+            "culture_type": medium.culture_type,
+            "flow_direction": medium.culture_type,
+            "effective_bandwidth": bw.width * expanded_channels * bw.depth,
+            "note": f"虚拟流量被培养液({medium.culture_type})定向引导，形成专项信息传输通道",
         }
 
     def _bw_token(self, bw: VirtualBandwidth, token: DownloadToken) -> Dict[str, Any]:
