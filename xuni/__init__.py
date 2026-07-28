@@ -138,6 +138,14 @@ from .code_quality import (
 )
 from .codebase_scanner import CodebaseScanner
 from .black_hole_trainer import BlackHoleTrainer
+from .dimension_system import (
+    DimensionNature, DimensionSize,
+    VulnerabilitySpore, PenetrationProbe, ExploitPattern,
+    AlgorithmCrystal, ArchitectureBlueprint, OptimizationEnzyme,
+    IdeaSpark, EntropyShard, VoidEssence, MirrorResource,
+    AbyssalCode, FusionShard, DimensionEntryShield,
+    Dimension, DimensionGate, DimensionExplorer,
+)
 
 __all__ = [
     "XuniSampler",
@@ -309,4 +317,22 @@ __all__ = [
     "RealCodeRefiner",
     "CodebaseScanner",
     "BlackHoleTrainer",
+    "DimensionNature",
+    "DimensionSize",
+    "VulnerabilitySpore",
+    "PenetrationProbe",
+    "ExploitPattern",
+    "AlgorithmCrystal",
+    "ArchitectureBlueprint",
+    "OptimizationEnzyme",
+    "IdeaSpark",
+    "EntropyShard",
+    "VoidEssence",
+    "MirrorResource",
+    "AbyssalCode",
+    "FusionShard",
+    "DimensionEntryShield",
+    "Dimension",
+    "DimensionGate",
+    "DimensionExplorer",
 ]
