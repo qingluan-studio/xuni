@@ -711,6 +711,11 @@ class Dimension:
     def factory_count(self) -> int:
         return len(self._factories)
 
+    def inject_culture_boost(self, culture) -> None:
+        """培养液注入提升稳定性"""
+        boost = getattr(culture, 'level', 1) * 0.05
+        self.stability = min(1.0, self.stability + boost)
+
     @property
     def total_power(self) -> float:
         return sum(r.power_score for r in self._residents) + sum(p.power_score for p in self._product_pool)
