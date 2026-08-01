@@ -1,0 +1,8 @@
+{
+  "version": "v6",
+  "fragments_learned": 4000000,
+  "active_experts": 11,
+  "training_time": 3.48,
+  "epochs": 200000,
+  "focus": "全方位：代码+中文对话+音乐+多模态+通用知识"
+}

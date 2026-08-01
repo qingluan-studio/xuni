@@ -1,0 +1,254 @@
+{
+  "version": "v6",
+  "focus": "全方位：代码+中文对话+音乐+多模态+通用知识",
+  "repo_stats": [
+    {
+      "desc": "CPython 标准库",
+      "files": 868,
+      "frags": 15074,
+      "ok": true
+    },
+    {
+      "desc": "Django Web框架",
+      "files": 758,
+      "frags": 7485,
+      "ok": true
+    },
+    {
+      "desc": "scikit-learn ML",
+      "files": 325,
+      "frags": 4376,
+      "ok": true
+    },
+    {
+      "desc": "pandas 数据科学",
+      "files": 284,
+      "frags": 6455,
+      "ok": true
+    },
+    {
+      "desc": "pydantic 验证",
+      "files": 110,
+      "frags": 1959,
+      "ok": true
+    },
+    {
+      "desc": "flask Web",
+      "files": 23,
+      "frags": 354,
+      "ok": true
+    },
+    {
+      "desc": "click CLI",
+      "files": 17,
+      "frags": 499,
+      "ok": true
+    },
+    {
+      "desc": "requests HTTP",
+      "files": 20,
+      "frags": 233,
+      "ok": true
+    },
+    {
+      "desc": "numpy 数值计算",
+      "files": 199,
+      "frags": 2475,
+      "ok": true
+    },
+    {
+      "desc": "scipy 科学计算",
+      "files": 570,
+      "frags": 7159,
+      "ok": true
+    },
+    {
+      "desc": "matplotlib 可视化",
+      "files": 265,
+      "frags": 5923,
+      "ok": true
+    },
+    {
+      "desc": "SQLAlchemy ORM",
+      "files": 269,
+      "frags": 9502,
+      "ok": true
+    },
+    {
+      "desc": "Scrapy 爬虫",
+      "files": 171,
+      "frags": 1379,
+      "ok": true
+    },
+    {
+      "desc": "Celery 任务队列",
+      "files": 312,
+      "frags": 5561,
+      "ok": true
+    },
+    {
+      "desc": "httpx HTTP客户端",
+      "files": 23,
+      "frags": 379,
+      "ok": true
+    },
+    {
+      "desc": "uvicorn ASGI服务器",
+      "files": 36,
+      "frags": 275,
+      "ok": true
+    }
+  ],
+  "code_fragments": 69775,
+  "builtin_corpus": {
+    "chinese_chat": 136,
+    "music": 98,
+    "multimodal": 83,
+    "general": 79
+  },
+  "total_fragments": 70171,
+  "epochs": 200000,
+  "batch_size": 20,
+  "fragments_learned": 4000000,
+  "active_experts": 11,
+  "expert_load": {
+    "合鸣自述者": 4,
+    "混合专家": 4,
+    "中文对话": 25,
+    "中文知识": 25,
+    "音乐理论": 30,
+    "多模态生成": 20,
+    "虚拟电场": 3,
+    "超混沌采样": 3,
+    "双态系统": 2,
+    "虚拟算力": 2,
+    "通用兜底": 4000010
+  },
+  "training_time": 3.48,
+  "growth_log": [
+    {
+      "epoch": 20000,
+      "learned": 400000,
+      "active": 11,
+      "avg_load": 36375.3,
+      "elapsed": 0.37
+    },
+    {
+      "epoch": 40000,
+      "learned": 800000,
+      "active": 11,
+      "avg_load": 72738.9,
+      "elapsed": 0.72
+    },
+    {
+      "epoch": 60000,
+      "learned": 1200000,
+      "active": 11,
+      "avg_load": 109102.5,
+      "elapsed": 1.07
+    },
+    {
+      "epoch": 80000,
+      "learned": 1600000,
+      "active": 11,
+      "avg_load": 145466.2,
+      "elapsed": 1.41
+    },
+    {
+      "epoch": 100000,
+      "learned": 2000000,
+      "active": 11,
+      "avg_load": 181829.8,
+      "elapsed": 1.76
+    },
+    {
+      "epoch": 120000,
+      "learned": 2400000,
+      "active": 11,
+      "avg_load": 218193.5,
+      "elapsed": 2.1
+    },
+    {
+      "epoch": 140000,
+      "learned": 2800000,
+      "active": 11,
+      "avg_load": 254557.1,
+      "elapsed": 2.45
+    },
+    {
+      "epoch": 160000,
+      "learned": 3200000,
+      "active": 11,
+      "avg_load": 290920.7,
+      "elapsed": 2.79
+    },
+    {
+      "epoch": 180000,
+      "learned": 3600000,
+      "active": 11,
+      "avg_load": 327284.4,
+      "elapsed": 3.13
+    },
+    {
+      "epoch": 200000,
+      "learned": 4000000,
+      "active": 11,
+      "avg_load": 363648.0,
+      "elapsed": 3.48
+    }
+  ],
+  "improved": 7,
+  "total_compared": 23,
+  "category_scores": {
+    "中文对话": {
+      "improved": 1,
+      "total": 4
+    },
+    "中文知识": {
+      "improved": 1,
+      "total": 3
+    },
+    "音乐": {
+      "improved": 1,
+      "total": 5
+    },
+    "多模态": {
+      "improved": 0,
+      "total": 3
+    },
+    "代码": {
+      "improved": 4,
+      "total": 5
+    },
+    "通用": {
+      "improved": 0,
+      "total": 3
+    }
+  },
+  "comparison_samples": {
+    "你好": {
+      "before": "你好！很高兴见到你，有什么我可以帮忙的吗？您好！我是合鸣，一个虚拟大模型，可以和你聊天、写代码、聊音乐",
+      "after": "你好！很高兴见到你，有什么我可以帮忙的吗？您好！我是合鸣，一个虚拟大模型，可以和你聊天、写代码、聊音乐"
+    },
+    "今天天气怎么样": {
+      "before": "今天天气真不错，适合出去走走，晚上好，今天过得怎么样？早上好！今天也是充满活力的一天呢，这个问题问得好，让我想想怎么回答",
+      "after": "晚上好，今天过得怎么样？今天天气真不错，适合出去走走，早上好！今天也是充满活力的一天呢，这个问题问得好，让我想想怎么回答"
+    },
+    "你叫什么名字": {
+      "before": "我的名字叫合鸣（Harmonia），取「众声共振、和而不同」之意，周末打算做什么？可以出去放松一下",
+      "after": "我的名字叫合鸣（Harmonia），取「众声共振、和而不同」之意，你好！很高兴见到你，有什么我可以帮忙的吗？"
+    },
+    "谢谢你的帮助": {
+      "before": "谢谢你的夸奖，我会继续努力变得更好，你说得有道理，我赞同你的看法，我理解你的感受，这确实不容易",
+      "after": "谢谢你的夸奖，我会继续努力变得更好，我理解你的感受，这确实不容易，你说得有道理，我赞同你的看法"
+    },
+    "画蛇添足是什么意思": {
+      "before": "周末打算做什么？可以出去放松一下，我觉得这个话题很有意思，值得深入探讨，「画蛇添足」比喻做了多余的事，反而把事情弄糟",
+      "after": "你好！很高兴见到你，有什么我可以帮忙的吗？我觉得这个话题很有意思，值得深入探讨"
+    },
+    "唐诗有什么特点": {
+      "before": "唐诗是中国文学的巅峰，李白被称为「诗仙」，杜甫被称为「诗圣」",
+      "after": "唐诗是中国文学的巅峰，李白被称为「诗仙」，杜甫被称为「诗圣」"
+    }
+  }
+}
