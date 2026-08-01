@@ -1,0 +1,8 @@
+{
+  "version": "v9",
+  "fragments_learned": 98990,
+  "active_experts": 11,
+  "training_time": 3047.57,
+  "epochs": 500000,
+  "focus": "中文觉醒：情感对话+日常交流+中文知识"
+}

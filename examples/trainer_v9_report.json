@@ -1,0 +1,193 @@
+{
+  "version": "v9",
+  "focus": "中文觉醒：情感对话+日常交流+中文知识+500000轮",
+  "new_experts": [
+    "情感对话",
+    "中文知识"
+  ],
+  "expert_count": 11,
+  "expert_corpus": 258,
+  "extra_chinese": 40,
+  "repo_stats": [
+    {
+      "desc": "CPython",
+      "files": 1500,
+      "frags": 18100,
+      "ok": true
+    },
+    {
+      "desc": "Django",
+      "files": 791,
+      "frags": 7782,
+      "ok": true
+    },
+    {
+      "desc": "sklearn",
+      "files": 341,
+      "frags": 4510,
+      "ok": true
+    },
+    {
+      "desc": "pandas",
+      "files": 316,
+      "frags": 6675,
+      "ok": true
+    },
+    {
+      "desc": "Transformers",
+      "files": 1500,
+      "frags": 15811,
+      "ok": true
+    },
+    {
+      "desc": "PyTorch",
+      "files": 1500,
+      "frags": 27774,
+      "ok": true
+    },
+    {
+      "desc": "FastAPI",
+      "files": 438,
+      "frags": 1171,
+      "ok": true
+    },
+    {
+      "desc": "LangChain",
+      "files": 800,
+      "frags": 2843,
+      "ok": true
+    },
+    {
+      "desc": "Rust",
+      "files": 500,
+      "frags": 7401,
+      "ok": true
+    },
+    {
+      "desc": "Go",
+      "files": 500,
+      "frags": 7089,
+      "ok": true
+    },
+    {
+      "desc": "Node.js",
+      "files": 500,
+      "frags": 1232,
+      "ok": true
+    }
+  ],
+  "total_fragments": 103409,
+  "epochs": 500000,
+  "fragments_learned": 98990,
+  "active_experts": 11,
+  "expert_load": {
+    "情感对话": 110,
+    "中文知识": 85,
+    "合鸣自述者": 6,
+    "AI造物哲学": 10,
+    "硬件框架": 8,
+    "创意工具全栈": 8,
+    "行业应用": 7,
+    "音乐理论": 6,
+    "多模态生成": 6,
+    "混合专家": 5,
+    "通用兜底": 98997
+  },
+  "training_time": 3047.57,
+  "growth_log": [
+    {
+      "epoch": 50000,
+      "learned": 98987,
+      "active": 11,
+      "avg_load": 9022.3,
+      "elapsed": 274.21
+    },
+    {
+      "epoch": 100000,
+      "learned": 98990,
+      "active": 11,
+      "avg_load": 9022.5,
+      "elapsed": 580.12
+    },
+    {
+      "epoch": 150000,
+      "learned": 98990,
+      "active": 11,
+      "avg_load": 9022.5,
+      "elapsed": 887.97
+    },
+    {
+      "epoch": 200000,
+      "learned": 98990,
+      "active": 11,
+      "avg_load": 9022.5,
+      "elapsed": 1195.0
+    },
+    {
+      "epoch": 250000,
+      "learned": 98990,
+      "active": 11,
+      "avg_load": 9022.5,
+      "elapsed": 1500.71
+    },
+    {
+      "epoch": 300000,
+      "learned": 98990,
+      "active": 11,
+      "avg_load": 9022.5,
+      "elapsed": 1809.92
+    },
+    {
+      "epoch": 350000,
+      "learned": 98990,
+      "active": 11,
+      "avg_load": 9022.5,
+      "elapsed": 2118.92
+    },
+    {
+      "epoch": 400000,
+      "learned": 98990,
+      "active": 11,
+      "avg_load": 9022.5,
+      "elapsed": 2427.28
+    },
+    {
+      "epoch": 450000,
+      "learned": 98990,
+      "active": 11,
+      "avg_load": 9022.5,
+      "elapsed": 2738.1
+    },
+    {
+      "epoch": 500000,
+      "learned": 98990,
+      "active": 11,
+      "avg_load": 9022.5,
+      "elapsed": 3047.57
+    }
+  ],
+  "improved": 3,
+  "total_compared": 23,
+  "category_scores": {
+    "情感对话": {
+      "improved": 1,
+      "total": 10
+    },
+    "中文知识": {
+      "improved": 1,
+      "total": 5
+    },
+    "日常对话": {
+      "improved": 0,
+      "total": 4
+    },
+    "代码生成": {
+      "improved": 1,
+      "total": 2
+    },
+    "其他领域": {
+      "improved": 0,
+      "total": 2
+    }
+  }
+}
