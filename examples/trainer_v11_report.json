@@ -1,0 +1,460 @@
+{
+  "version": "v11",
+  "focus": "工厂全开：黑洞+永动+知识下载 / 700000轮",
+  "new_modules": [
+    "BlackHoleTrainer",
+    "PerpetualTrainingEngine",
+    "KnowledgeDownloader"
+  ],
+  "new_experts": [
+    "生活百科",
+    "跨领域融合",
+    "黑洞压缩"
+  ],
+  "expert_count": 18,
+  "blackhole": {
+    "absorbed": 341733,
+    "kept": 297588,
+    "ejected": 44145,
+    "compression": "11,484x",
+    "quality": 0.999
+  },
+  "knowledge_downloader": {
+    "domains": 32,
+    "total_texts": 64000,
+    "domain_stats": [
+      {
+        "domain": "math",
+        "count": 2000,
+        "avg_quality": 0.8033,
+        "speed": 10000.0
+      },
+      {
+        "domain": "physics",
+        "count": 2000,
+        "avg_quality": 0.8181,
+        "speed": 10000.0
+      },
+      {
+        "domain": "chemistry",
+        "count": 2000,
+        "avg_quality": 0.805,
+        "speed": 10000.0
+      },
+      {
+        "domain": "biology",
+        "count": 2000,
+        "avg_quality": 0.8099,
+        "speed": 10000.0
+      },
+      {
+        "domain": "medicine",
+        "count": 2000,
+        "avg_quality": 0.8245,
+        "speed": 10000.0
+      },
+      {
+        "domain": "law",
+        "count": 2000,
+        "avg_quality": 0.7924,
+        "speed": 10000.0
+      },
+      {
+        "domain": "finance",
+        "count": 2000,
+        "avg_quality": 0.7963,
+        "speed": 10000.0
+      },
+      {
+        "domain": "philosophy",
+        "count": 2000,
+        "avg_quality": 0.7816,
+        "speed": 10000.0
+      },
+      {
+        "domain": "computer_science",
+        "count": 2000,
+        "avg_quality": 0.827,
+        "speed": 10000.0
+      },
+      {
+        "domain": "engineering",
+        "count": 2000,
+        "avg_quality": 0.806,
+        "speed": 10000.0
+      },
+      {
+        "domain": "music_theory",
+        "count": 2000,
+        "avg_quality": 0.7924,
+        "speed": 10000.0
+      },
+      {
+        "domain": "music_composition",
+        "count": 2000,
+        "avg_quality": 0.7856,
+        "speed": 10000.0
+      },
+      {
+        "domain": "music_production",
+        "count": 2000,
+        "avg_quality": 0.7974,
+        "speed": 10000.0
+      },
+      {
+        "domain": "music_history",
+        "count": 2000,
+        "avg_quality": 0.7811,
+        "speed": 10000.0
+      },
+      {
+        "domain": "music_instruments",
+        "count": 2000,
+        "avg_quality": 0.7925,
+        "speed": 10000.0
+      },
+      {
+        "domain": "music_genres",
+        "count": 2000,
+        "avg_quality": 0.7876,
+        "speed": 10000.0
+      },
+      {
+        "domain": "video_production",
+        "count": 2000,
+        "avg_quality": 0.7965,
+        "speed": 10000.0
+      },
+      {
+        "domain": "video_editing",
+        "count": 2000,
+        "avg_quality": 0.7928,
+        "speed": 10000.0
+      },
+      {
+        "domain": "cinematography",
+        "count": 2000,
+        "avg_quality": 0.803,
+        "speed": 10000.0
+      },
+      {
+        "domain": "animation",
+        "count": 2000,
+        "avg_quality": 0.797,
+        "speed": 10000.0
+      },
+      {
+        "domain": "visual_effects",
+        "count": 2000,
+        "avg_quality": 0.8037,
+        "speed": 10000.0
+      },
+      {
+        "domain": "color_grading",
+        "count": 2000,
+        "avg_quality": 0.7916,
+        "speed": 10000.0
+      },
+      {
+        "domain": "cooking",
+        "count": 2000,
+        "avg_quality": 0.7886,
+        "speed": 10000.0
+      },
+      {
+        "domain": "fitness",
+        "count": 2000,
+        "avg_quality": 0.7931,
+        "speed": 10000.0
+      },
+      {
+        "domain": "travel",
+        "count": 2000,
+        "avg_quality": 0.7773,
+        "speed": 10000.0
+      },
+      {
+        "domain": "psychology",
+        "count": 2000,
+        "avg_quality": 0.7934,
+        "speed": 10000.0
+      },
+      {
+        "domain": "communication",
+        "count": 2000,
+        "avg_quality": 0.7866,
+        "speed": 10000.0
+      },
+      {
+        "domain": "time_management",
+        "count": 2000,
+        "avg_quality": 0.787,
+        "speed": 10000.0
+      },
+      {
+        "domain": "personal_finance",
+        "count": 2000,
+        "avg_quality": 0.7938,
+        "speed": 10000.0
+      },
+      {
+        "domain": "health_nutrition",
+        "count": 2000,
+        "avg_quality": 0.7976,
+        "speed": 10000.0
+      },
+      {
+        "domain": "parenting",
+        "count": 2000,
+        "avg_quality": 0.7875,
+        "speed": 10000.0
+      },
+      {
+        "domain": "relationships",
+        "count": 2000,
+        "avg_quality": 0.7824,
+        "speed": 10000.0
+      }
+    ]
+  },
+  "perpetual_engine": {
+    "fusions": [
+      "能量算力核心",
+      "流式算力网络",
+      "全网永动算力",
+      "永动参数引擎",
+      "万象奇点"
+    ],
+    "compute_mult": 1999800.0,
+    "node_mult": 499950.0,
+    "accelerator_mult": 99990.0,
+    "perpetual": true,
+    "total_vflops": 0.0,
+    "energy_regen": Infinity
+  },
+  "repo_stats": [
+    {
+      "repo": "python_cpython_main",
+      "files": 1970,
+      "functions": 69969,
+      "seeds": 1838,
+      "absorbed": true,
+      "ok": true
+    },
+    {
+      "repo": "django_django_main",
+      "files": 1547,
+      "functions": 22589,
+      "seeds": 1481,
+      "absorbed": true,
+      "ok": true
+    },
+    {
+      "repo": "pandas-dev_pandas_main",
+      "files": 1346,
+      "functions": 29811,
+      "seeds": 1343,
+      "absorbed": true,
+      "ok": true
+    },
+    {
+      "repo": "huggingface_transformers_main",
+      "files": 1465,
+      "functions": 27435,
+      "seeds": 1465,
+      "absorbed": true,
+      "ok": true
+    },
+    {
+      "repo": "pytorch_pytorch_main",
+      "files": 1965,
+      "functions": 96701,
+      "seeds": 1947,
+      "absorbed": true,
+      "ok": true
+    },
+    {
+      "repo": "fastapi_fastapi_master",
+      "files": 957,
+      "functions": 4972,
+      "seeds": 939,
+      "absorbed": true,
+      "ok": true
+    },
+    {
+      "repo": "rust-lang_rust_master",
+      "files": 2000,
+      "functions": 9486,
+      "seeds": 1991,
+      "absorbed": true,
+      "ok": true
+    },
+    {
+      "repo": "golang_go_master",
+      "files": 1999,
+      "functions": 4016,
+      "seeds": 1995,
+      "absorbed": true,
+      "ok": true
+    },
+    {
+      "repo": "scikit-learn_scikit-learn_main",
+      "files": 910,
+      "functions": 11522,
+      "seeds": 896,
+      "absorbed": true,
+      "ok": true
+    },
+    {
+      "repo": "pydantic_pydantic_main",
+      "files": 525,
+      "functions": 9157,
+      "seeds": 523,
+      "absorbed": true,
+      "ok": true
+    },
+    {
+      "repo": "pallets_flask_main",
+      "files": 80,
+      "functions": 1460,
+      "seeds": 71,
+      "absorbed": true,
+      "ok": true
+    },
+    {
+      "repo": "psf_requests_main",
+      "files": 36,
+      "functions": 711,
+      "seeds": 36,
+      "absorbed": true,
+      "ok": true
+    }
+  ],
+  "total_fragments": 148284,
+  "epochs": 700000,
+  "fragments_learned": 145117,
+  "active_experts": 18,
+  "training_time": 6328.7,
+  "growth_log": [
+    {
+      "epoch": 70000,
+      "learned": 145104,
+      "active": 18,
+      "avg_load": 8072.1,
+      "elapsed": 569.73,
+      "energy": Infinity
+    },
+    {
+      "epoch": 140000,
+      "learned": 145117,
+      "active": 18,
+      "avg_load": 8072.8,
+      "elapsed": 1208.08,
+      "energy": Infinity
+    },
+    {
+      "epoch": 210000,
+      "learned": 145117,
+      "active": 18,
+      "avg_load": 8072.8,
+      "elapsed": 1848.23,
+      "energy": Infinity
+    },
+    {
+      "epoch": 280000,
+      "learned": 145117,
+      "active": 18,
+      "avg_load": 8072.8,
+      "elapsed": 2490.58,
+      "energy": Infinity
+    },
+    {
+      "epoch": 350000,
+      "learned": 145117,
+      "active": 18,
+      "avg_load": 8072.8,
+      "elapsed": 3129.5,
+      "energy": Infinity
+    },
+    {
+      "epoch": 420000,
+      "learned": 145117,
+      "active": 18,
+      "avg_load": 8072.8,
+      "elapsed": 3770.01,
+      "energy": Infinity
+    },
+    {
+      "epoch": 490000,
+      "learned": 145117,
+      "active": 18,
+      "avg_load": 8072.8,
+      "elapsed": 4406.6,
+      "energy": Infinity
+    },
+    {
+      "epoch": 560000,
+      "learned": 145117,
+      "active": 18,
+      "avg_load": 8072.8,
+      "elapsed": 5047.08,
+      "energy": Infinity
+    },
+    {
+      "epoch": 630000,
+      "learned": 145117,
+      "active": 18,
+      "avg_load": 8072.8,
+      "elapsed": 5689.98,
+      "energy": Infinity
+    },
+    {
+      "epoch": 700000,
+      "learned": 145117,
+      "active": 18,
+      "avg_load": 8072.8,
+      "elapsed": 6328.7,
+      "energy": Infinity
+    }
+  ],
+  "improved": 4,
+  "total_compared": 17,
+  "category_scores": {
+    "数学推理": {
+      "improved": 1,
+      "total": 2
+    },
+    "算法题解": {
+      "improved": 0,
+      "total": 2
+    },
+    "逻辑推理": {
+      "improved": 0,
+      "total": 1
+    },
+    "Agent规划": {
+      "improved": 0,
+      "total": 1
+    },
+    "中文日常": {
+      "improved": 1,
+      "total": 2
+    },
+    "代码生成": {
+      "improved": 1,
+      "total": 2
+    },
+    "生活百科": {
+      "improved": 0,
+      "total": 3
+    },
+    "跨领域融合": {
+      "improved": 1,
+      "total": 1
+    },
+    "黑洞压缩": {
+      "improved": 0,
+      "total": 3
+    }
+  }
+}
