@@ -1,0 +1,320 @@
+{
+  "version": "v8",
+  "focus": "极限突破：24仓库+多语言代码+500000轮",
+  "new_repos": [
+    "fastapi",
+    "transformers",
+    "langchain",
+    "pytorch",
+    "rust",
+    "go",
+    "node",
+    "ansible"
+  ],
+  "repo_stats": [
+    {
+      "desc": "CPython标准库",
+      "files": 1975,
+      "frags": 20281,
+      "ok": true
+    },
+    {
+      "desc": "Django Web框架",
+      "files": 791,
+      "frags": 7782,
+      "ok": true
+    },
+    {
+      "desc": "scikit-learn ML",
+      "files": 341,
+      "frags": 4510,
+      "ok": true
+    },
+    {
+      "desc": "pandas 数据科学",
+      "files": 316,
+      "frags": 6675,
+      "ok": true
+    },
+    {
+      "desc": "pydantic 验证",
+      "files": 232,
+      "frags": 3626,
+      "ok": true
+    },
+    {
+      "desc": "flask Web",
+      "files": 23,
+      "frags": 357,
+      "ok": true
+    },
+    {
+      "desc": "click CLI",
+      "files": 17,
+      "frags": 502,
+      "ok": true
+    },
+    {
+      "desc": "requests HTTP",
+      "files": 20,
+      "frags": 234,
+      "ok": true
+    },
+    {
+      "desc": "numpy 数值计算",
+      "files": 642,
+      "frags": 3519,
+      "ok": true
+    },
+    {
+      "desc": "scipy 科学计算",
+      "files": 1039,
+      "frags": 8496,
+      "ok": true
+    },
+    {
+      "desc": "matplotlib 可视化",
+      "files": 480,
+      "frags": 7168,
+      "ok": true
+    },
+    {
+      "desc": "SQLAlchemy ORM",
+      "files": 264,
+      "frags": 9482,
+      "ok": true
+    },
+    {
+      "desc": "Scrapy 爬虫",
+      "files": 171,
+      "frags": 1379,
+      "ok": true
+    },
+    {
+      "desc": "Celery 任务队列",
+      "files": 310,
+      "frags": 5559,
+      "ok": true
+    },
+    {
+      "desc": "httpx HTTP客户端",
+      "files": 23,
+      "frags": 379,
+      "ok": true
+    },
+    {
+      "desc": "uvicorn ASGI服务器",
+      "files": 36,
+      "frags": 276,
+      "ok": true
+    },
+    {
+      "desc": "FastAPI ASGI框架",
+      "files": 438,
+      "frags": 1171,
+      "ok": true
+    },
+    {
+      "desc": "Transformers NLP",
+      "files": 2000,
+      "frags": 20752,
+      "ok": true
+    },
+    {
+      "desc": "LangChain LLM框架",
+      "files": 1664,
+      "frags": 6639,
+      "ok": true
+    },
+    {
+      "desc": "PyTorch 深度学习",
+      "files": 2000,
+      "frags": 31596,
+      "ok": true
+    },
+    {
+      "desc": "Rust 编译器",
+      "files": 1500,
+      "frags": 15618,
+      "ok": true
+    },
+    {
+      "desc": "Go 语言",
+      "files": 1500,
+      "frags": 26155,
+      "ok": true
+    },
+    {
+      "desc": "Node.js 运行时",
+      "files": 1500,
+      "frags": 12768,
+      "ok": true
+    },
+    {
+      "desc": "Ansible 运维",
+      "files": 551,
+      "frags": 4244,
+      "ok": true
+    }
+  ],
+  "total_fragments": 204845,
+  "epochs": 500000,
+  "batch_size": 20,
+  "fragments_learned": 196888,
+  "active_experts": 10,
+  "expert_load": {
+    "合鸣自述者": 4,
+    "AI造物哲学": 23,
+    "硬件框架": 14,
+    "创意工具全栈": 15,
+    "行业应用": 14,
+    "中文对话": 11,
+    "音乐理论": 8,
+    "多模态生成": 10,
+    "混合专家": 6,
+    "通用兜底": 196897
+  },
+  "training_time": 6839.66,
+  "growth_log": [
+    {
+      "epoch": 50000,
+      "learned": 195447,
+      "active": 10,
+      "avg_load": 19556.1,
+      "elapsed": 554.39
+    },
+    {
+      "epoch": 100000,
+      "learned": 196877,
+      "active": 10,
+      "avg_load": 19699.1,
+      "elapsed": 1255.05
+    },
+    {
+      "epoch": 150000,
+      "learned": 196888,
+      "active": 10,
+      "avg_load": 19700.2,
+      "elapsed": 1952.81
+    },
+    {
+      "epoch": 200000,
+      "learned": 196888,
+      "active": 10,
+      "avg_load": 19700.2,
+      "elapsed": 2649.78
+    },
+    {
+      "epoch": 250000,
+      "learned": 196888,
+      "active": 10,
+      "avg_load": 19700.2,
+      "elapsed": 3345.79
+    },
+    {
+      "epoch": 300000,
+      "learned": 196888,
+      "active": 10,
+      "avg_load": 19700.2,
+      "elapsed": 4040.19
+    },
+    {
+      "epoch": 350000,
+      "learned": 196888,
+      "active": 10,
+      "avg_load": 19700.2,
+      "elapsed": 4744.73
+    },
+    {
+      "epoch": 400000,
+      "learned": 196888,
+      "active": 10,
+      "avg_load": 19700.2,
+      "elapsed": 5444.9
+    },
+    {
+      "epoch": 450000,
+      "learned": 196888,
+      "active": 10,
+      "avg_load": 19700.2,
+      "elapsed": 6144.51
+    },
+    {
+      "epoch": 500000,
+      "learned": 196888,
+      "active": 10,
+      "avg_load": 19700.2,
+      "elapsed": 6839.66
+    }
+  ],
+  "improved": 8,
+  "total_compared": 22,
+  "category_scores": {
+    "造物哲学": {
+      "improved": 0,
+      "total": 2
+    },
+    "硬件框架": {
+      "improved": 1,
+      "total": 2
+    },
+    "创意工具": {
+      "improved": 1,
+      "total": 2
+    },
+    "行业应用": {
+      "improved": 1,
+      "total": 2
+    },
+    "音乐": {
+      "improved": 0,
+      "total": 2
+    },
+    "多模态": {
+      "improved": 0,
+      "total": 1
+    },
+    "多语言代码": {
+      "improved": 2,
+      "total": 5
+    },
+    "代码生成": {
+      "improved": 3,
+      "total": 6
+    }
+  },
+  "comparison_samples": {
+    "不可伪造的原型有哪些": {
+      "before": "不可伪造的原型：封印、烙印、契约、符文、印记，涌现智能的原型：涌现之井、混沌核、集体心智、突现体",
+      "after": "不可伪造的原型：封印、烙印、契约、符文、印记，涌现智能的原型：涌现之井、混沌核、集体心智、突现体"
+    },
+    "什么是涌现智能": {
+      "before": "涌现智能的原型：涌现之井、混沌核、集体心智、突现体，不可伪造的原型：封印、烙印、契约、符文、印记",
+      "after": "涌现智能的原型：涌现之井、混沌核、集体心智、突现体，不可伪造的原型：封印、烙印、契约、符文、印记"
+    },
+    "H100和H800有什么区别": {
+      "before": "NVIDIA H800是H100的中国特供版，NVLink带宽减半至400GB/s",
+      "after": "NVIDIA H800是H100的中国特供版，NVLink带宽减半至400GB/s"
+    },
+    "Flash Attention的作用": {
+      "before": "Flash Attention将注意力计算的内存复杂度从O(n²)降至O(n)",
+      "after": "def _flash_attn_can_dispatch(self, flash_attn_version: int,"
+    },
+    "Blender 4.2的特点": {
+      "before": "Blender 4.2是免费3D之王：建模/雕刻/动画/渲染/合成全流程",
+      "after": "def _estimate_importance(prompt: str, answer: str,"
+    },
+    "Serum合成器怎么样": {
+      "before": "Serum合成器可视化波表编辑，EDM制作人必备",
+      "after": "Serum合成器可视化波表编辑，EDM制作人必备"
+    },
+    "金融风控AI用什么模型": {
+      "before": "金融风控AI使用XGBoost/LightGBM做二分类，通过KS值和AUC衡量区分度",
+      "after": "def _detect_domain(self, question: str) -> str:\n        \"\"\"简"
+    },
+    "医学影像诊断常用什么网络": {
+      "before": "医学影像诊断使用3D U-Net分割CT/MRI病灶，Dice系数衡量准确率",
+      "after": "医学影像诊断使用3D U-Net分割CT/MRI病灶，Dice系数衡量准确率"
+    }
+  }
+}
