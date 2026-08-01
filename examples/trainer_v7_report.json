@@ -1,0 +1,92 @@
+{
+  "version": "v7",
+  "base": "v3_fresh",
+  "epochs": 100,
+  "batch": 500,
+  "corpus": 21536,
+  "fragments_learned": 290000,
+  "time": 0.02,
+  "log": [
+    {
+      "epoch": 1,
+      "learned": 240500,
+      "total": 120542,
+      "elapsed": 0.0
+    },
+    {
+      "epoch": 10,
+      "learned": 245000,
+      "total": 125042,
+      "elapsed": 0.0
+    },
+    {
+      "epoch": 20,
+      "learned": 250000,
+      "total": 130042,
+      "elapsed": 0.01
+    },
+    {
+      "epoch": 30,
+      "learned": 255000,
+      "total": 135042,
+      "elapsed": 0.01
+    },
+    {
+      "epoch": 40,
+      "learned": 260000,
+      "total": 140042,
+      "elapsed": 0.01
+    },
+    {
+      "epoch": 50,
+      "learned": 265000,
+      "total": 145042,
+      "elapsed": 0.01
+    },
+    {
+      "epoch": 60,
+      "learned": 270000,
+      "total": 150042,
+      "elapsed": 0.01
+    },
+    {
+      "epoch": 70,
+      "learned": 275000,
+      "total": 155042,
+      "elapsed": 0.02
+    },
+    {
+      "epoch": 80,
+      "learned": 280000,
+      "total": 160042,
+      "elapsed": 0.02
+    },
+    {
+      "epoch": 90,
+      "learned": 285000,
+      "total": 165042,
+      "elapsed": 0.02
+    },
+    {
+      "epoch": 100,
+      "learned": 290000,
+      "total": 170042,
+      "elapsed": 0.02
+    }
+  ],
+  "experts": {
+    "合鸣自述者": 4,
+    "混合专家": 4,
+    "虚拟电场": 3,
+    "物理建模合成": 3,
+    "超混沌采样": 3,
+    "水动力学": 3,
+    "玻璃逻辑": 3,
+    "双态系统": 3,
+    "虚拟凭证": 3,
+    "神经共振": 3,
+    "虚拟算力": 3,
+    "虚拟哲学": 3,
+    "通用兜底": 170004
+  }
+}

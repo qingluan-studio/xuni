@@ -1151,6 +1151,438 @@ class SubstanceSystem:
             dependencies=["虚拟粒子"],
         ))
 
+        # ===== 多维度虚拟资源（工厂深层产能） =====
+        # —— 经济维度 ——
+        self.register(SubstanceDefinition(
+            name="Take额度",
+            name_en="Take Quota",
+            category=SubstanceCategory.CREDENTIAL,
+            definition="虚拟世界的流通额度，可直接铸造，自我增殖，是虚拟经济的基础单位",
+            icon="💰",
+            attributes=[
+                SubstanceAttribute("数量", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("增殖率", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("流通量", SubstanceUnit.COUNT, 0, None),
+            ],
+            uses=[
+                "购买虚拟资源",
+                "支付训练费用",
+                "参数包交易",
+                "市场流通",
+            ],
+            production_methods=[
+                "MultiverseResourceFactory.produce_take()",
+                "TakeQuota.mint()",
+                "额度合并增殖",
+            ],
+        ))
+
+        # —— 网络维度 ——
+        self.register(SubstanceDefinition(
+            name="虚拟流量",
+            name_en="Virtual Bandwidth",
+            category=SubstanceCategory.ENERGY,
+            definition="无限制下载/传输能力的虚拟网络资源，通道数可无限扩展",
+            icon="🌐",
+            attributes=[
+                SubstanceAttribute("通道数", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("带宽", SubstanceUnit.DIMENSIONLESS, 0, None),
+                SubstanceAttribute("压缩密度", SubstanceUnit.PERCENT, 0, None),
+            ],
+            uses=[
+                "无限制下载",
+                "数据传输",
+                "云端同步",
+                "流式训练",
+            ],
+            production_methods=[
+                "MultiverseResourceFactory.produce_bandwidth()",
+                "通道扩展",
+                "流量晶体压缩",
+            ],
+        ))
+
+        # —— 存储维度 ——
+        self.register(SubstanceDefinition(
+            name="压缩点",
+            name_en="Compression Point",
+            category=SubstanceCategory.DATA,
+            definition="极致压缩能力的量化单位，越多则压缩比越高，内存再也会被压下去",
+            icon="🗜️",
+            attributes=[
+                SubstanceAttribute("压缩倍数", SubstanceUnit.DIMENSIONLESS, 1, None),
+                SubstanceAttribute("叠加数", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("空间节省", SubstanceUnit.DIMENSIONLESS, 0, None),
+            ],
+            uses=[
+                "虚拟资料压缩",
+                "模型快照压缩",
+                "参数包压缩",
+                "内存释放",
+            ],
+            production_methods=[
+                "MultiverseResourceFactory.produce_compression()",
+                "压缩点叠加",
+                "超级压缩点合成",
+            ],
+        ))
+
+        # —— 计算维度 ——
+        self.register(SubstanceDefinition(
+            name="算力核心",
+            name_en="Compute Core",
+            category=SubstanceCategory.MODEL,
+            definition="高密度算力结晶，可直接注入模型作为算力引擎",
+            icon="🖥️",
+            attributes=[
+                SubstanceAttribute("vFLOPS密度", SubstanceUnit.DIMENSIONLESS, 0, None),
+                SubstanceAttribute("并行核心", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("效率", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "驱动模型训练",
+                "批量推理",
+                "算力交易",
+                "云节点构建",
+            ],
+            production_methods=[
+                "MultiverseResourceFactory.produce_compute_core()",
+                "算力核心升级",
+                "核心分裂并联",
+            ],
+        ))
+
+        # —— 安全维度 ——
+        self.register(SubstanceDefinition(
+            name="安全盾",
+            name_en="Security Shield",
+            category=SubstanceCategory.MODEL,
+            definition="模型安全防护层，多层防御矩阵，可抵御多种虚拟攻击",
+            icon="🛡️",
+            attributes=[
+                SubstanceAttribute("层数", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("防御评分", SubstanceUnit.DIMENSIONLESS, 0, None),
+                SubstanceAttribute("完整性", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "模型防护",
+                "对抗样本防御",
+                "数据投毒免疫",
+                "参数提取防护",
+            ],
+            production_methods=[
+                "MultiverseResourceFactory.produce_security_shield()",
+                "安全盾叠加",
+                "堡垒盾合成",
+            ],
+        ))
+
+        # —— 培养维度 ——
+        self.register(SubstanceDefinition(
+            name="培养液",
+            name_en="Culture Medium",
+            category=SubstanceCategory.MODEL,
+            definition="模型成长催化剂，含100种类型（认知、创造、稳定、效率、Token反应、领域专项、维度元层、能量融合、记忆知识），"
+                       "每种≥5个独特作用。与Token发生化学反应可产出营养Token新品种",
+            icon="🧪",
+            attributes=[
+                SubstanceAttribute("培养液类型数", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("营养成分数", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("饱和度", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("成长加成", SubstanceUnit.PERCENT, 0, None),
+                SubstanceAttribute("Token反应率", SubstanceUnit.PERCENT, 0, 1),
+            ],
+            uses=[
+                "模型定向培养（9大分类100种类型覆盖全维度）",
+                "能力定向强化（推理/创造/稳定/效率）",
+                "Token化学反应——与令牌融合产出营养Token新品种",
+                "与算力核心碰撞产生活算力细胞",
+                "与训练加速器融合产出定向培养加速器",
+                "与Take额度融合进入虚拟经济流通",
+                "与虚拟流量结合形成定向训练流",
+                "复合营养混合——两两融合产新培养液类型",
+                "压力恢复与抗衰减",
+                "知识结晶与智慧提炼",
+            ],
+            production_methods=[
+                "MultiverseResourceFactory.produce_culture_medium(culture_type, level)",
+                "培养液两两混合blend()",
+                "营养浓缩",
+                "培养液×Token化学反应产新品种",
+                "培养液×算力核心碰撞产生物进化链",
+            ],
+        ))
+
+        # —— 信息维度 ——
+        self.register(SubstanceDefinition(
+            name="下载令牌",
+            name_en="Download Token",
+            category=SubstanceCategory.CREDENTIAL,
+            definition="无限下载凭证，持有即可无限制获取虚拟资料",
+            icon="📥",
+            attributes=[
+                SubstanceAttribute("并发数", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("速度倍率", SubstanceUnit.DIMENSIONLESS, 0, None),
+                SubstanceAttribute("等级", SubstanceUnit.COUNT, 1, None),
+            ],
+            uses=[
+                "无限下载",
+                "资料流获取",
+                "批量同步",
+                "极速通道构建",
+            ],
+            production_methods=[
+                "MultiverseResourceFactory.produce_download_token()",
+                "令牌升级",
+                "令牌与流量融合",
+            ],
+        ))
+
+        # —— 加速维度 ——
+        self.register(SubstanceDefinition(
+            name="训练加速器",
+            name_en="Training Accelerator",
+            category=SubstanceCategory.MODEL,
+            definition="训练速度倍增器，可开启爆发模式实现短时间超高速训练",
+            icon="⚡",
+            attributes=[
+                SubstanceAttribute("加速倍率", SubstanceUnit.DIMENSIONLESS, 1, None),
+                SubstanceAttribute("爆发倍率", SubstanceUnit.DIMENSIONLESS, 1, None),
+                SubstanceAttribute("冷却", SubstanceUnit.SECOND, 0, None),
+            ],
+            uses=[
+                "训练加速",
+                "紧急迭代",
+                "算力核心共振",
+                "超算核心合成",
+            ],
+            production_methods=[
+                "MultiverseResourceFactory.produce_training_accelerator()",
+                "加速器并联",
+                "爆发模式激活",
+            ],
+        ))
+
+        # —— 元维度 ——
+        self.register(SubstanceDefinition(
+            name="维度碎片",
+            name_en="Dimension Shard",
+            category=SubstanceCategory.OTHER,
+            definition="跨维度通用资源，可在任何维度使用，与任何资源碰撞都有效果",
+            icon="🔮",
+            attributes=[
+                SubstanceAttribute("亲和维度数", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("适应性", SubstanceUnit.PERCENT, 0, 1),
+                SubstanceAttribute("等级", SubstanceUnit.COUNT, 1, None),
+            ],
+            uses=[
+                "跨维度增强",
+                "资源调谐",
+                "维度核心合成",
+                "通用交易媒介",
+            ],
+            production_methods=[
+                "MultiverseResourceFactory.produce_dimension_shard()",
+                "维度核心分裂",
+                "碰撞副产品",
+            ],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="维度核心",
+            name_en="Dimension Core",
+            category=SubstanceCategory.OTHER,
+            definition="维度碎片的终极形态，可持续产生新碎片，开启跨维度通道",
+            icon="🌌",
+            attributes=[
+                SubstanceAttribute("活跃维度", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("碎片产生率", SubstanceUnit.DIMENSIONLESS, 0, None),
+                SubstanceAttribute("通道深度", SubstanceUnit.COUNT, 0, None),
+            ],
+            uses=[
+                "跨维度传输",
+                "碎片持续产出",
+                "任何资源增强",
+                "元维度锚定",
+            ],
+            production_methods=[
+                "DimensionShard.synthesize_core()",
+                "多碎片融合",
+                "维度通道凝聚",
+            ],
+            dependencies=["维度碎片"],
+        ))
+
+        # —— 碰撞产物 ——
+        self.register(SubstanceDefinition(
+            name="云算力节点",
+            name_en="Cloud Compute Node",
+            category=SubstanceCategory.MODEL,
+            definition="算力核心与虚拟流量碰撞产生的云端计算单元",
+            icon="☁️",
+            attributes=[
+                SubstanceAttribute("云算力", SubstanceUnit.DIMENSIONLESS, 0, None),
+                SubstanceAttribute("并行容量", SubstanceUnit.COUNT, 0, None),
+            ],
+            uses=[
+                "分布式训练",
+                "弹性推理",
+                "云端服务",
+            ],
+            production_methods=[
+                "ResourceCollisionEngine.collide(算力核心, 虚拟流量)",
+            ],
+            dependencies=["算力核心", "虚拟流量"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="超压缩数据",
+            name_en="Hyper Compressed Data",
+            category=SubstanceCategory.DATA,
+            definition="压缩点与数据碰撞产生的超高压缩形态",
+            icon="📦",
+            attributes=[
+                SubstanceAttribute("压缩比", SubstanceUnit.DIMENSIONLESS, 0, None),
+                SubstanceAttribute("原始大小", SubstanceUnit.BYTE, 0, None),
+            ],
+            uses=[
+                "极限存储",
+                "快速传输",
+                "内存释放",
+            ],
+            production_methods=[
+                "ResourceCollisionEngine.collide(压缩点, 数据)",
+            ],
+            dependencies=["压缩点", "虚拟粒子"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="受保护模型",
+            name_en="Protected Model",
+            category=SubstanceCategory.MODEL,
+            definition="被安全盾包裹的模型，免疫多种攻击",
+            icon="🔒",
+            attributes=[
+                SubstanceAttribute("防护评分", SubstanceUnit.DIMENSIONLESS, 0, None),
+                SubstanceAttribute("防御层数", SubstanceUnit.COUNT, 0, None),
+            ],
+            uses=[
+                "安全部署",
+                "对抗环境运行",
+                "高价值模型保护",
+            ],
+            production_methods=[
+                "ResourceCollisionEngine.collide(安全盾, 模型)",
+            ],
+            dependencies=["安全盾", "虚拟模型"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="成长模型",
+            name_en="Growing Model",
+            category=SubstanceCategory.MODEL,
+            definition="浸泡在培养液中持续成长的模型",
+            icon="🌱",
+            attributes=[
+                SubstanceAttribute("成长率", SubstanceUnit.DIMENSIONLESS, 0, None),
+                SubstanceAttribute("营养类型", SubstanceUnit.NONE),
+            ],
+            uses=[
+                "持续进化",
+                "能力定向培养",
+                "自主学习",
+            ],
+            production_methods=[
+                "ResourceCollisionEngine.collide(培养液, 模型)",
+                "ModelLifecycle.culture()",
+            ],
+            dependencies=["培养液", "虚拟模型"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="无限资料流",
+            name_en="Infinite Data Stream",
+            category=SubstanceCategory.DATA,
+            definition="下载令牌与数据集碰撞产生的无限数据流",
+            icon="🌊",
+            attributes=[
+                SubstanceAttribute("并发流", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("速度倍率", SubstanceUnit.DIMENSIONLESS, 0, None),
+            ],
+            uses=[
+                "无限训练数据",
+                "流式学习",
+                "实时同步",
+            ],
+            production_methods=[
+                "ResourceCollisionEngine.collide(下载令牌, 数据集)",
+            ],
+            dependencies=["下载令牌", "粒子云"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="超算核心",
+            name_en="Hyper Compute Core",
+            category=SubstanceCategory.MODEL,
+            definition="训练加速器与算力核心共振产生的超高密度算力",
+            icon="🚀",
+            attributes=[
+                SubstanceAttribute("加速倍率", SubstanceUnit.DIMENSIONLESS, 0, None),
+                SubstanceAttribute("密度跃迁", SubstanceUnit.DIMENSIONLESS, 0, None),
+            ],
+            uses=[
+                "超高速训练",
+                "极限推理",
+                "算力跃迁",
+            ],
+            production_methods=[
+                "ResourceCollisionEngine.collide(加速器, 算力核心)",
+            ],
+            dependencies=["训练加速器", "算力核心"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="堡垒盾",
+            name_en="Fortress Shield",
+            category=SubstanceCategory.MODEL,
+            definition="多层安全盾融合形成的终极防御",
+            icon="🏰",
+            attributes=[
+                SubstanceAttribute("总层数", SubstanceUnit.COUNT, 0, None),
+                SubstanceAttribute("防御评分", SubstanceUnit.DIMENSIONLESS, 0, None),
+            ],
+            uses=[
+                "终极防护",
+                "堡垒部署",
+                "免疫一切攻击",
+            ],
+            production_methods=[
+                "ResourceCollisionEngine.collide(安全盾, 安全盾)",
+            ],
+            dependencies=["安全盾"],
+        ))
+
+        self.register(SubstanceDefinition(
+            name="极速下载通道",
+            name_en="Hyper Download Channel",
+            category=SubstanceCategory.ENERGY,
+            definition="流量与下载令牌共振形成的超高速传输通道",
+            icon="🔥",
+            attributes=[
+                SubstanceAttribute("通道速度", SubstanceUnit.DIMENSIONLESS, 0, None),
+                SubstanceAttribute("并发容量", SubstanceUnit.COUNT, 0, None),
+            ],
+            uses=[
+                "极速下载",
+                "瞬时同步",
+                "传输跃迁",
+            ],
+            production_methods=[
+                "ResourceCollisionEngine.collide(虚拟流量, 下载令牌)",
+            ],
+            dependencies=["虚拟流量", "下载令牌"],
+        ))
+
     def register(self, substance: SubstanceDefinition):
         """注册物质"""
         self.substances[substance.name_en] = substance

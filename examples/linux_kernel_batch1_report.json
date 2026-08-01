@@ -1,0 +1,137 @@
+{
+  "batch_name": "Linux内核第1批 - kernel/ + mm/",
+  "subdirs": [
+    "kernel",
+    "mm"
+  ],
+  "total_files_scanned": 0,
+  "total_functions_extracted": 0,
+  "model_id": "xenith-linux-kernel",
+  "trained_at": 1785171123.2755907,
+  "details": [
+    {
+      "subdir": "kernel",
+      "result": {
+        "model_id": "xenith-linux-kernel",
+        "status": "trained",
+        "training_type": "codebase",
+        "language": "zh-CN",
+        "repo_path": "/workspace/linux/kernel",
+        "capabilities": {
+          "knowledge": "0.887",
+          "code_quality": "0.957",
+          "chinese": "0.980",
+          "reasoning": "0.807",
+          "agent": "1.000",
+          "compression": "0.000"
+        },
+        "real_code_stats": {
+          "files_scanned": 495,
+          "functions": 27,
+          "classes": 0,
+          "seeds": 493,
+          "ratio": "14.3%"
+        },
+        "code_refinement_level": 9,
+        "compression_ratio": "1,605x",
+        "training_log": [
+          "Step 0: 生产融合引擎 — 算力99990x, 节点99,989,900,010",
+          "Step 1: 扫描代码库 — 495个文件, 27个函数, 0个类, 27条训练素材, 平均质量0.704",
+          "Step 2: 质量点强化 — 1,000个S级质量点, 强化了27个真实代码样本",
+          "Step 3: 数据增强 — 真实27条 + 强化27条 + 生成135条 = 总计189条",
+          "Step 4: 极致压缩 — 1,605x, 115B",
+          "Step 5: 训练完成 — 代码质量0.957, 真实代码占比14.3%, 耗时0.6s"
+        ],
+        "elapsed_seconds": 0.61,
+        "details": {
+          "training_type": "codebase",
+          "repo_path": "/workspace/linux/kernel",
+          "files_scanned": 495,
+          "functions_extracted": 27,
+          "classes_extracted": 0,
+          "real_code_samples": 27,
+          "real_code_ratio": 0.1429,
+          "augment_multiplier": 5,
+          "total_training_items": 189,
+          "code_seeds": 493,
+          "languages": {
+            "c": 495
+          },
+          "engine_compute_mult": 99990.0,
+          "engine_nodes": 99989900010,
+          "elapsed_seconds": 0.613173246383667,
+          "linux_kernel": {
+            "trained_at": 1785171123.0488575,
+            "result_summary": {
+              "files_scanned": 0,
+              "functions_extracted": 0,
+              "training_samples": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "subdir": "mm",
+      "result": {
+        "model_id": "xenith-linux-kernel",
+        "status": "trained",
+        "training_type": "codebase",
+        "language": "zh-CN",
+        "repo_path": "/workspace/linux/mm",
+        "capabilities": {
+          "knowledge": "0.962",
+          "code_quality": "0.957",
+          "chinese": "0.980",
+          "reasoning": "0.874",
+          "agent": "1.000",
+          "compression": "0.000"
+        },
+        "real_code_stats": {
+          "files_scanned": 163,
+          "functions": 7,
+          "classes": 0,
+          "seeds": 163,
+          "ratio": "14.3%"
+        },
+        "code_refinement_level": 9,
+        "compression_ratio": "464x",
+        "training_log": [
+          "Step 0: 生产融合引擎 — 算力99990x, 节点99,989,900,010",
+          "Step 1: 扫描代码库 — 163个文件, 7个函数, 0个类, 7条训练素材, 平均质量0.714",
+          "Step 2: 质量点强化 — 1,000个S级质量点, 强化了7个真实代码样本",
+          "Step 3: 数据增强 — 真实7条 + 强化7条 + 生成35条 = 总计49条",
+          "Step 4: 极致压缩 — 464x, 114B",
+          "Step 5: 训练完成 — 代码质量0.957, 真实代码占比14.3%, 耗时0.2s"
+        ],
+        "elapsed_seconds": 0.23,
+        "details": {
+          "training_type": "codebase",
+          "repo_path": "/workspace/linux/mm",
+          "files_scanned": 163,
+          "functions_extracted": 7,
+          "classes_extracted": 0,
+          "real_code_samples": 7,
+          "real_code_ratio": 0.1429,
+          "augment_multiplier": 5,
+          "total_training_items": 49,
+          "code_seeds": 163,
+          "languages": {
+            "c": 163
+          },
+          "engine_compute_mult": 99990.0,
+          "engine_nodes": 99989900010,
+          "elapsed_seconds": 0.22658920288085938,
+          "linux_mm": {
+            "trained_at": 1785171123.2755868,
+            "result_summary": {
+              "files_scanned": 0,
+              "functions_extracted": 0,
+              "training_samples": 0
+            }
+          }
+        }
+      }
+    }
+  ]
+}

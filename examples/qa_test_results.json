@@ -1,0 +1,74 @@
+{
+  "questions": [
+    {
+      "question": "用Python写一个快速排序",
+      "mode": "code",
+      "domain": "computer_science",
+      "answer": "【Xenith 代码助手】\n\n问题：用Python写一个快速排序\n\n```python\ndef quicksort(arr):\n    \"\"\"快速排序 — Xenith 生成（质量点强化等级 9/10）\"\"\"\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[len(arr) // 2]\n    left = [x for x in arr if x < pivot]\n    middle = [x for x in arr if x == pivot]\n    right = [x for x in arr if x > pivot]\n    return quicksort(left) + middle + quicksort(right)\n\n\n# 测试\nif __name__ == \"__main__\":\n    data = [3, 6, 8, 10, 1, 2, 1]\n    print(quicksort(data))  # [1, 1, 2, 3, 6, 8, 10]\n```\n\n代码质量强化等级：9/10",
+      "confidence": 1.0,
+      "latency_ms": 0.04
+    },
+    {
+      "question": "解释一下什么是闭包，举个JavaScript例子",
+      "mode": "code",
+      "domain": "computer_science",
+      "answer": "【Xenith 代码助手】\n\n问题：解释一下什么是闭包，举个JavaScript例子\n\n```javascript\n// JavaScript 闭包示例\nfunction createCounter() {\n    let count = 0;  // 被闭包捕获的变量\n    return {\n        increment: function() { return ++count; },\n        getCount: function() { return count; }\n    };\n}\n\nconst counter = createCounter();\nconsole.log(counter.increment()); // 1\nconsole.log(counter.increment()); // 2\nconsole.log(counter.getCount());  // 2\n\n// 闭包 = 函数 + 其词法环境的引用\n// count 变量被内部函数\"封闭\"，外部无法直接访问，但内部函数可以读写\n```\n\n**闭包本质：** 函数携带了定义时的作用域链，即使外层函数已返回，内层函数仍能访问外层变量。\n\n代码质量强化等级：9/10",
+      "confidence": 1.0,
+      "latency_ms": 0.02
+    },
+    {
+      "question": "如何优化数据库查询性能？",
+      "mode": "normal",
+      "domain": "engineering",
+      "answer": "【Xenith 中文回答】\n\n## 如何优化数据库查询性能？\n\n**数据库查询优化关键策略：**\n\n1. **索引优化**\n   - 为 WHERE/JOIN/ORDER BY 涉及的列建索引\n   - 使用 `EXPLAIN` 分析执行计划，避免全表扫描\n   - 复合索引遵循最左前缀原则\n\n2. **查询改写**\n   - 只查需要的列，避免 `SELECT *`\n   - 用 `EXISTS` 替代 `IN` 子查询\n   - 大分页用 `WHERE id > last_id LIMIT n` 替代 `OFFSET`\n\n3. **架构层面**\n   - 读写分离，主库写、从库读\n   - 热数据加 Redis 缓存\n   - 大表分区/分库分表\n\n4. **连接池**\n   - 使用连接池复用连接（如 HikariCP/pgbouncer）\n   - 避免短连接频繁建立/销毁\n\n（领域：工程学，知识质量：1.000）",
+      "confidence": 1.0,
+      "latency_ms": 0.02
+    },
+    {
+      "question": "写一个Python装饰器，统计函数执行时间",
+      "mode": "code",
+      "domain": "math",
+      "answer": "【Xenith 代码助手】\n\n问题：写一个Python装饰器，统计函数执行时间\n\n```python\nimport time\nfrom functools import wraps\n\n\ndef timing(func):\n    \"\"\"统计函数执行时间的装饰器 — Xenith 生成（强化等级 9/10）\"\"\"\n    @wraps(func)\n    def wrapper(*args, **kwargs):\n        start = time.perf_counter()\n        result = func(*args, **kwargs)\n        elapsed = (time.perf_counter() - start) * 1000\n        print(f\"[{func.__name__}] 耗时: {elapsed:.2f}ms\")\n        return result\n    return wrapper\n\n\n# 使用示例\n@timing\ndef slow_function(n):\n    \"\"\"模拟耗时操作\"\"\"\n    return sum(i * i for i in range(n))\n\n\nprint(slow_function(1000000))\n```\n\n代码质量强化等级：9/10",
+      "confidence": 1.0,
+      "latency_ms": 0.02
+    },
+    {
+      "question": "解释HTTP和HTTPS的区别",
+      "mode": "normal",
+      "domain": "computer_science",
+      "answer": "【Xenith 中文回答】\n\n## 解释HTTP和HTTPS的区别\n\n**HTTP 与 HTTPS 的核心区别：**\n\n| 特性 | HTTP | HTTPS |\n|------|------|-------|\n| 安全性 | 明文传输，不加密 | SSL/TLS加密传输 |\n| 端口 | 80 | 443 |\n| 证书 | 不需要 | 需要CA颁发的SSL证书 |\n| 性能 | 较快（无加密开销） | 略慢（握手+加密） |\n| SEO | 无加权 | 搜索引擎优先收录 |\n\n**建议：** 生产环境一律用 HTTPS，Let's Encrypt 提供免费证书。\n\n（领域：计算机科学，知识质量：1.000）",
+      "confidence": 1.0,
+      "latency_ms": 0.01
+    }
+  ],
+  "refine_test": {
+    "model": "xenith",
+    "language": "python",
+    "refinement_level": 9,
+    "before": {
+      "score": 0.863,
+      "grade": "S",
+      "dims": {
+        "syntax": 0.9,
+        "complexity": 1.0,
+        "readability": 0.55,
+        "security": 1.0,
+        "performance": 1.0
+      }
+    },
+    "after": {
+      "score": 0.863,
+      "grade": "S",
+      "dims": {
+        "syntax": 0.9,
+        "complexity": 1.0,
+        "readability": 0.55,
+        "security": 1.0,
+        "performance": 1.0
+      },
+      "code": "def qsort(a):\n    if len(a)<=1: return a\n    p=a[0]\n    l=[x for x in a[1:] if x<p]\n    r=[x for x in a[1:] if x>=p]\n    return qsort(l)+[p]+qsort(r)\n"
+    },
+    "improvement": 0.0,
+    "grade_up": false
+  }
+}

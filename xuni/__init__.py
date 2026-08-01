@@ -48,6 +48,7 @@ from .model import (
     XuniClassifier, XuniChatBot, XuniDiffusion, XuniPredictor, XuniAutoencoder,
     XuniModelRegistry,
     ModelType, ModelStatus, TrainingState, ModelCapability, ModelInput, ModelOutput, ModelStats,
+    XenithModel, XenithCapabilities, XenithDomain,
 )
 from .gateway import XuniGateway, APIEndpoint, APIError, APIRequest, APIResponse
 from .dualstate import (
@@ -87,7 +88,13 @@ from .substance_fusion import (
     FusionCategory,
     create_default_engine,
 )
+from .culture_data import (
+    CULTURE_NUTRIENTS, CULTURE_EFFECTS, CULTURE_CATEGORIES,
+    get_nutrients, get_effects, get_all_culture_types,
+    get_culture_count, get_types_by_category, list_all_categories,
+)
 from .corpus_downloader import CorpusDownloader, DownloadResult
+from .knowledge_downloader import KnowledgeDownloader
 from .virtual_data import (
     VirtualDataConverter, VirtualDataParticle, VirtualDataset,
     VirtualDataGenerator, DataPhase,
@@ -102,6 +109,42 @@ from .energy_sources import (
     EnergyTier, EnergyOutput, EnergySourceManager,
     VirtualFusionReactor, ParameterChainReactor,
     BlackHoleGenerator, ZeroPointEnergyExtractor, DysonSphere,
+)
+from .multiverse_resources import (
+    MultiverseResourceFactory, ResourceCollisionEngine,
+    VirtualResource, ResourceDimension, ResourceRarity,
+    TakeQuota, VirtualBandwidth, CompressionPoint, ComputeCore,
+    SecurityShield, CultureMedium, DownloadToken,
+    TrainingAccelerator, DimensionShard, DimensionCore,
+    ProductionAccelerator, VirtualStartup, AutoMine,
+    InvestmentFund, ResourceProspector, ResearchLab, MarketArbitrage,
+)
+from .lifecycle import (
+    ModelLifecycle, LifecycleOrchestrator,
+    LifecycleStage, ModelHealth, LifecycleEvent, ModelVitality,
+)
+from .perpetual_engine import (
+    PerpetualTrainingEngine, FusionBoost,
+)
+from .ultra_context import (
+    UltraContextMemory, MemoryPoint,
+)
+from .training_forge import (
+    TrainingForge, QualityScorer, TrainingSample,
+)
+from .code_quality import (
+    CodeQualityScorer, QualityPoint, CodeQualityForge,
+    ASTQualityScorer, RealCodeRefiner,
+)
+from .codebase_scanner import CodebaseScanner
+from .black_hole_trainer import BlackHoleTrainer
+from .dimension_system import (
+    DimensionNature, DimensionSize,
+    VulnerabilitySpore, PenetrationProbe, ExploitPattern,
+    AlgorithmCrystal, ArchitectureBlueprint, OptimizationEnzyme,
+    IdeaSpark, EntropyShard, VoidEssence, MirrorResource,
+    AbyssalCode, FusionShard, DimensionEntryShield,
+    Dimension, DimensionGate, DimensionExplorer,
 )
 
 __all__ = [
@@ -220,6 +263,7 @@ __all__ = [
     "DataPhase",
     "CorpusDownloader",
     "DownloadResult",
+    "KnowledgeDownloader",
     "VirtualComputeUnit",
     "ComputeAllocation",
     "ComputeLoopManager",
@@ -235,4 +279,60 @@ __all__ = [
     "BlackHoleGenerator",
     "ZeroPointEnergyExtractor",
     "DysonSphere",
+    "MultiverseResourceFactory",
+    "ResourceCollisionEngine",
+    "VirtualResource",
+    "ResourceDimension",
+    "ResourceRarity",
+    "TakeQuota",
+    "VirtualBandwidth",
+    "CompressionPoint",
+    "ComputeCore",
+    "SecurityShield",
+    "CultureMedium",
+    "DownloadToken",
+    "TrainingAccelerator",
+    "DimensionShard",
+    "DimensionCore",
+    "ProductionAccelerator",
+    "VirtualStartup",
+    "AutoMine",
+    "InvestmentFund",
+    "ResourceProspector",
+    "ResearchLab",
+    "MarketArbitrage",
+    "ModelLifecycle",
+    "LifecycleOrchestrator",
+    "LifecycleStage",
+    "ModelHealth",
+    "LifecycleEvent",
+    "ModelVitality",
+    "TrainingForge",
+    "QualityScorer",
+    "TrainingSample",
+    "CodeQualityScorer",
+    "QualityPoint",
+    "CodeQualityForge",
+    "ASTQualityScorer",
+    "RealCodeRefiner",
+    "CodebaseScanner",
+    "BlackHoleTrainer",
+    "DimensionNature",
+    "DimensionSize",
+    "VulnerabilitySpore",
+    "PenetrationProbe",
+    "ExploitPattern",
+    "AlgorithmCrystal",
+    "ArchitectureBlueprint",
+    "OptimizationEnzyme",
+    "IdeaSpark",
+    "EntropyShard",
+    "VoidEssence",
+    "MirrorResource",
+    "AbyssalCode",
+    "FusionShard",
+    "DimensionEntryShield",
+    "Dimension",
+    "DimensionGate",
+    "DimensionExplorer",
 ]

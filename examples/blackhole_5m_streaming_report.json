@@ -1,0 +1,18 @@
+{
+  "model_id": "xenith-5m-streaming",
+  "streaming": true,
+  "total_absorbed": 5093483,
+  "core_count": 4508054,
+  "ejected": 585429,
+  "final_quality": 0.999,
+  "compressed_size": 450805,
+  "compression_ratio": 11298.639101163475,
+  "domains": 32,
+  "repos": 26,
+  "elapsed_seconds": 400.45,
+  "type_counts": {
+    "code_function": 379940,
+    "code_seed": 17311,
+    "knowledge": 4800000
+  }
+}
