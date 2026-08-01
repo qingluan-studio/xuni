@@ -82,3 +82,15 @@ examples/checkpoints/*/harmonia_lite.json
 
 # 语料缓存目录（下载的仓库代码，不入库）
 corpus_cache/
+*.json.gz
+checkpoints/*/harmonia_lite.json.gz
+checkpoints/harmonia13/harmonia_lite.json
+corpus_particles_large.json.gz
+corpus_clean_large.json.gz
+corpus_particles.json
+corpus_clean.json
+examples/checkpoints/harmonia_v7/
+examples/checkpoints/harmonia_v8/
+examples/checkpoints/harmonia_v3/
+examples/checkpoints/harmonia_v2/
+examples/checkpoints/harmonia_trained/
