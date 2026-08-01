@@ -1,0 +1,185 @@
+{
+  "version": "v10",
+  "focus": "推理之神：数学+算法+逻辑+Agent思维链 / 600000轮",
+  "new_experts": [
+    "数学推理",
+    "算法题解",
+    "逻辑推理",
+    "Agent规划"
+  ],
+  "expert_count": 15,
+  "expert_corpus": 259,
+  "extra_reasoning_corpus": 35,
+  "repo_stats": [
+    {
+      "desc": "CPython",
+      "files": 1500,
+      "frags": 18100,
+      "ok": true
+    },
+    {
+      "desc": "Django",
+      "files": 600,
+      "frags": 6676,
+      "ok": true
+    },
+    {
+      "desc": "pandas",
+      "files": 316,
+      "frags": 6675,
+      "ok": true
+    },
+    {
+      "desc": "Transformers",
+      "files": 1500,
+      "frags": 15811,
+      "ok": true
+    },
+    {
+      "desc": "PyTorch",
+      "files": 1000,
+      "frags": 21611,
+      "ok": true
+    },
+    {
+      "desc": "FastAPI",
+      "files": 438,
+      "frags": 1171,
+      "ok": true
+    },
+    {
+      "desc": "Rust",
+      "files": 500,
+      "frags": 7401,
+      "ok": true
+    },
+    {
+      "desc": "Go",
+      "files": 500,
+      "frags": 7089,
+      "ok": true
+    }
+  ],
+  "total_fragments": 87550,
+  "epochs": 600000,
+  "fragments_learned": 83510,
+  "active_experts": 15,
+  "expert_load": {
+    "数学推理": 50,
+    "算法题解": 53,
+    "逻辑推理": 39,
+    "Agent规划": 32,
+    "情感对话": 17,
+    "中文知识": 18,
+    "合鸣自述者": 4,
+    "AI造物哲学": 6,
+    "硬件框架": 6,
+    "创意工具全栈": 6,
+    "行业应用": 6,
+    "音乐理论": 5,
+    "多模态生成": 6,
+    "混合专家": 5,
+    "通用兜底": 83516
+  },
+  "training_time": 3278.47,
+  "growth_log": [
+    {
+      "epoch": 60000,
+      "learned": 83510,
+      "active": 15,
+      "avg_load": 5584.6,
+      "elapsed": 298.04
+    },
+    {
+      "epoch": 120000,
+      "learned": 83510,
+      "active": 15,
+      "avg_load": 5584.6,
+      "elapsed": 631.7
+    },
+    {
+      "epoch": 180000,
+      "learned": 83510,
+      "active": 15,
+      "avg_load": 5584.6,
+      "elapsed": 961.77
+    },
+    {
+      "epoch": 240000,
+      "learned": 83510,
+      "active": 15,
+      "avg_load": 5584.6,
+      "elapsed": 1289.37
+    },
+    {
+      "epoch": 300000,
+      "learned": 83510,
+      "active": 15,
+      "avg_load": 5584.6,
+      "elapsed": 1619.46
+    },
+    {
+      "epoch": 360000,
+      "learned": 83510,
+      "active": 15,
+      "avg_load": 5584.6,
+      "elapsed": 1952.54
+    },
+    {
+      "epoch": 420000,
+      "learned": 83510,
+      "active": 15,
+      "avg_load": 5584.6,
+      "elapsed": 2283.25
+    },
+    {
+      "epoch": 480000,
+      "learned": 83510,
+      "active": 15,
+      "avg_load": 5584.6,
+      "elapsed": 2614.06
+    },
+    {
+      "epoch": 540000,
+      "learned": 83510,
+      "active": 15,
+      "avg_load": 5584.6,
+      "elapsed": 2944.1
+    },
+    {
+      "epoch": 600000,
+      "learned": 83510,
+      "active": 15,
+      "avg_load": 5584.6,
+      "elapsed": 3278.47
+    }
+  ],
+  "improved": 5,
+  "total_compared": 22,
+  "category_scores": {
+    "数学推理": {
+      "improved": 0,
+      "total": 5
+    },
+    "算法题解": {
+      "improved": 2,
+      "total": 5
+    },
+    "逻辑推理": {
+      "improved": 0,
+      "total": 4
+    },
+    "Agent规划": {
+      "improved": 0,
+      "total": 3
+    },
+    "中文日常": {
+      "improved": 1,
+      "total": 3
+    },
+    "代码生成": {
+      "improved": 2,
+      "total": 2
+    }
+  }
+}
