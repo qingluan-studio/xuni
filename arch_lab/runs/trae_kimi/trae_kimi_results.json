@@ -1,0 +1,292 @@
+{
+  "experiment": "trae_kimi_fusion",
+  "epochs": 8,
+  "channels": 32,
+  "device": "cpu",
+  "cls_results": {
+    "TRAE (T→R→A→E)": {
+      "acc": 0.917,
+      "params": 100371,
+      "elapsed": 44.3,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.7357,
+          "acc": 0.57
+        },
+        {
+          "epoch": 1,
+          "loss": 1.0435,
+          "acc": 0.72
+        },
+        {
+          "epoch": 2,
+          "loss": 0.6842,
+          "acc": 0.775
+        },
+        {
+          "epoch": 3,
+          "loss": 0.5024,
+          "acc": 0.861
+        },
+        {
+          "epoch": 4,
+          "loss": 0.3873,
+          "acc": 0.871
+        },
+        {
+          "epoch": 5,
+          "loss": 0.3167,
+          "acc": 0.887
+        },
+        {
+          "epoch": 6,
+          "loss": 0.2573,
+          "acc": 0.905
+        },
+        {
+          "epoch": 7,
+          "loss": 0.2262,
+          "acc": 0.917
+        }
+      ]
+    },
+    "Kimi (K→i→m→i)": {
+      "acc": 0.927,
+      "params": 83498,
+      "elapsed": 80.7,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.8355,
+          "acc": 0.563
+        },
+        {
+          "epoch": 1,
+          "loss": 1.0653,
+          "acc": 0.717
+        },
+        {
+          "epoch": 2,
+          "loss": 0.706,
+          "acc": 0.818
+        },
+        {
+          "epoch": 3,
+          "loss": 0.4944,
+          "acc": 0.88
+        },
+        {
+          "epoch": 4,
+          "loss": 0.395,
+          "acc": 0.894
+        },
+        {
+          "epoch": 5,
+          "loss": 0.3274,
+          "acc": 0.908
+        },
+        {
+          "epoch": 6,
+          "loss": 0.2799,
+          "acc": 0.927
+        },
+        {
+          "epoch": 7,
+          "loss": 0.2535,
+          "acc": 0.926
+        }
+      ]
+    },
+    "TRAE×Kimi (TK→Ri→Am→Ei)": {
+      "acc": 0.906,
+      "params": 146099,
+      "elapsed": 128.8,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.7298,
+          "acc": 0.482
+        },
+        {
+          "epoch": 1,
+          "loss": 1.0562,
+          "acc": 0.699
+        },
+        {
+          "epoch": 2,
+          "loss": 0.708,
+          "acc": 0.813
+        },
+        {
+          "epoch": 3,
+          "loss": 0.5463,
+          "acc": 0.82
+        },
+        {
+          "epoch": 4,
+          "loss": 0.4383,
+          "acc": 0.882
+        },
+        {
+          "epoch": 5,
+          "loss": 0.3528,
+          "acc": 0.895
+        },
+        {
+          "epoch": 6,
+          "loss": 0.2887,
+          "acc": 0.899
+        },
+        {
+          "epoch": 7,
+          "loss": 0.26,
+          "acc": 0.906
+        }
+      ]
+    }
+  },
+  "add_results": {
+    "TRAE (T→R→A→E)": {
+      "acc": 0.277,
+      "params": 101244,
+      "elapsed": 37.5,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.8942,
+          "acc": 0.119
+        },
+        {
+          "epoch": 1,
+          "loss": 2.7116,
+          "acc": 0.135
+        },
+        {
+          "epoch": 2,
+          "loss": 2.5772,
+          "acc": 0.167
+        },
+        {
+          "epoch": 3,
+          "loss": 2.4505,
+          "acc": 0.187
+        },
+        {
+          "epoch": 4,
+          "loss": 2.3479,
+          "acc": 0.225
+        },
+        {
+          "epoch": 5,
+          "loss": 2.32,
+          "acc": 0.247
+        },
+        {
+          "epoch": 6,
+          "loss": 2.256,
+          "acc": 0.236
+        },
+        {
+          "epoch": 7,
+          "loss": 2.2572,
+          "acc": 0.277
+        }
+      ]
+    },
+    "Kimi (K→i→m→i)": {
+      "acc": 0.291,
+      "params": 84371,
+      "elapsed": 75.8,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.9187,
+          "acc": 0.126
+        },
+        {
+          "epoch": 1,
+          "loss": 2.685,
+          "acc": 0.147
+        },
+        {
+          "epoch": 2,
+          "loss": 2.5309,
+          "acc": 0.192
+        },
+        {
+          "epoch": 3,
+          "loss": 2.3976,
+          "acc": 0.189
+        },
+        {
+          "epoch": 4,
+          "loss": 2.3237,
+          "acc": 0.244
+        },
+        {
+          "epoch": 5,
+          "loss": 2.2467,
+          "acc": 0.238
+        },
+        {
+          "epoch": 6,
+          "loss": 2.2588,
+          "acc": 0.266
+        },
+        {
+          "epoch": 7,
+          "loss": 2.2282,
+          "acc": 0.291
+        }
+      ]
+    },
+    "TRAE×Kimi (TK→Ri→Am→Ei)": {
+      "acc": 0.27,
+      "params": 146972,
+      "elapsed": 128.3,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.8124,
+          "acc": 0.111
+        },
+        {
+          "epoch": 1,
+          "loss": 2.7045,
+          "acc": 0.136
+        },
+        {
+          "epoch": 2,
+          "loss": 2.5308,
+          "acc": 0.189
+        },
+        {
+          "epoch": 3,
+          "loss": 2.421,
+          "acc": 0.213
+        },
+        {
+          "epoch": 4,
+          "loss": 2.3481,
+          "acc": 0.169
+        },
+        {
+          "epoch": 5,
+          "loss": 2.302,
+          "acc": 0.222
+        },
+        {
+          "epoch": 6,
+          "loss": 2.2571,
+          "acc": 0.27
+        },
+        {
+          "epoch": 7,
+          "loss": 2.2537,
+          "acc": 0.244
+        }
+      ]
+    }
+  }
+}

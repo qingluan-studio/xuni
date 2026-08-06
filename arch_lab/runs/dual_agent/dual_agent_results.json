@@ -1,0 +1,480 @@
+{
+  "experiment": "dual_agent_collaboration",
+  "epochs": 8,
+  "channels": 32,
+  "device": "cpu",
+  "cls_results": {
+    "Solo-TRAE": {
+      "acc": 0.93,
+      "params": 100371,
+      "elapsed": 48.9,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.8401,
+          "acc": 0.519
+        },
+        {
+          "epoch": 1,
+          "loss": 0.9885,
+          "acc": 0.78
+        },
+        {
+          "epoch": 2,
+          "loss": 0.6125,
+          "acc": 0.87
+        },
+        {
+          "epoch": 3,
+          "loss": 0.3964,
+          "acc": 0.899
+        },
+        {
+          "epoch": 4,
+          "loss": 0.3063,
+          "acc": 0.915
+        },
+        {
+          "epoch": 5,
+          "loss": 0.238,
+          "acc": 0.912
+        },
+        {
+          "epoch": 6,
+          "loss": 0.2063,
+          "acc": 0.929
+        },
+        {
+          "epoch": 7,
+          "loss": 0.1796,
+          "acc": 0.93
+        }
+      ]
+    },
+    "Solo-Kimi": {
+      "acc": 0.928,
+      "params": 83498,
+      "elapsed": 80.7,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.853,
+          "acc": 0.601
+        },
+        {
+          "epoch": 1,
+          "loss": 0.9479,
+          "acc": 0.787
+        },
+        {
+          "epoch": 2,
+          "loss": 0.6066,
+          "acc": 0.863
+        },
+        {
+          "epoch": 3,
+          "loss": 0.4498,
+          "acc": 0.887
+        },
+        {
+          "epoch": 4,
+          "loss": 0.3451,
+          "acc": 0.918
+        },
+        {
+          "epoch": 5,
+          "loss": 0.2851,
+          "acc": 0.913
+        },
+        {
+          "epoch": 6,
+          "loss": 0.2414,
+          "acc": 0.925
+        },
+        {
+          "epoch": 7,
+          "loss": 0.2223,
+          "acc": 0.928
+        }
+      ]
+    },
+    "Parallel-Vote": {
+      "acc": 0.934,
+      "params": 183869,
+      "elapsed": 128.9,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.6474,
+          "acc": 0.677
+        },
+        {
+          "epoch": 1,
+          "loss": 0.8394,
+          "acc": 0.791
+        },
+        {
+          "epoch": 2,
+          "loss": 0.5356,
+          "acc": 0.849
+        },
+        {
+          "epoch": 3,
+          "loss": 0.3695,
+          "acc": 0.911
+        },
+        {
+          "epoch": 4,
+          "loss": 0.2743,
+          "acc": 0.908
+        },
+        {
+          "epoch": 5,
+          "loss": 0.2137,
+          "acc": 0.918
+        },
+        {
+          "epoch": 6,
+          "loss": 0.1757,
+          "acc": 0.934
+        },
+        {
+          "epoch": 7,
+          "loss": 0.1482,
+          "acc": 0.932
+        }
+      ]
+    },
+    "Parallel-Learned": {
+      "acc": 0.937,
+      "params": 194623,
+      "elapsed": 133.9,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.6263,
+          "acc": 0.659
+        },
+        {
+          "epoch": 1,
+          "loss": 0.8642,
+          "acc": 0.81
+        },
+        {
+          "epoch": 2,
+          "loss": 0.5013,
+          "acc": 0.88
+        },
+        {
+          "epoch": 3,
+          "loss": 0.3533,
+          "acc": 0.898
+        },
+        {
+          "epoch": 4,
+          "loss": 0.2599,
+          "acc": 0.923
+        },
+        {
+          "epoch": 5,
+          "loss": 0.2157,
+          "acc": 0.931
+        },
+        {
+          "epoch": 6,
+          "loss": 0.1601,
+          "acc": 0.936
+        },
+        {
+          "epoch": 7,
+          "loss": 0.1345,
+          "acc": 0.937
+        }
+      ]
+    },
+    "Sequential-Fuse": {
+      "acc": 0.929,
+      "params": 190439,
+      "elapsed": 128.5,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.8,
+          "acc": 0.534
+        },
+        {
+          "epoch": 1,
+          "loss": 1.0948,
+          "acc": 0.709
+        },
+        {
+          "epoch": 2,
+          "loss": 0.7189,
+          "acc": 0.837
+        },
+        {
+          "epoch": 3,
+          "loss": 0.5036,
+          "acc": 0.87
+        },
+        {
+          "epoch": 4,
+          "loss": 0.3649,
+          "acc": 0.899
+        },
+        {
+          "epoch": 5,
+          "loss": 0.2786,
+          "acc": 0.918
+        },
+        {
+          "epoch": 6,
+          "loss": 0.2314,
+          "acc": 0.922
+        },
+        {
+          "epoch": 7,
+          "loss": 0.2008,
+          "acc": 0.929
+        }
+      ]
+    }
+  },
+  "add_results": {
+    "Solo-TRAE": {
+      "acc": 0.282,
+      "params": 101244,
+      "elapsed": 40.0,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.843,
+          "acc": 0.089
+        },
+        {
+          "epoch": 1,
+          "loss": 2.7179,
+          "acc": 0.13
+        },
+        {
+          "epoch": 2,
+          "loss": 2.5918,
+          "acc": 0.175
+        },
+        {
+          "epoch": 3,
+          "loss": 2.4605,
+          "acc": 0.195
+        },
+        {
+          "epoch": 4,
+          "loss": 2.3564,
+          "acc": 0.224
+        },
+        {
+          "epoch": 5,
+          "loss": 2.3351,
+          "acc": 0.242
+        },
+        {
+          "epoch": 6,
+          "loss": 2.2742,
+          "acc": 0.238
+        },
+        {
+          "epoch": 7,
+          "loss": 2.2636,
+          "acc": 0.282
+        }
+      ]
+    },
+    "Solo-Kimi": {
+      "acc": 0.283,
+      "params": 84371,
+      "elapsed": 76.6,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.9032,
+          "acc": 0.098
+        },
+        {
+          "epoch": 1,
+          "loss": 2.7252,
+          "acc": 0.125
+        },
+        {
+          "epoch": 2,
+          "loss": 2.5877,
+          "acc": 0.173
+        },
+        {
+          "epoch": 3,
+          "loss": 2.4586,
+          "acc": 0.17
+        },
+        {
+          "epoch": 4,
+          "loss": 2.3972,
+          "acc": 0.21
+        },
+        {
+          "epoch": 5,
+          "loss": 2.3151,
+          "acc": 0.23
+        },
+        {
+          "epoch": 6,
+          "loss": 2.2903,
+          "acc": 0.269
+        },
+        {
+          "epoch": 7,
+          "loss": 2.2577,
+          "acc": 0.283
+        }
+      ]
+    },
+    "Parallel-Vote": {
+      "acc": 0.312,
+      "params": 185615,
+      "elapsed": 127.3,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.8348,
+          "acc": 0.111
+        },
+        {
+          "epoch": 1,
+          "loss": 2.6362,
+          "acc": 0.187
+        },
+        {
+          "epoch": 2,
+          "loss": 2.4475,
+          "acc": 0.208
+        },
+        {
+          "epoch": 3,
+          "loss": 2.3331,
+          "acc": 0.267
+        },
+        {
+          "epoch": 4,
+          "loss": 2.2494,
+          "acc": 0.27
+        },
+        {
+          "epoch": 5,
+          "loss": 2.1761,
+          "acc": 0.266
+        },
+        {
+          "epoch": 6,
+          "loss": 2.1534,
+          "acc": 0.312
+        },
+        {
+          "epoch": 7,
+          "loss": 2.1289,
+          "acc": 0.302
+        }
+      ]
+    },
+    "Parallel-Learned": {
+      "acc": 0.319,
+      "params": 196657,
+      "elapsed": 131.9,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.821,
+          "acc": 0.117
+        },
+        {
+          "epoch": 1,
+          "loss": 2.6675,
+          "acc": 0.16
+        },
+        {
+          "epoch": 2,
+          "loss": 2.5018,
+          "acc": 0.191
+        },
+        {
+          "epoch": 3,
+          "loss": 2.3538,
+          "acc": 0.232
+        },
+        {
+          "epoch": 4,
+          "loss": 2.2822,
+          "acc": 0.255
+        },
+        {
+          "epoch": 5,
+          "loss": 2.2296,
+          "acc": 0.279
+        },
+        {
+          "epoch": 6,
+          "loss": 2.1659,
+          "acc": 0.319
+        },
+        {
+          "epoch": 7,
+          "loss": 2.1547,
+          "acc": 0.307
+        }
+      ]
+    },
+    "Sequential-Fuse": {
+      "acc": 0.307,
+      "params": 192482,
+      "elapsed": 127.0,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.8333,
+          "acc": 0.116
+        },
+        {
+          "epoch": 1,
+          "loss": 2.7111,
+          "acc": 0.126
+        },
+        {
+          "epoch": 2,
+          "loss": 2.5121,
+          "acc": 0.213
+        },
+        {
+          "epoch": 3,
+          "loss": 2.3756,
+          "acc": 0.217
+        },
+        {
+          "epoch": 4,
+          "loss": 2.2846,
+          "acc": 0.248
+        },
+        {
+          "epoch": 5,
+          "loss": 2.2411,
+          "acc": 0.292
+        },
+        {
+          "epoch": 6,
+          "loss": 2.2084,
+          "acc": 0.281
+        },
+        {
+          "epoch": 7,
+          "loss": 2.1699,
+          "acc": 0.307
+        }
+      ]
+    }
+  }
+}
