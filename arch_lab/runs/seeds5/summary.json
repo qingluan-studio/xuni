@@ -1,0 +1,466 @@
+{
+  "tag": "seeds5",
+  "elapsed_sec": 191.6,
+  "best_fitness": 4.004384604100792,
+  "best_acc": 0.822,
+  "best_params": 36394,
+  "best_genome": [
+    {
+      "op": "norm_act",
+      "act": "gelu",
+      "expand": 1.0,
+      "heads": 4,
+      "inputs": [
+        -1
+      ]
+    },
+    {
+      "op": "attn",
+      "act": "gelu",
+      "expand": 2.0,
+      "heads": 4,
+      "inputs": [
+        0
+      ]
+    },
+    {
+      "op": "conv1",
+      "act": "silu",
+      "expand": 1.0,
+      "heads": 8,
+      "inputs": [
+        1,
+        -1,
+        0
+      ]
+    },
+    {
+      "op": "conv3",
+      "act": "silu",
+      "expand": 2.0,
+      "heads": 8,
+      "inputs": [
+        2
+      ]
+    },
+    {
+      "op": "conv1",
+      "act": "relu",
+      "expand": 1.0,
+      "heads": 2,
+      "inputs": [
+        3,
+        2,
+        0
+      ]
+    },
+    {
+      "op": "ffn",
+      "act": "relu",
+      "expand": 4.0,
+      "heads": 8,
+      "inputs": [
+        4,
+        3,
+        0
+      ]
+    },
+    {
+      "op": "conv5",
+      "act": "gelu",
+      "expand": 1.0,
+      "heads": 4,
+      "inputs": [
+        5
+      ]
+    },
+    {
+      "op": "ffn",
+      "act": "relu",
+      "expand": 4.0,
+      "heads": 8,
+      "inputs": [
+        5
+      ]
+    }
+  ],
+  "recommended_acc": 0.883,
+  "recommended_params": 36394,
+  "recommended_genome": [
+    {
+      "op": "norm_act",
+      "act": "gelu",
+      "expand": 1.0,
+      "heads": 4,
+      "inputs": [
+        -1
+      ]
+    },
+    {
+      "op": "attn",
+      "act": "gelu",
+      "expand": 2.0,
+      "heads": 4,
+      "inputs": [
+        0
+      ]
+    },
+    {
+      "op": "conv1",
+      "act": "silu",
+      "expand": 1.0,
+      "heads": 8,
+      "inputs": [
+        1,
+        -1,
+        0
+      ]
+    },
+    {
+      "op": "conv3",
+      "act": "silu",
+      "expand": 2.0,
+      "heads": 8,
+      "inputs": [
+        2
+      ]
+    },
+    {
+      "op": "conv1",
+      "act": "relu",
+      "expand": 1.0,
+      "heads": 2,
+      "inputs": [
+        3,
+        2
+      ]
+    },
+    {
+      "op": "ffn",
+      "act": "relu",
+      "expand": 4.0,
+      "heads": 8,
+      "inputs": [
+        4,
+        3
+      ]
+    },
+    {
+      "op": "conv5",
+      "act": "gelu",
+      "expand": 1.0,
+      "heads": 4,
+      "inputs": [
+        5
+      ]
+    },
+    {
+      "op": "ffn",
+      "act": "relu",
+      "expand": 4.0,
+      "heads": 8,
+      "inputs": [
+        5
+      ]
+    }
+  ],
+  "emerged_motifs": [
+    {
+      "motif": "tri:conv1->ffn->ffn",
+      "initial_freq": 0.0,
+      "final_freq": 1.0,
+      "growth": 1.0
+    },
+    {
+      "motif": "tri:conv3->ffn->ffn",
+      "initial_freq": 0.0,
+      "final_freq": 1.0,
+      "growth": 1.0
+    },
+    {
+      "motif": "pair:norm_act->conv1",
+      "initial_freq": 0.2,
+      "final_freq": 1.0,
+      "growth": 0.8
+    },
+    {
+      "motif": "op:norm_act",
+      "initial_freq": 0.2,
+      "final_freq": 1.0,
+      "growth": 0.8
+    },
+    {
+      "motif": "tri:conv3->conv1->ffn",
+      "initial_freq": 0.2,
+      "final_freq": 1.0,
+      "growth": 0.8
+    },
+    {
+      "motif": "pair:ffn->ffn",
+      "initial_freq": 0.2,
+      "final_freq": 1.0,
+      "growth": 0.8
+    },
+    {
+      "motif": "op:conv1",
+      "initial_freq": 0.2,
+      "final_freq": 1.0,
+      "growth": 0.8
+    },
+    {
+      "motif": "pair:conv3->conv1",
+      "initial_freq": 0.2,
+      "final_freq": 1.0,
+      "growth": 0.8
+    },
+    {
+      "motif": "pair:norm_act->attn",
+      "initial_freq": 0.2,
+      "final_freq": 1.0,
+      "growth": 0.8
+    },
+    {
+      "motif": "metric:skip_density:0.4",
+      "initial_freq": 0.2,
+      "final_freq": 1.0,
+      "growth": 0.8
+    },
+    {
+      "motif": "pair:conv1->ffn",
+      "initial_freq": 0.2,
+      "final_freq": 1.0,
+      "growth": 0.8
+    },
+    {
+      "motif": "metric:depth_bucket:4",
+      "initial_freq": 0.2,
+      "final_freq": 1.0,
+      "growth": 0.8
+    },
+    {
+      "motif": "metric:longest_path:7",
+      "initial_freq": 0.0,
+      "final_freq": 0.8,
+      "growth": 0.8
+    },
+    {
+      "motif": "tri:norm_act->attn->conv1",
+      "initial_freq": 0.2,
+      "final_freq": 0.8,
+      "growth": 0.6
+    },
+    {
+      "motif": "tri:conv1->conv3->conv1",
+      "initial_freq": 0.2,
+      "final_freq": 0.8,
+      "growth": 0.6
+    },
+    {
+      "motif": "pair:conv1->conv1",
+      "initial_freq": 0.2,
+      "final_freq": 0.8,
+      "growth": 0.6
+    },
+    {
+      "motif": "pair:attn->conv1",
+      "initial_freq": 0.2,
+      "final_freq": 0.8,
+      "growth": 0.6
+    },
+    {
+      "motif": "tri:norm_act->conv1->ffn",
+      "initial_freq": 0.0,
+      "final_freq": 0.6,
+      "growth": 0.6
+    },
+    {
+      "motif": "tri:norm_act->conv1->conv3",
+      "initial_freq": 0.2,
+      "final_freq": 0.8,
+      "growth": 0.6
+    },
+    {
+      "motif": "tri:attn->conv1->conv1",
+      "initial_freq": 0.2,
+      "final_freq": 0.8,
+      "growth": 0.6
+    },
+    {
+      "motif": "tri:conv1->conv1->ffn",
+      "initial_freq": 0.2,
+      "final_freq": 0.8,
+      "growth": 0.6
+    },
+    {
+      "motif": "merge_fanin:3",
+      "initial_freq": 0.0,
+      "final_freq": 0.6,
+      "growth": 0.6
+    },
+    {
+      "motif": "tri:conv1->conv3->ffn",
+      "initial_freq": 0.2,
+      "final_freq": 0.8,
+      "growth": 0.6
+    },
+    {
+      "motif": "tri:attn->conv1->conv3",
+      "initial_freq": 0.2,
+      "final_freq": 0.8,
+      "growth": 0.6
+    },
+    {
+      "motif": "pair:conv1->conv3",
+      "initial_freq": 0.2,
+      "final_freq": 0.8,
+      "growth": 0.6
+    },
+    {
+      "motif": "tri:norm_act->conv1->conv1",
+      "initial_freq": 0.2,
+      "final_freq": 0.8,
+      "growth": 0.6
+    },
+    {
+      "motif": "metric:avg_fanin:1.4",
+      "initial_freq": 0.0,
+      "final_freq": 0.6,
+      "growth": 0.6
+    },
+    {
+      "motif": "pair:ffn->conv5",
+      "initial_freq": 0.0,
+      "final_freq": 0.6,
+      "growth": 0.6
+    },
+    {
+      "motif": "tri:conv3->ffn->conv5",
+      "initial_freq": 0.0,
+      "final_freq": 0.6,
+      "growth": 0.6
+    },
+    {
+      "motif": "tri:conv1->ffn->conv5",
+      "initial_freq": 0.0,
+      "final_freq": 0.6,
+      "growth": 0.6
+    },
+    {
+      "motif": "pattern:bottleneck",
+      "initial_freq": 0.2,
+      "final_freq": 0.6,
+      "growth": 0.4
+    },
+    {
+      "motif": "skip:dense_input",
+      "initial_freq": 0.2,
+      "final_freq": 0.6,
+      "growth": 0.4
+    }
+  ],
+  "pareto_front": {
+    "size": 3,
+    "best_acc": 0.883,
+    "min_params": 26154,
+    "points": [
+      {
+        "acc": 0.83,
+        "params": 26154,
+        "fitness": 3.2584
+      },
+      {
+        "acc": 0.852,
+        "params": 34058,
+        "fitness": 3.6537
+      },
+      {
+        "acc": 0.883,
+        "params": 36394,
+        "fitness": 3.8102
+      }
+    ]
+  },
+  "seeds_used": 5,
+  "history": [
+    {
+      "gen": 0,
+      "best_fitness": 3.6537424325039534,
+      "mean_fitness": 2.1470280375513675,
+      "best_acc": 0.852,
+      "best_proxy": 3.6540830125039534,
+      "best_params": 34058
+    },
+    {
+      "gen": 1,
+      "best_fitness": 3.716736160113341,
+      "mean_fitness": 2.727666295336876,
+      "best_acc": 0.826,
+      "best_proxy": 3.717076740113341,
+      "best_params": 34058
+    },
+    {
+      "gen": 2,
+      "best_fitness": 3.881718764227746,
+      "mean_fitness": 3.091256823835979,
+      "best_acc": 0.817,
+      "best_proxy": 3.8820827042277464,
+      "best_params": 36394
+    },
+    {
+      "gen": 3,
+      "best_fitness": 3.785626999242278,
+      "mean_fitness": 3.2935170782396015,
+      "best_acc": 0.802,
+      "best_proxy": 3.785990939242278,
+      "best_params": 36394
+    },
+    {
+      "gen": 4,
+      "best_fitness": 3.8876310401383845,
+      "mean_fitness": 2.960266704451513,
+      "best_acc": 0.817,
+      "best_proxy": 3.8879949801383846,
+      "best_params": 36394
+    },
+    {
+      "gen": 5,
+      "best_fitness": 3.8693626543862125,
+      "mean_fitness": 3.25144685621261,
+      "best_acc": 0.808,
+      "best_proxy": 3.8697265943862127,
+      "best_params": 36394
+    },
+    {
+      "gen": 6,
+      "best_fitness": 3.87519428610169,
+      "mean_fitness": 2.9913817504646594,
+      "best_acc": 0.802,
+      "best_proxy": 3.87555822610169,
+      "best_params": 36394
+    },
+    {
+      "gen": 7,
+      "best_fitness": 3.893659724348513,
+      "mean_fitness": 3.2261351767789885,
+      "best_acc": 0.827,
+      "best_proxy": 3.8940236643485133,
+      "best_params": 36394
+    },
+    {
+      "gen": 8,
+      "best_fitness": 4.004384604100792,
+      "mean_fitness": 3.042531031507815,
+      "best_acc": 0.822,
+      "best_proxy": 4.004748544100791,
+      "best_params": 36394
+    },
+    {
+      "gen": 9,
+      "best_fitness": 3.9451048540796387,
+      "mean_fitness": 3.226159702061832,
+      "best_acc": 0.79,
+      "best_proxy": 3.9454710340796386,
+      "best_params": 36618
+    }
+  ]
+}

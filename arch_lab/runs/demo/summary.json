@@ -1,0 +1,280 @@
+{
+  "tag": "demo",
+  "elapsed_sec": 194.7,
+  "best_fitness": 4.354018017233072,
+  "best_acc": 0.885,
+  "best_params": 32266,
+  "best_genome": [
+    {
+      "op": "conv3",
+      "act": "silu",
+      "expand": 1.0,
+      "heads": 4,
+      "inputs": [
+        -1
+      ]
+    },
+    {
+      "op": "attn",
+      "act": "silu",
+      "expand": 2.0,
+      "heads": 4,
+      "inputs": [
+        0,
+        -1
+      ]
+    },
+    {
+      "op": "conv5",
+      "act": "relu",
+      "expand": 2.0,
+      "heads": 4,
+      "inputs": [
+        1
+      ]
+    },
+    {
+      "op": "conv5",
+      "act": "relu",
+      "expand": 1.0,
+      "heads": 2,
+      "inputs": [
+        2,
+        -1,
+        1,
+        0
+      ]
+    },
+    {
+      "op": "conv3",
+      "act": "gelu",
+      "expand": 2.0,
+      "heads": 2,
+      "inputs": [
+        3
+      ]
+    },
+    {
+      "op": "conv5",
+      "act": "gelu",
+      "expand": 2.0,
+      "heads": 2,
+      "inputs": [
+        4,
+        1,
+        3
+      ]
+    },
+    {
+      "op": "conv3",
+      "act": "gelu",
+      "expand": 4.0,
+      "heads": 2,
+      "inputs": [
+        5,
+        0
+      ]
+    },
+    {
+      "op": "ffn",
+      "act": "relu",
+      "expand": 4.0,
+      "heads": 8,
+      "inputs": [
+        6,
+        5
+      ]
+    }
+  ],
+  "recommended_acc": 0.913,
+  "recommended_params": 24202,
+  "recommended_genome": [
+    {
+      "op": "conv3",
+      "act": "silu",
+      "expand": 1.0,
+      "heads": 4,
+      "inputs": [
+        -1
+      ]
+    },
+    {
+      "op": "attn",
+      "act": "silu",
+      "expand": 2.0,
+      "heads": 4,
+      "inputs": [
+        0,
+        -1
+      ]
+    },
+    {
+      "op": "norm_act",
+      "act": "gelu",
+      "expand": 2.0,
+      "heads": 4,
+      "inputs": [
+        1
+      ]
+    },
+    {
+      "op": "conv5",
+      "act": "silu",
+      "expand": 1.0,
+      "heads": 2,
+      "inputs": [
+        2,
+        -1,
+        1
+      ]
+    },
+    {
+      "op": "conv3",
+      "act": "gelu",
+      "expand": 2.0,
+      "heads": 2,
+      "inputs": [
+        3
+      ]
+    },
+    {
+      "op": "conv5",
+      "act": "gelu",
+      "expand": 2.0,
+      "heads": 2,
+      "inputs": [
+        4,
+        1,
+        3
+      ]
+    },
+    {
+      "op": "conv3",
+      "act": "silu",
+      "expand": 4.0,
+      "heads": 2,
+      "inputs": [
+        5,
+        0
+      ]
+    },
+    {
+      "op": "ffn",
+      "act": "relu",
+      "expand": 1.0,
+      "heads": 8,
+      "inputs": [
+        6,
+        5
+      ]
+    }
+  ],
+  "emerged_motifs": [
+    {
+      "motif": "pair:attn->conv5",
+      "initial_freq": 0.0,
+      "final_freq": 0.8,
+      "growth": 0.8
+    },
+    {
+      "motif": "pair:conv5->conv5",
+      "initial_freq": 0.0,
+      "final_freq": 0.8,
+      "growth": 0.8
+    },
+    {
+      "motif": "pair:conv3->ffn",
+      "initial_freq": 0.2,
+      "final_freq": 0.8,
+      "growth": 0.6
+    },
+    {
+      "motif": "pair:conv3->attn",
+      "initial_freq": 0.2,
+      "final_freq": 0.8,
+      "growth": 0.6
+    }
+  ],
+  "history": [
+    {
+      "gen": 0,
+      "best_fitness": 3.7001972272323145,
+      "mean_fitness": 2.078512094845069,
+      "best_acc": 0.854,
+      "best_proxy": 3.7005378072323145,
+      "best_params": 34058
+    },
+    {
+      "gen": 1,
+      "best_fitness": 3.869414208682788,
+      "mean_fitness": 2.7112249910008828,
+      "best_acc": 0.874,
+      "best_proxy": 3.869754788682788,
+      "best_params": 34058
+    },
+    {
+      "gen": 2,
+      "best_fitness": 3.825487875668861,
+      "mean_fitness": 3.122324007957002,
+      "best_acc": 0.857,
+      "best_proxy": 3.825828455668861,
+      "best_params": 34058
+    },
+    {
+      "gen": 3,
+      "best_fitness": 4.0317168102623135,
+      "mean_fitness": 2.9914977195354098,
+      "best_acc": 0.823,
+      "best_proxy": 4.0320212302623135,
+      "best_params": 30442
+    },
+    {
+      "gen": 4,
+      "best_fitness": 3.97948377834752,
+      "mean_fitness": 3.4082911875718587,
+      "best_acc": 0.871,
+      "best_proxy": 3.97982435834752,
+      "best_params": 34058
+    },
+    {
+      "gen": 5,
+      "best_fitness": 3.950659225750569,
+      "mean_fitness": 3.4033915731289412,
+      "best_acc": 0.864,
+      "best_proxy": 3.950963645750569,
+      "best_params": 30442
+    },
+    {
+      "gen": 6,
+      "best_fitness": 4.2064053181647925,
+      "mean_fitness": 3.2438840959438116,
+      "best_acc": 0.864,
+      "best_proxy": 4.206751018164792,
+      "best_params": 34570
+    },
+    {
+      "gen": 7,
+      "best_fitness": 4.3146524394783015,
+      "mean_fitness": 3.3283194999216152,
+      "best_acc": 0.856,
+      "best_proxy": 4.314998139478301,
+      "best_params": 34570
+    },
+    {
+      "gen": 8,
+      "best_fitness": 4.287630189923417,
+      "mean_fitness": 3.8214166759885986,
+      "best_acc": 0.876,
+      "best_proxy": 4.287952849923417,
+      "best_params": 32266
+    },
+    {
+      "gen": 9,
+      "best_fitness": 4.354018017233072,
+      "mean_fitness": 3.6746846087417158,
+      "best_acc": 0.885,
+      "best_proxy": 4.354340677233072,
+      "best_params": 32266
+    }
+  ]
+}

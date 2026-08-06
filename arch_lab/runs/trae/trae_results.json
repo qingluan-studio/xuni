@@ -1,0 +1,197 @@
+{
+  "experiment": "trae_letter_model",
+  "epochs": 8,
+  "channels": 32,
+  "cls_results": {
+    "TRAE (T→R→A→E)": {
+      "acc": 0.928,
+      "params": 100371,
+      "elapsed": 43.1,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.7927,
+          "acc": 0.544
+        },
+        {
+          "epoch": 1,
+          "loss": 1.1093,
+          "acc": 0.715
+        },
+        {
+          "epoch": 2,
+          "loss": 0.7035,
+          "acc": 0.835
+        },
+        {
+          "epoch": 3,
+          "loss": 0.5013,
+          "acc": 0.882
+        },
+        {
+          "epoch": 4,
+          "loss": 0.3793,
+          "acc": 0.884
+        },
+        {
+          "epoch": 5,
+          "loss": 0.3028,
+          "acc": 0.918
+        },
+        {
+          "epoch": 6,
+          "loss": 0.2611,
+          "acc": 0.923
+        },
+        {
+          "epoch": 7,
+          "loss": 0.2292,
+          "acc": 0.928
+        }
+      ]
+    },
+    "Scrambled (A→T→R→E)": {
+      "acc": 0.878,
+      "params": 100371,
+      "elapsed": 43.1,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.89,
+          "acc": 0.398
+        },
+        {
+          "epoch": 1,
+          "loss": 1.2029,
+          "acc": 0.723
+        },
+        {
+          "epoch": 2,
+          "loss": 0.8039,
+          "acc": 0.778
+        },
+        {
+          "epoch": 3,
+          "loss": 0.609,
+          "acc": 0.823
+        },
+        {
+          "epoch": 4,
+          "loss": 0.4886,
+          "acc": 0.853
+        },
+        {
+          "epoch": 5,
+          "loss": 0.3997,
+          "acc": 0.872
+        },
+        {
+          "epoch": 6,
+          "loss": 0.3621,
+          "acc": 0.869
+        },
+        {
+          "epoch": 7,
+          "loss": 0.3313,
+          "acc": 0.878
+        }
+      ]
+    }
+  },
+  "add_results": {
+    "TRAE (T→R→A→E)": {
+      "acc": 0.291,
+      "params": 101244,
+      "elapsed": 39.3,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.8287,
+          "acc": 0.114
+        },
+        {
+          "epoch": 1,
+          "loss": 2.7032,
+          "acc": 0.128
+        },
+        {
+          "epoch": 2,
+          "loss": 2.5289,
+          "acc": 0.183
+        },
+        {
+          "epoch": 3,
+          "loss": 2.4021,
+          "acc": 0.232
+        },
+        {
+          "epoch": 4,
+          "loss": 2.339,
+          "acc": 0.24
+        },
+        {
+          "epoch": 5,
+          "loss": 2.2816,
+          "acc": 0.268
+        },
+        {
+          "epoch": 6,
+          "loss": 2.2375,
+          "acc": 0.262
+        },
+        {
+          "epoch": 7,
+          "loss": 2.2289,
+          "acc": 0.291
+        }
+      ]
+    },
+    "Scrambled (A→T→R→E)": {
+      "acc": 0.232,
+      "params": 101244,
+      "elapsed": 41.5,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.8528,
+          "acc": 0.121
+        },
+        {
+          "epoch": 1,
+          "loss": 2.6999,
+          "acc": 0.138
+        },
+        {
+          "epoch": 2,
+          "loss": 2.58,
+          "acc": 0.181
+        },
+        {
+          "epoch": 3,
+          "loss": 2.4768,
+          "acc": 0.181
+        },
+        {
+          "epoch": 4,
+          "loss": 2.3951,
+          "acc": 0.22
+        },
+        {
+          "epoch": 5,
+          "loss": 2.3461,
+          "acc": 0.196
+        },
+        {
+          "epoch": 6,
+          "loss": 2.3153,
+          "acc": 0.232
+        },
+        {
+          "epoch": 7,
+          "loss": 2.3037,
+          "acc": 0.23
+        }
+      ]
+    }
+  }
+}

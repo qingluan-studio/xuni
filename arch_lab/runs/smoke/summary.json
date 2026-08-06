@@ -1,0 +1,105 @@
+{
+  "tag": "smoke",
+  "elapsed_sec": 6.2,
+  "best_fitness": 3.1875697510647325,
+  "best_acc": 0.254,
+  "best_params": 26154,
+  "best_genome": [
+    {
+      "op": "norm_act",
+      "act": "gelu",
+      "expand": 1.0,
+      "heads": 4,
+      "inputs": [
+        -1
+      ]
+    },
+    {
+      "op": "attn",
+      "act": "gelu",
+      "expand": 2.0,
+      "heads": 4,
+      "inputs": [
+        0
+      ]
+    },
+    {
+      "op": "conv1",
+      "act": "silu",
+      "expand": 1.0,
+      "heads": 8,
+      "inputs": [
+        1,
+        -1,
+        0
+      ]
+    },
+    {
+      "op": "conv3",
+      "act": "silu",
+      "expand": 2.0,
+      "heads": 8,
+      "inputs": [
+        2
+      ]
+    },
+    {
+      "op": "conv1",
+      "act": "relu",
+      "expand": 4.0,
+      "heads": 2,
+      "inputs": [
+        3,
+        2
+      ]
+    },
+    {
+      "op": "ffn",
+      "act": "gelu",
+      "expand": 4.0,
+      "heads": 8,
+      "inputs": [
+        4,
+        3
+      ]
+    }
+  ],
+  "emerged_motifs": [
+    {
+      "motif": "depth_bucket:4",
+      "initial_freq": 0.0,
+      "final_freq": 0.5,
+      "growth": 0.5
+    },
+    {
+      "motif": "motif:stem_skip",
+      "initial_freq": 0.0,
+      "final_freq": 0.5,
+      "growth": 0.5
+    },
+    {
+      "motif": "pair:conv1->conv1",
+      "initial_freq": 0.0,
+      "final_freq": 0.5,
+      "growth": 0.5
+    }
+  ],
+  "history": [
+    {
+      "gen": 0,
+      "best_fitness": 3.1875697510647325,
+      "mean_fitness": 1.6319308239909107,
+      "best_acc": 0.254,
+      "best_proxy": 3.1878312910647324,
+      "best_params": 26154
+    },
+    {
+      "gen": 1,
+      "best_fitness": 3.1611079200553176,
+      "mean_fitness": 2.657068904523704,
+      "best_acc": 0.361,
+      "best_proxy": 3.1613694600553175,
+      "best_params": 26154
+    }
+  ]
+}

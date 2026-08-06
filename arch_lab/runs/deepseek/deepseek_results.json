@@ -1,0 +1,197 @@
+{
+  "experiment": "deepseek_letter_model",
+  "epochs": 8,
+  "channels": 32,
+  "cls_results": {
+    "DeepSeek (D→E₁→E₂→P→S→E₃→E₄→K)": {
+      "acc": 0.905,
+      "params": 182298,
+      "elapsed": 76.5,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.1403,
+          "acc": 0.526
+        },
+        {
+          "epoch": 1,
+          "loss": 0.9956,
+          "acc": 0.671
+        },
+        {
+          "epoch": 2,
+          "loss": 0.7753,
+          "acc": 0.75
+        },
+        {
+          "epoch": 3,
+          "loss": 0.5911,
+          "acc": 0.858
+        },
+        {
+          "epoch": 4,
+          "loss": 0.4606,
+          "acc": 0.862
+        },
+        {
+          "epoch": 5,
+          "loss": 0.3834,
+          "acc": 0.893
+        },
+        {
+          "epoch": 6,
+          "loss": 0.3199,
+          "acc": 0.9
+        },
+        {
+          "epoch": 7,
+          "loss": 0.2864,
+          "acc": 0.905
+        }
+      ]
+    },
+    "Scrambled (P→S→E₁→D→E₂→E₃→E₄→K)": {
+      "acc": 0.925,
+      "params": 182298,
+      "elapsed": 76.1,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.9401,
+          "acc": 0.5
+        },
+        {
+          "epoch": 1,
+          "loss": 1.0416,
+          "acc": 0.754
+        },
+        {
+          "epoch": 2,
+          "loss": 0.7226,
+          "acc": 0.838
+        },
+        {
+          "epoch": 3,
+          "loss": 0.5151,
+          "acc": 0.89
+        },
+        {
+          "epoch": 4,
+          "loss": 0.3813,
+          "acc": 0.892
+        },
+        {
+          "epoch": 5,
+          "loss": 0.3017,
+          "acc": 0.91
+        },
+        {
+          "epoch": 6,
+          "loss": 0.2505,
+          "acc": 0.917
+        },
+        {
+          "epoch": 7,
+          "loss": 0.2228,
+          "acc": 0.925
+        }
+      ]
+    }
+  },
+  "add_results": {
+    "DeepSeek (D→E₁→E₂→P→S→E₃→E₄→K)": {
+      "acc": 0.287,
+      "params": 183171,
+      "elapsed": 74.9,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 3.2457,
+          "acc": 0.101
+        },
+        {
+          "epoch": 1,
+          "loss": 2.7025,
+          "acc": 0.147
+        },
+        {
+          "epoch": 2,
+          "loss": 2.5565,
+          "acc": 0.158
+        },
+        {
+          "epoch": 3,
+          "loss": 2.4668,
+          "acc": 0.183
+        },
+        {
+          "epoch": 4,
+          "loss": 2.373,
+          "acc": 0.234
+        },
+        {
+          "epoch": 5,
+          "loss": 2.3503,
+          "acc": 0.237
+        },
+        {
+          "epoch": 6,
+          "loss": 2.2973,
+          "acc": 0.233
+        },
+        {
+          "epoch": 7,
+          "loss": 2.2877,
+          "acc": 0.287
+        }
+      ]
+    },
+    "Scrambled (P→S→E₁→D→E₂→E₃→E₄→K)": {
+      "acc": 0.242,
+      "params": 183171,
+      "elapsed": 76.9,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 3.2031,
+          "acc": 0.099
+        },
+        {
+          "epoch": 1,
+          "loss": 2.7423,
+          "acc": 0.118
+        },
+        {
+          "epoch": 2,
+          "loss": 2.629,
+          "acc": 0.172
+        },
+        {
+          "epoch": 3,
+          "loss": 2.4967,
+          "acc": 0.175
+        },
+        {
+          "epoch": 4,
+          "loss": 2.4048,
+          "acc": 0.206
+        },
+        {
+          "epoch": 5,
+          "loss": 2.3283,
+          "acc": 0.214
+        },
+        {
+          "epoch": 6,
+          "loss": 2.2898,
+          "acc": 0.224
+        },
+        {
+          "epoch": 7,
+          "loss": 2.2776,
+          "acc": 0.242
+        }
+      ]
+    }
+  }
+}

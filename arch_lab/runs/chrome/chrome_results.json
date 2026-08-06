@@ -1,0 +1,197 @@
+{
+  "experiment": "chrome_letter_model",
+  "epochs": 8,
+  "channels": 32,
+  "cls_results": {
+    "Chrome (C→H→R→O→M→E)": {
+      "acc": 0.952,
+      "params": 112175,
+      "elapsed": 56.8,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.5599,
+          "acc": 0.698
+        },
+        {
+          "epoch": 1,
+          "loss": 0.7334,
+          "acc": 0.764
+        },
+        {
+          "epoch": 2,
+          "loss": 0.4167,
+          "acc": 0.904
+        },
+        {
+          "epoch": 3,
+          "loss": 0.2549,
+          "acc": 0.914
+        },
+        {
+          "epoch": 4,
+          "loss": 0.1889,
+          "acc": 0.945
+        },
+        {
+          "epoch": 5,
+          "loss": 0.1508,
+          "acc": 0.948
+        },
+        {
+          "epoch": 6,
+          "loss": 0.1186,
+          "acc": 0.95
+        },
+        {
+          "epoch": 7,
+          "loss": 0.1024,
+          "acc": 0.952
+        }
+      ]
+    },
+    "Scrambled (O→M→C→H→R→E)": {
+      "acc": 0.94,
+      "params": 112175,
+      "elapsed": 57.3,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.325,
+          "acc": 0.593
+        },
+        {
+          "epoch": 1,
+          "loss": 0.6143,
+          "acc": 0.849
+        },
+        {
+          "epoch": 2,
+          "loss": 0.3839,
+          "acc": 0.877
+        },
+        {
+          "epoch": 3,
+          "loss": 0.2815,
+          "acc": 0.923
+        },
+        {
+          "epoch": 4,
+          "loss": 0.2154,
+          "acc": 0.93
+        },
+        {
+          "epoch": 5,
+          "loss": 0.1601,
+          "acc": 0.931
+        },
+        {
+          "epoch": 6,
+          "loss": 0.1349,
+          "acc": 0.934
+        },
+        {
+          "epoch": 7,
+          "loss": 0.1158,
+          "acc": 0.94
+        }
+      ]
+    }
+  },
+  "add_results": {
+    "Chrome (C→H→R→O→M→E)": {
+      "acc": 0.354,
+      "params": 113048,
+      "elapsed": 55.1,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.8307,
+          "acc": 0.122
+        },
+        {
+          "epoch": 1,
+          "loss": 2.6074,
+          "acc": 0.162
+        },
+        {
+          "epoch": 2,
+          "loss": 2.4169,
+          "acc": 0.218
+        },
+        {
+          "epoch": 3,
+          "loss": 2.28,
+          "acc": 0.261
+        },
+        {
+          "epoch": 4,
+          "loss": 2.1802,
+          "acc": 0.257
+        },
+        {
+          "epoch": 5,
+          "loss": 2.1096,
+          "acc": 0.339
+        },
+        {
+          "epoch": 6,
+          "loss": 2.051,
+          "acc": 0.354
+        },
+        {
+          "epoch": 7,
+          "loss": 2.0232,
+          "acc": 0.329
+        }
+      ]
+    },
+    "Scrambled (O→M→C→H→R→E)": {
+      "acc": 0.337,
+      "params": 113048,
+      "elapsed": 54.9,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.8772,
+          "acc": 0.107
+        },
+        {
+          "epoch": 1,
+          "loss": 2.6413,
+          "acc": 0.152
+        },
+        {
+          "epoch": 2,
+          "loss": 2.4817,
+          "acc": 0.185
+        },
+        {
+          "epoch": 3,
+          "loss": 2.3451,
+          "acc": 0.215
+        },
+        {
+          "epoch": 4,
+          "loss": 2.2408,
+          "acc": 0.275
+        },
+        {
+          "epoch": 5,
+          "loss": 2.1877,
+          "acc": 0.288
+        },
+        {
+          "epoch": 6,
+          "loss": 2.1703,
+          "acc": 0.31
+        },
+        {
+          "epoch": 7,
+          "loss": 2.1272,
+          "acc": 0.337
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,409 @@
+{
+  "experiment": "twelve_domain_fusion",
+  "epochs": 3,
+  "channels": 32,
+  "device": "cpu",
+  "single_results": {
+    "Transformer": {
+      "acc": 0.731,
+      "params": 22666,
+      "elapsed": 5.4,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.9818,
+          "acc": 0.32
+        },
+        {
+          "epoch": 1,
+          "loss": 1.2588,
+          "acc": 0.673
+        },
+        {
+          "epoch": 2,
+          "loss": 0.9245,
+          "acc": 0.731
+        }
+      ],
+      "domain": "NLP文本",
+      "score": 9.4
+    },
+    "ViT": {
+      "acc": 0.765,
+      "params": 22538,
+      "elapsed": 4.2,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.7539,
+          "acc": 0.628
+        },
+        {
+          "epoch": 1,
+          "loss": 1.0145,
+          "acc": 0.719
+        },
+        {
+          "epoch": 2,
+          "loss": 0.7603,
+          "acc": 0.765
+        }
+      ],
+      "domain": "图像分类",
+      "score": 8.4
+    },
+    "Conformer": {
+      "acc": 0.657,
+      "params": 35978,
+      "elapsed": 8.1,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.9595,
+          "acc": 0.458
+        },
+        {
+          "epoch": 1,
+          "loss": 1.3646,
+          "acc": 0.598
+        },
+        {
+          "epoch": 2,
+          "loss": 1.0661,
+          "acc": 0.657
+        }
+      ],
+      "domain": "语音识别",
+      "score": 8.0
+    },
+    "VideoMAE": {
+      "acc": 0.705,
+      "params": 26954,
+      "elapsed": 7.9,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.9671,
+          "acc": 0.514
+        },
+        {
+          "epoch": 1,
+          "loss": 1.3087,
+          "acc": 0.685
+        },
+        {
+          "epoch": 2,
+          "loss": 0.9851,
+          "acc": 0.705
+        }
+      ],
+      "domain": "视频理解",
+      "score": 8.0
+    },
+    "DiT": {
+      "acc": 0.624,
+      "params": 28874,
+      "elapsed": 5.8,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.1408,
+          "acc": 0.348
+        },
+        {
+          "epoch": 1,
+          "loss": 1.6058,
+          "acc": 0.536
+        },
+        {
+          "epoch": 2,
+          "loss": 1.2521,
+          "acc": 0.624
+        }
+      ],
+      "domain": "图像生成",
+      "score": 8.4
+    },
+    "PointTrans": {
+      "acc": 0.6,
+      "params": 18346,
+      "elapsed": 21.0,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.0422,
+          "acc": 0.372
+        },
+        {
+          "epoch": 1,
+          "loss": 1.5533,
+          "acc": 0.504
+        },
+        {
+          "epoch": 2,
+          "loss": 1.2756,
+          "acc": 0.6
+        }
+      ],
+      "domain": "3D点云",
+      "score": 8.0
+    },
+    "CLIP": {
+      "acc": 0.705,
+      "params": 29067,
+      "elapsed": 9.6,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.0256,
+          "acc": 0.421
+        },
+        {
+          "epoch": 1,
+          "loss": 1.3305,
+          "acc": 0.629
+        },
+        {
+          "epoch": 2,
+          "loss": 0.9957,
+          "acc": 0.705
+        }
+      ],
+      "domain": "多模态",
+      "score": 8.8
+    },
+    "Mamba": {
+      "acc": 0.701,
+      "params": 22954,
+      "elapsed": 13.5,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.9699,
+          "acc": 0.479
+        },
+        {
+          "epoch": 1,
+          "loss": 1.3082,
+          "acc": 0.583
+        },
+        {
+          "epoch": 2,
+          "loss": 1.0502,
+          "acc": 0.701
+        }
+      ],
+      "domain": "高效序列",
+      "score": 8.4
+    },
+    "MoE": {
+      "acc": 0.612,
+      "params": 43566,
+      "elapsed": 6.3,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.1254,
+          "acc": 0.458
+        },
+        {
+          "epoch": 1,
+          "loss": 1.6584,
+          "acc": 0.58
+        },
+        {
+          "epoch": 2,
+          "loss": 1.3608,
+          "acc": 0.612
+        }
+      ],
+      "domain": "稀疏路由",
+      "score": 8.8
+    },
+    "Graphormer": {
+      "acc": 0.65,
+      "params": 22794,
+      "elapsed": 5.5,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.0013,
+          "acc": 0.414
+        },
+        {
+          "epoch": 1,
+          "loss": 1.4396,
+          "acc": 0.601
+        },
+        {
+          "epoch": 2,
+          "loss": 1.1058,
+          "acc": 0.65
+        }
+      ],
+      "domain": "图学习",
+      "score": 8.0
+    },
+    "RWKV": {
+      "acc": 0.532,
+      "params": 16394,
+      "elapsed": 8.9,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 2.1729,
+          "acc": 0.318
+        },
+        {
+          "epoch": 1,
+          "loss": 1.868,
+          "acc": 0.517
+        },
+        {
+          "epoch": 2,
+          "loss": 1.5941,
+          "acc": 0.532
+        }
+      ],
+      "domain": "线性RNN",
+      "score": 8.2
+    },
+    "Perceiver": {
+      "acc": 0.754,
+      "params": 31882,
+      "elapsed": 6.1,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.8918,
+          "acc": 0.553
+        },
+        {
+          "epoch": 1,
+          "loss": 1.1418,
+          "acc": 0.672
+        },
+        {
+          "epoch": 2,
+          "loss": 0.8602,
+          "acc": 0.754
+        }
+      ],
+      "domain": "通用感知",
+      "score": 8.2
+    }
+  },
+  "fusion_results": {
+    "Chain(12)": {
+      "acc": 0.587,
+      "params": 212431,
+      "elapsed": 89.1,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 719.3986,
+          "acc": 0.393
+        },
+        {
+          "epoch": 1,
+          "loss": 182.3311,
+          "acc": 0.476
+        },
+        {
+          "epoch": 2,
+          "loss": 90.246,
+          "acc": 0.587
+        }
+      ],
+      "desc": "12个架构顺序串联+残差"
+    },
+    "Parallel(12)": {
+      "acc": 0.887,
+      "params": 229403,
+      "elapsed": 74.3,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.4272,
+          "acc": 0.715
+        },
+        {
+          "epoch": 1,
+          "loss": 0.6794,
+          "acc": 0.863
+        },
+        {
+          "epoch": 2,
+          "loss": 0.4596,
+          "acc": 0.887
+        }
+      ],
+      "desc": "12个架构并联+门控汇聚"
+    },
+    "Hierarchical(4×3)": {
+      "acc": 0.883,
+      "params": 222927,
+      "elapsed": 72.6,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.5789,
+          "acc": 0.673
+        },
+        {
+          "epoch": 1,
+          "loss": 0.8044,
+          "acc": 0.836
+        },
+        {
+          "epoch": 2,
+          "loss": 0.5143,
+          "acc": 0.883
+        }
+      ],
+      "desc": "4组(感知/注意力/序列/融合)各3架构串联→并联汇聚"
+    },
+    "Evolved(Top6)": {
+      "acc": 0.809,
+      "params": 106315,
+      "elapsed": 37.2,
+      "hist": [
+        {
+          "epoch": 0,
+          "loss": 1.7165,
+          "acc": 0.572
+        },
+        {
+          "epoch": 1,
+          "loss": 1.0434,
+          "acc": 0.73
+        },
+        {
+          "epoch": 2,
+          "loss": 0.7831,
+          "acc": 0.809
+        }
+      ],
+      "desc": "Top-6(ViT+Perceiver+Transformer+VideoMAE+CLIP+Mamba)串联+跨层跳连",
+      "selected": [
+        "ViT",
+        "Perceiver",
+        "Transformer",
+        "VideoMAE",
+        "CLIP",
+        "Mamba"
+      ]
+    }
+  },
+  "top6": [
+    "ViT",
+    "Perceiver",
+    "Transformer",
+    "VideoMAE",
+    "CLIP",
+    "Mamba"
+  ],
+  "best_single": "ViT",
+  "best_fusion": "Parallel(12)",
+  "fusion_gain": 0.122
+}

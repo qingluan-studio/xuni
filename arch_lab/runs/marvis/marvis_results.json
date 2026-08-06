@@ -1,0 +1,131 @@
+{
+  "experiment": "marvis_hybrid_formula_validation",
+  "epochs": 3,
+  "channels": 32,
+  "device": "cpu",
+  "results": {
+    "mnist": {
+      "融合冠军 (TEXT基因)": {
+        "accuracy": 0.849,
+        "params": 66986,
+        "elapsed": 17.3,
+        "history": [
+          {
+            "epoch": 0,
+            "loss": 6.0965,
+            "acc": 0.539
+          },
+          {
+            "epoch": 1,
+            "loss": 0.7838,
+            "acc": 0.816
+          },
+          {
+            "epoch": 2,
+            "loss": 0.5107,
+            "acc": 0.849
+          }
+        ],
+        "domain_scores": {
+          "多模态融合": 9.0,
+          "视频理解": 8.9,
+          "代码生成/理解": 8.6,
+          "音乐/音频": 8.4,
+          "语音识别/合成": 8.4,
+          "文本/NLP": 8.3,
+          "强化学习": 8.3,
+          "3D视觉/点云": 8.3,
+          "深度推理": 8.1,
+          "图像生成": 8.0
+        },
+        "components": {
+          "Conv-Attn (TEXT基因)": 1.0
+        }
+      },
+      "RL冠军 (DualStream基因)": {
+        "accuracy": 0.868,
+        "params": 106626,
+        "elapsed": 29.3,
+        "history": [
+          {
+            "epoch": 0,
+            "loss": 564.4842,
+            "acc": 0.56
+          },
+          {
+            "epoch": 1,
+            "loss": 32.0282,
+            "acc": 0.812
+          },
+          {
+            "epoch": 2,
+            "loss": 18.5709,
+            "acc": 0.868
+          }
+        ],
+        "domain_scores": {
+          "多模态融合": 7.7,
+          "视频理解": 8.1,
+          "代码生成/理解": 7.7,
+          "音乐/音频": 7.7,
+          "语音识别/合成": 7.5,
+          "文本/NLP": 7.5,
+          "强化学习": 8.0,
+          "3D视觉/点云": 8.5,
+          "深度推理": 8.4,
+          "图像生成": 8.3
+        },
+        "components": {
+          "DualStream": 0.58,
+          "GlobalContext": 0.17,
+          "DenseBlock": 0.25
+        }
+      },
+      "混合公式架构": {
+        "accuracy": 0.878,
+        "params": 101274,
+        "elapsed": 26.5,
+        "history": [
+          {
+            "epoch": 0,
+            "loss": 1.9,
+            "acc": 0.621
+          },
+          {
+            "epoch": 1,
+            "loss": 1.0724,
+            "acc": 0.832
+          },
+          {
+            "epoch": 2,
+            "loss": 0.7065,
+            "acc": 0.878
+          }
+        ],
+        "domain_scores": {
+          "多模态融合": 7.8,
+          "视频理解": 8.0,
+          "代码生成/理解": 7.9,
+          "音乐/音频": 7.6,
+          "语音识别/合成": 7.6,
+          "文本/NLP": 7.8,
+          "强化学习": 7.8,
+          "3D视觉/点云": 7.9,
+          "深度推理": 8.1,
+          "图像生成": 7.8
+        },
+        "components": {
+          "DualStream": 0.3,
+          "GlobalContext": 0.25,
+          "DenseBlock": 0.2,
+          "探索层": 0.25
+        }
+      }
+    }
+  },
+  "hybrid_vs_best": {
+    "avg": -0.68,
+    "min": -1.2,
+    "max": -0.3
+  }
+}
